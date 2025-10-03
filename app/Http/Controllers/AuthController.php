@@ -35,7 +35,7 @@ class AuthController extends Controller
         $data['username'] = $request->username;
         $data['password'] = $request->password;
 
-        return view('respon-form', $data);
+        return view('guest.respon-form', $data);
     }
 
     /**
