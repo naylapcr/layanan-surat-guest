@@ -90,7 +90,7 @@
         </div>
 
         <div class="button-group">
-            <a href="{{ route('Auth.index') }}" class="btn btn-secondary">Kembali ke Login</a>
+            <a href="{{ route('auth.index') }}" class="btn btn-secondary">Kembali ke Login</a>
             <a href="{{ route('home') }}" class="btn btn-primary">Dashboard Utama</a>
         </div>
     </div>

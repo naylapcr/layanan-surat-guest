@@ -6,7 +6,7 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 
 Route::prefix('surat')->group(function () {
@@ -14,8 +14,8 @@ Route::prefix('surat')->group(function () {
     Route::post('/tracking', [GuestController::class, 'track'])->name('surat.guest.track');
 });
 
-Route::get('/auth', [AuthController::class, 'index'])->name('auth.index');
-Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
-Route::get('/login', [AuthController::class, 'index'])->name('login');
+Route::get('/auth', [authController::class, 'index'])->name('auth.index');
+Route::post('/auth/login', [authController::class, 'login'])->name('auth.login');
+Route::get('/login', [authController::class, 'index'])->name('login');
 
 
