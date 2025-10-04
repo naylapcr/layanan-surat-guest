@@ -136,7 +136,7 @@
     <div class="login-container">
         <h2>Login Layanan Surat</h2>
 
-        {{-- Tampilkan pesan error --}}
+
         @if ($errors->any())
             <div class="error">
                 <ul>

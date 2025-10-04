@@ -19,7 +19,7 @@ class AuthController extends Controller
      */
     public function login(request $request)
     {
-        // Validasi input
+
 
         $request->validate([
             'username' => 'required|max:20',
