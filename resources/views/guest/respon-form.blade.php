@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login Berhasil - UMKM Desa</title>
+    <title>Login Berhasil - Layana Surat</title>
     <style>
         body {
             font-family: Arial;
@@ -80,7 +80,7 @@
 
         <div style="font-size: 18px; margin-bottom: 20px;">
             <p><strong>Selamat, anda sudah berhasil login!!</strong></p>
-            <p>Silahkan belanja sekarang.</p>
+            <p>Silahkan Akses Layanan Surat Anda.</p>
         </div>
 
         <div class="user-info">
