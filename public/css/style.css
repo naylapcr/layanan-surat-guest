@@ -1,0 +1,259 @@
+/********** Basic Style ***********/
+* {
+    padding:0;
+    margin:0;
+    box-sizing:border-box;
+}
+
+body {
+    font-family: 'Raleway', sans-serif;
+    color: #F2F2F2;
+}
+
+a {
+    text-decoration:none !important;
+}
+
+section {
+    position: relative;
+}
+
+
+/*********** Header ************/
+.header {
+    background: -webkit-gradient(linear, left top, right top, from(rgba(000, 000, 000, 0.2)), to(rgba(000, 000, 000, 0.2))), url("../img/header-bg.jpg");
+    background: linear-gradient(90deg, rgba(000, 000, 000, 0.2) 0%, rgba(000, 000, 000, 0.2) 100%), url("../img/header-bg.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 0 0 30px 0;
+    position: relative;
+}
+
+.header-title {
+    padding: 20px 15px;
+    text-align: center;
+    background: rgba(000, 000, 000, 0.8);
+}
+
+.header-title h1 {
+    color: #FFFFFF;
+    font-size: 44px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 0;
+}
+
+.header form {
+    margin-top: 30px;
+    padding: 25px 30px;
+    background: rgba(000, 000, 000, 0.4);
+    font-weight: 400;
+}
+
+.header .form-row {
+    margin-bottom: 10px;
+}
+
+.control-group label {
+    margin-bottom: 0;
+    font-size: 14px;
+    color: #F2F2F2;
+}
+
+.form-control {
+    color: #323232;
+    border: none;
+    border-radius: 0;
+    background: #e7e6e6;
+}
+
+.form-control:focus {
+    border: none;
+    box-shadow: none;
+    outline: none;
+    background: #FFFFFF;
+    color: #323232;
+}
+
+.btn {
+    color: #ffffff;
+    background: #dd4952;
+    border-radius: 0;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.btn:hover {
+    color: #dd4952;
+    background: #333333;
+}
+
+.submit-condition {
+    margin-top: 15px;
+    margin-bottom: 0;
+    font-size: 12px;
+    font-weight: 400;
+    color: #FFFFFF;
+}
+
+
+/********** About Us ***********/
+.about {
+    position: relative;
+    padding: 45px 0 30px 0;
+    background: url("../img/header-bg.jpg") center top no-repeat fixed;
+    background-size: cover;
+}
+
+.about::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.92);
+    z-index: 9;
+}
+
+.about .container {
+    position: relative;
+    z-index: 10;
+}
+
+.about .title {
+    text-align: center;
+    font-size: 35px;
+    font-weight: 800;
+    color: #333333;
+    margin-bottom: 15px;
+}
+
+.about .title-sub {
+    text-align: center;
+    color: #666666;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 26px;
+    margin-bottom: 30px;
+}
+
+.about .about-col {
+    background: #fff;
+    box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.08);
+    margin-bottom: 20px;
+}
+
+.about .about-col .img {
+    position: relative;
+}
+
+.about .about-col .icon {
+    width: 64px;
+    height: 64px;
+    padding-top: 8px;
+    text-align: center;
+    position: absolute;
+    background-color: #dd4952;
+    border-radius: 50%;
+    text-align: center;
+    border: 4px solid #fff;
+    left: calc( 50% - 32px);
+    bottom: -30px;
+    transition: 0.3s;
+}
+
+.about .about-col span {
+    font-size: 37px;
+    font-weight: 800;
+    line-height: 1;
+    color: #ffffff;
+    transition: 0.3s;
+}
+
+.about .about-col:hover .icon {
+    background-color: #ffffff;
+}
+
+.about .about-col:hover .icon span {
+    color: #dd4952;
+}
+
+.about .about-col h2 {
+    color: #333333;
+    text-align: center;
+    font-weight: 700;
+    font-size: 20px;
+    padding: 0;
+    margin: 40px 0 12px 0;
+}
+
+.about .about-col h2 a {
+    color: #333333;
+}
+
+.about .about-col h2 a:hover {
+    color: #dd4952;
+}
+
+.about .about-col p {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #666666;
+    margin-bottom: 0;
+    padding: 0 30px;
+}
+
+.about .read-more {
+    width: 100%;
+    text-align: center;
+}
+
+.about .read-more a {
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 5px 15px;
+    transition: 0.5s;
+    margin: 15px 30px 30px 30px;
+    color: #fff;
+    background: #dd4952;
+}
+
+.about .read-more a:hover {
+    background: #333333;
+    color: #dd4952;
+    font-weight: 500;
+}
+
+
+/******** Solar Partner *********/
+.newsletter {
+    position: relative;
+    padding: 45px 0;
+}
+
+.newsletter .title {
+    text-align: center;
+    font-size: 35px;
+    font-weight: 800;
+    color: #333333;
+    margin-bottom: 15px;
+}
+
+.newsletter .title-sub {
+    text-align: center;
+    color: #666666;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 26px;
+    margin-bottom: 30px;
+}
+
+.newsletter .form-control:focus {
+    background: #f2f2f2;
+}
