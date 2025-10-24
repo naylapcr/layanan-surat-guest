@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Data Warga - Bina Desa</title>
+    <title>Jenis Surat - Bina Desa</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <!-- Google Web Fonts -->
@@ -47,53 +47,43 @@
         }
 
         /* Widget Card Styles */
-        .widget-card {
+        .jenis-surat-card {
             border: none;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
             overflow: hidden;
+            height: 100%;
         }
 
-        .widget-card:hover {
+        .jenis-surat-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
 
-        .widget-card .card-header {
-            border-bottom: none;
-            padding: 15px 20px;
-        }
-
-        .service-card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-        }
-
-        .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-
-        .service-card .card-header {
+        .jenis-surat-card .card-header {
             background: linear-gradient(135deg, #0d6efd, #0a58ca);
             border-bottom: none;
-            padding: 15px 20px;
+            padding: 20px;
+            color: white;
         }
 
         .bg-gradient-primary {
             background: linear-gradient(135deg, #0d6efd, #0a58ca) !important;
         }
 
-        .bg-pink {
-            background-color: #e83e8c !important;
-        }
-
         .syarat-list {
             max-height: 200px;
             overflow-y: auto;
+        }
+
+        .syarat-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .syarat-item:last-child {
+            border-bottom: none;
         }
 
         /* Search box improvements */
@@ -122,13 +112,6 @@
         .badge {
             font-size: 0.75em;
             padding: 0.4em 0.6em;
-        }
-
-        /* Button improvements */
-        .btn-action {
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            font-size: 0.875rem;
         }
 
         /* Card hover effects */
@@ -169,17 +152,16 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        .kode-badge {
+            font-size: 0.9em;
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
     </style>
 </head>
 
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-secondary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-    <!-- Spinner End -->
 
     <!-- Topbar Start -->
     <div class="container-fluid bg-primary px-5 d-none d-lg-block">
@@ -224,8 +206,8 @@
     <!-- Page Header Start -->
     <div class="page-header">
         <div class="container text-center">
-            <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Data Warga</h1>
-            <p class="lead text-white animate__animated animate__fadeInUp">Kelola data warga desa dengan mudah dan efisien</p>
+            <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Jenis Surat</h1>
+            <p class="lead text-white animate__animated animate__fadeInUp">Kelola jenis-jenis surat yang tersedia di sistem</p>
         </div>
     </div>
     <!-- Page Header End -->
@@ -235,54 +217,41 @@
         <div class="container py-5">
             <!-- Stats Cards -->
             <div class="row mb-5">
-                <div class="col-md-3 mb-4">
+                <div class="col-md-4 mb-4">
                     <div class="card card-stat bg-primary text-white shadow h-100" data-aos="fade-up" data-aos-delay="100">
                         <div class="card-body d-flex align-items-center">
                             <div class="me-3">
-                                <i class="fas fa-users fa-3x"></i>
+                                <i class="fas fa-file-alt fa-3x"></i>
                             </div>
                             <div>
-                                <h4 class="mb-0">{{ $dataWarga->count() }}</h4>
-                                <p class="mb-0">Total Warga</p>
+                                <h4 class="mb-0">{{ $dataJenisSurat->count() }}</h4>
+                                <p class="mb-0">Total Jenis Surat</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 mb-4">
+                <div class="col-md-4 mb-4">
                     <div class="card card-stat bg-success text-white shadow h-100" data-aos="fade-up" data-aos-delay="200">
                         <div class="card-body d-flex align-items-center">
                             <div class="me-3">
-                                <i class="fas fa-male fa-3x"></i>
+                                <i class="fas fa-code fa-3x"></i>
                             </div>
                             <div>
-                                <h4 class="mb-0">{{ $dataWarga->where('jenis_kelamin', 'L')->count() }}</h4>
-                                <p class="mb-0">Laki-laki</p>
+                                <h4 class="mb-0">{{ $dataJenisSurat->unique('kode')->count() }}</h4>
+                                <p class="mb-0">Kode Unik</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 mb-4">
+                <div class="col-md-4 mb-4">
                     <div class="card card-stat bg-info text-white shadow h-100" data-aos="fade-up" data-aos-delay="300">
                         <div class="card-body d-flex align-items-center">
                             <div class="me-3">
-                                <i class="fas fa-female fa-3x"></i>
+                                <i class="fas fa-clipboard-list fa-3x"></i>
                             </div>
                             <div>
-                                <h4 class="mb-0">{{ $dataWarga->where('jenis_kelamin', 'P')->count() }}</h4>
-                                <p class="mb-0">Perempuan</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <div class="card card-stat bg-warning text-white shadow h-100" data-aos="fade-up" data-aos-delay="400">
-                        <div class="card-body d-flex align-items-center">
-                            <div class="me-3">
-                                <i class="fas fa-briefcase fa-3x"></i>
-                            </div>
-                            <div>
-                                <h4 class="mb-0">{{ $dataWarga->unique('pekerjaan')->count() }}</h4>
-                                <p class="mb-0">Jenis Pekerjaan</p>
+                                <h4 class="mb-0">{{ $dataJenisSurat->where('syarat_json', '!=', '')->count() }}</h4>
+                                <p class="mb-0">Dengan Syarat</p>
                             </div>
                         </div>
                     </div>
@@ -295,27 +264,28 @@
                     <div class="d-flex">
                         <div class="search-box me-3 flex-grow-1">
                             <div class="input-group">
-                                <input type="text" class="form-control border-0" placeholder="Cari warga..." id="searchInput">
+                                <input type="text" class="form-control border-0" placeholder="Cari jenis surat..." id="searchInput">
                                 <button class="btn btn-primary" type="button" id="searchButton">
                                     <i class="fas fa-search"></i>
                                 </button>
                             </div>
                         </div>
                         <div class="dropdown">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip" title="Filter data warga">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip" title="Filter data jenis surat">
                                 <i class="fas fa-filter me-2"></i>Filter
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item filter-option" href="#" data-filter="all">Semua</a></li>
-                                <li><a class="dropdown-item filter-option" href="#" data-filter="L">Laki-laki</a></li>
-                                <li><a class="dropdown-item filter-option" href="#" data-filter="P">Perempuan</a></li>
+                                <li><a class="dropdown-item filter-option" href="#" data-filter="with-syarat">Dengan Syarat</a></li>
+                                <li><a class="dropdown-item filter-option" href="#" data-filter="without-syarat">Tanpa Syarat</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 text-md-end">
-                    <a href="{{ route('warga.create') }}" class="btn btn-primary" data-bs-toggle="tooltip" title="Tambah data warga baru">
-                        <i class="fas fa-plus me-2"></i>Tambah Warga
+                    <!-- TOMBOL TAMBAH JENIS SURAT -->
+                    <a href="{{ route('jenis-surat.create') }}" class="btn btn-primary" data-bs-toggle="tooltip" title="Tambah jenis surat baru">
+                        <i class="fas fa-plus me-2"></i>Tambah Jenis Surat
                     </a>
                 </div>
             </div>
@@ -327,30 +297,33 @@
                 </div>
             @endif
 
-            <!-- Widget Cards untuk Data Warga -->
-            <div class="row" id="wargaContainer">
-                @forelse($dataWarga as $index => $warga)
-                <div class="col-xl-4 col-md-6 mb-4 warga-card" data-gender="{{ $warga->jenis_kelamin }}" data-name="{{ strtolower($warga->nama) }}" data-aos="fade-up" data-aos-delay="{{ ($index % 3) * 100 }}">
-                    <div class="card widget-card h-100">
-                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                            <h6 class="mb-0">
-                                <i class="fas fa-user me-2"></i>{{ $warga->nama }}
-                            </h6>
+            <!-- Widget Cards untuk Jenis Surat -->
+            <div class="row" id="jenisSuratContainer">
+                @forelse($dataJenisSurat as $index => $jenis)
+                <div class="col-xl-4 col-md-6 mb-4 jenis-surat-card-item" data-name="{{ strtolower($jenis->nama_jenis) }}" data-syarat="{{ $jenis->syarat_json ? 'with-syarat' : 'without-syarat' }}" data-aos="fade-up" data-aos-delay="{{ ($index % 3) * 100 }}">
+                    <div class="card jenis-surat-card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-1">
+                                    <i class="fas fa-file-contract me-2"></i>{{ $jenis->nama_jenis }}
+                                </h5>
+                                <span class="badge kode-badge">{{ $jenis->kode }}</span>
+                            </div>
                             <div class="dropdown">
                                 <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip" title="Aksi">
                                     <i class="fas fa-ellipsis-v"></i>
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('warga.edit', $warga->warga_id) }}">
+                                        <a class="dropdown-item" href="{{ route('jenis-surat.edit', $jenis->jenis_id) }}">
                                             <i class="fas fa-edit me-2"></i>Edit
                                         </a>
                                     </li>
                                     <li>
-                                        <form action="{{ route('warga.destroy', $warga->warga_id) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('jenis-surat.destroy', $jenis->jenis_id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data warga ini?')">
+                                            <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus jenis surat ini?')">
                                                 <i class="fas fa-trash me-2"></i>Hapus
                                             </button>
                                         </form>
@@ -359,48 +332,47 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="row mb-3">
-                                <div class="col-12">
-                                    <small class="text-muted">NIK</small>
-                                    <p class="mb-2"><i class="fas fa-id-card text-primary me-2"></i>{{ $warga->no_ktp }}</p>
-                                </div>
+                            @if($jenis->syarat_json)
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-clipboard-check me-2"></i>Syarat-syarat:
+                            </h6>
+                            <div class="syarat-list">
+                                @php
+                                    try {
+                                        $syarat = json_decode($jenis->syarat_json, true);
+                                        if (json_last_error() !== JSON_ERROR_NONE) {
+                                            throw new Exception('Not JSON');
+                                        }
+                                    } catch (Exception $e) {
+                                        $syarat = array_map('trim', explode(',', $jenis->syarat_json));
+                                    }
+                                @endphp
+
+                                @if(is_array($syarat) && count($syarat) > 0)
+                                    @foreach($syarat as $item)
+                                    <div class="syarat-item d-flex align-items-start">
+                                        <i class="fas fa-check-circle text-success me-2 mt-1"></i>
+                                        <span class="small">{{ is_array($item) ? ($item['syarat'] ?? $item) : $item }}</span>
+                                    </div>
+                                    @endforeach
+                                @else
+                                    <div class="text-center text-muted py-2">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <span class="small">Tidak ada syarat khusus</span>
+                                    </div>
+                                @endif
                             </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <small class="text-muted">Jenis Kelamin</small>
-                                    <p class="mb-2">
-                                        @if($warga->jenis_kelamin == 'L')
-                                            <span class="badge bg-primary"><i class="fas fa-male me-1"></i>Laki-laki</span>
-                                        @else
-                                            <span class="badge bg-pink"><i class="fas fa-female me-1"></i>Perempuan</span>
-                                        @endif
-                                    </p>
-                                </div>
-                                <div class="col-6">
-                                    <small class="text-muted">Agama</small>
-                                    <p class="mb-2">{{ $warga->agama }}</p>
-                                </div>
+                            @else
+                            <div class="text-center text-muted py-4">
+                                <i class="fas fa-info-circle fa-2x mb-3"></i>
+                                <p class="mb-0 small">Tidak ada syarat khusus yang ditentukan</p>
                             </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <small class="text-muted">Pekerjaan</small>
-                                    <p class="mb-2"><i class="fas fa-briefcase text-warning me-2"></i>{{ $warga->pekerjaan }}</p>
-                                </div>
-                            </div>
+                            @endif
                         </div>
                         <div class="card-footer bg-light">
                             <div class="row text-center">
-                                <div class="col-6 border-end">
-                                    <a href="tel:{{ $warga->telp }}" class="text-secondary" title="Telepon" data-bs-toggle="tooltip">
-                                        <i class="fas fa-phone"></i>
-                                        <small class="d-block mt-1">Telepon</small>
-                                    </a>
-                                </div>
-                                <div class="col-6">
-                                    <a href="mailto:{{ $warga->email }}" class="text-secondary" title="Email" data-bs-toggle="tooltip">
-                                        <i class="fas fa-envelope"></i>
-                                        <small class="d-block mt-1">Email</small>
-                                    </a>
+                                <div class="col-12">
+                                    <small class="text-muted">Terakhir diperbarui: {{ $jenis->updated_at->format('d M Y') }}</small>
                                 </div>
                             </div>
                         </div>
@@ -410,11 +382,11 @@
                 <div class="col-12">
                     <div class="card text-center py-5" data-aos="fade-up">
                         <div class="card-body">
-                            <i class="fas fa-users fa-4x text-muted mb-3"></i>
-                            <h4 class="text-muted">Belum ada data warga</h4>
-                            <p class="text-muted mb-4">Mulai dengan menambahkan data warga pertama</p>
-                            <a href="{{ route('warga.create') }}" class="btn btn-primary">
-                                <i class="fas fa-plus me-2"></i>Tambah Data Warga Pertama
+                            <i class="fas fa-file-alt fa-4x text-muted mb-3"></i>
+                            <h4 class="text-muted">Belum ada data jenis surat</h4>
+                            <p class="text-muted mb-4">Mulai dengan menambahkan jenis surat pertama</p>
+                            <a href="{{ route('jenis-surat.create') }}" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Tambah Jenis Surat Pertama
                             </a>
                         </div>
                     </div>
@@ -423,10 +395,10 @@
             </div>
 
             <!-- Info jumlah data -->
-            @if($dataWarga->count() > 0)
+            @if($dataJenisSurat->count() > 0)
             <div class="row mt-4">
                 <div class="col-12 text-center">
-                    <p class="text-muted">Menampilkan {{ $dataWarga->count() }} data warga</p>
+                    <p class="text-muted">Menampilkan {{ $dataJenisSurat->count() }} jenis surat</p>
                 </div>
             </div>
             @endif
@@ -517,22 +489,26 @@
             });
 
             // Search functionality
-            const searchInput = document.querySelector('input[placeholder="Cari warga..."]');
-            const cards = document.querySelectorAll('.widget-card');
+            const searchInput = document.getElementById('searchInput');
+            const cards = document.querySelectorAll('.jenis-surat-card');
+
+            function filterJenisSurat() {
+                const searchTerm = searchInput.value.toLowerCase();
+
+                cards.forEach(card => {
+                    const text = card.textContent.toLowerCase();
+                    const cardItem = card.closest('.jenis-surat-card-item');
+
+                    if (text.includes(searchTerm)) {
+                        cardItem.style.display = 'block';
+                    } else {
+                        cardItem.style.display = 'none';
+                    }
+                });
+            }
 
             if (searchInput) {
-                searchInput.addEventListener('input', function(e) {
-                    const searchTerm = e.target.value.toLowerCase();
-
-                    cards.forEach(card => {
-                        const text = card.textContent.toLowerCase();
-                        if (text.includes(searchTerm)) {
-                            card.closest('.warga-card').style.display = 'block';
-                        } else {
-                            card.closest('.warga-card').style.display = 'none';
-                        }
-                    });
-                });
+                searchInput.addEventListener('input', filterJenisSurat);
             }
 
             // Filter functionality
@@ -544,11 +520,13 @@
                     e.preventDefault();
                     currentFilter = this.getAttribute('data-filter');
 
-                    const wargaCards = document.querySelectorAll('.warga-card');
-                    wargaCards.forEach(card => {
-                        const gender = card.getAttribute('data-gender');
+                    const jenisSuratCards = document.querySelectorAll('.jenis-surat-card-item');
+                    jenisSuratCards.forEach(card => {
+                        const syarat = card.getAttribute('data-syarat');
 
-                        if (currentFilter === 'all' || gender === currentFilter) {
+                        if (currentFilter === 'all' ||
+                            (currentFilter === 'with-syarat' && syarat === 'with-syarat') ||
+                            (currentFilter === 'without-syarat' && syarat === 'without-syarat')) {
                             card.style.display = 'block';
                         } else {
                             card.style.display = 'none';
@@ -574,17 +552,7 @@
                 searchInput.addEventListener('keypress', function(e) {
                     if (e.key === 'Enter') {
                         e.preventDefault();
-                        const searchTerm = e.target.value.toLowerCase();
-
-                        cards.forEach(card => {
-                            const text = card.textContent.toLowerCase();
-                            if (text.includes(searchTerm)) {
-                                card.closest('.warga-card').style.display = 'block';
-                                card.classList.add('fade-in');
-                            } else {
-                                card.closest('.warga-card').style.display = 'none';
-                            }
-                        });
+                        filterJenisSurat();
                     }
                 });
             }
@@ -604,7 +572,7 @@
             }, observerOptions);
 
             // Observe all cards
-            document.querySelectorAll('.warga-card').forEach(card => {
+            document.querySelectorAll('.jenis-surat-card-item').forEach(card => {
                 observer.observe(card);
             });
         });

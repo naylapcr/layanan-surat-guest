@@ -65,35 +65,8 @@
             padding: 15px 20px;
         }
 
-        .service-card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-        }
-
-        .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-
-        .service-card .card-header {
-            background: linear-gradient(135deg, #0d6efd, #0a58ca);
-            border-bottom: none;
-            padding: 15px 20px;
-        }
-
-        .bg-gradient-primary {
-            background: linear-gradient(135deg, #0d6efd, #0a58ca) !important;
-        }
-
         .bg-pink {
             background-color: #e83e8c !important;
-        }
-
-        .syarat-list {
-            max-height: 200px;
-            overflow-y: auto;
         }
 
         /* Search box improvements */
@@ -122,13 +95,6 @@
         .badge {
             font-size: 0.75em;
             padding: 0.4em 0.6em;
-        }
-
-        /* Button improvements */
-        .btn-action {
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            font-size: 0.875rem;
         }
 
         /* Card hover effects */
@@ -173,14 +139,6 @@
 </head>
 
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-secondary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-    <!-- Spinner End -->
-
     <!-- Topbar Start -->
     <div class="container-fluid bg-primary px-5 d-none d-lg-block">
         <div class="row gx-0 align-items-center">

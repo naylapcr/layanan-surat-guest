@@ -12,8 +12,8 @@ class JenisSuratController extends Controller
      */
     public function index()
     {
-        $data['dataJenisSurat'] = JenisSurat::all();
-        return view('guest.jenis-surat', $data);
+        $data['dataJenisSurat'] = \App\Models\JenisSurat::all();
+        return view('jenis-surat.index', $data);
     }
 
     /**
@@ -21,7 +21,7 @@ class JenisSuratController extends Controller
      */
     public function create()
     {
-        return view('guest.form-jenis-surat');
+        return view('jenis-surat.create');
     }
 
     /**
@@ -34,11 +34,11 @@ class JenisSuratController extends Controller
             'nama_jenis' => 'required'
         ]);
 
-        $data['kode'] = $request->kode;
-        $data['nama_jenis'] = $request->nama_jenis;
-        $data['syarat_json'] = $request->syarat_json;
-
-        JenisSurat::create($data);
+        \App\Models\JenisSurat::create([
+            'kode' => $request->kode,
+            'nama_jenis' => $request->nama_jenis,
+            'syarat_json' => $request->syarat_json
+        ]);
 
         return redirect()->route('jenis-surat.index')->with('success', 'Jenis surat berhasil ditambahkan!');
     }
@@ -56,8 +56,8 @@ class JenisSuratController extends Controller
      */
     public function edit(string $id)
     {
-        $data['dataJenisSurat'] = JenisSurat::findOrFail($id);
-        return view('guest.form-jenis-surat', $data);
+        $data['dataJenisSurat'] = \App\Models\JenisSurat::findOrFail($id);
+        return view('jenis-surat.edit', $data);
     }
 
     /**
@@ -65,19 +65,19 @@ class JenisSuratController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $jenis_id = $id;
-        $dataJenisSurat = JenisSurat::findOrFail($jenis_id);
+        $jenisSurat = \App\Models\JenisSurat::findOrFail($id);
 
         $request->validate([
             'kode' => 'required|unique:jenis_surat,kode,' . $id . ',jenis_id',
             'nama_jenis' => 'required'
         ]);
 
-        $dataJenisSurat->kode = $request->kode;
-        $dataJenisSurat->nama_jenis = $request->nama_jenis;
-        $dataJenisSurat->syarat_json = $request->syarat_json;
+        $jenisSurat->update([
+            'kode' => $request->kode,
+            'nama_jenis' => $request->nama_jenis,
+            'syarat_json' => $request->syarat_json
+        ]);
 
-        $dataJenisSurat->save();
         return redirect()->route('jenis-surat.index')->with('success', 'Jenis surat berhasil diupdate!');
     }
 
@@ -86,7 +86,7 @@ class JenisSuratController extends Controller
      */
     public function destroy(string $id)
     {
-        $jenisSurat = JenisSurat::findOrFail($id);
+        $jenisSurat = \App\Models\JenisSurat::findOrFail($id);
         $jenisSurat->delete();
 
         return redirect()->route('jenis-surat.index')->with('success', 'Jenis surat berhasil dihapus!');

@@ -21,7 +21,7 @@ class WargaController extends Controller
      */
     public function create()
     {
-        return view('guest.form-warga');
+        return view('data-warga.create');
     }
 
     /**
@@ -66,7 +66,7 @@ class WargaController extends Controller
     public function edit(string $id)
     {
         $data['dataWarga'] = Warga::findOrFail($id);
-        return view('guest.form-warga', $data);
+        return view('data-warga.edit', $data);
     }
 
     /**
