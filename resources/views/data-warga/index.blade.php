@@ -446,10 +446,7 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <script>
-        // Simple spinner hide
-        window.addEventListener('load', function() {
-            document.getElementById('spinner').style.display = 'none';
-        });
+        
 
         // Back to top button
         document.addEventListener('DOMContentLoaded', function() {

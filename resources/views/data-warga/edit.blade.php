@@ -94,11 +94,16 @@
         .input-group-icon {
             position: relative;
         }
+
+        /* HIDE SPINNER - TAMBAHKAN INI */
+        #spinner {
+            display: none !important;
+        }
     </style>
 </head>
 
 <body>
-
+ 
     <!-- Topbar Start -->
     <div class="container-fluid bg-primary px-5 d-none d-lg-block">
         <div class="row gx-0 align-items-center">
@@ -298,10 +303,45 @@
     </div>
     <!-- Copyright End -->
 
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
-        window.addEventListener('load', function() {
-            document.getElementById('spinner').style.display = 'none';
+        // Force hide any spinner element that might exist
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide spinner immediately
+            const spinner = document.getElementById('spinner');
+            if (spinner) {
+                spinner.style.display = 'none';
+                spinner.remove(); // Remove from DOM completely
+            }
+
+            // Also hide any elements with spinner class
+            const spinnerElements = document.querySelectorAll('.spinner-border, .spinner');
+            spinnerElements.forEach(function(element) {
+                element.style.display = 'none';
+                element.remove();
+            });
         });
+
+        // Backup hide on window load
+        window.addEventListener('load', function() {
+            const spinner = document.getElementById('spinner');
+            if (spinner) {
+                spinner.style.display = 'none';
+                spinner.remove();
+            }
+        });
+
+        // Emergency hide after 1 second
+        setTimeout(function() {
+            const spinner = document.getElementById('spinner');
+            if (spinner) {
+                spinner.style.display = 'none';
+                spinner.remove();
+            }
+        }, 1000);
     </script>
 </body>
 </html>
