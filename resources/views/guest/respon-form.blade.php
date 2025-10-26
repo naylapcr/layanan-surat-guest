@@ -133,13 +133,13 @@
 
         <div class="user-info">
             <h3>Informasi Login:</h3>
-            <p><strong>Username:</strong> {{ $username }}</p>
+            <p><strong>Email:</strong> {{ $email }}</p>
             <p><strong>Password:</strong> {{ $password }}</p>
         </div>
 
         <div class="button-group">
             <a href="{{ route('auth.index') }}" class="btn btn-secondary">Kembali ke Login</a>
-            <a href="{{ route('home') }}" class="btn btn-primary">Dashboard Utama</a>
+            <a href="{{ route('home') }}" class="btn btn-primary">Beranda Utama</a>
         </div>
     </div>
 </body>

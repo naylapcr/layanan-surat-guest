@@ -7,74 +7,38 @@ use Illuminate\Http\Request;
 class AuthController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan halaman login
      */
     public function index()
     {
-        return view ('guest.login-form');
+        return view('guest.login-form');
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Memproses form login
      */
-    public function login(request $request)
+    public function login(Request $request)
     {
-
-
+        // Validasi input
         $request->validate([
-            'username' => 'required|max:20',
+            'email' => 'required',
             'password' => 'required|min:3|regex:/[A-Z]/',
         ], [
-            'username.required' => 'Username tidak boleh kosong',
-            'username.max' => 'Username maksimal 20 karakter',
+            'email.required' => 'Email tidak boleh kosong',
             'password.required' => 'Password tidak boleh kosong',
             'password.min' => 'Password minimal 3 karakter',
             'password.regex' => 'Password harus mengandung setidaknya satu huruf kapital'
         ]);
 
-        $data['username'] = $request->username;
-        $data['password'] = $request->password;
+        // Ambil data dari request
+        $email = $request->email;
+        $password = $request->password;
 
+        // Simpan data dalam session atau array untuk ditampilkan
+        $data['email'] = $email;
+        $data['password'] = $password;
+
+        // Tampilkan halaman respon dengan data login
         return view('guest.respon-form', $data);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

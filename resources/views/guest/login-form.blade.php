@@ -70,7 +70,7 @@
             transition: all 0.3s ease;
         }
 
-        input[type="text"],
+        input[type="email"],
         input[type="password"] {
             width: 100%;
             padding: 0.75em;
@@ -81,7 +81,7 @@
             transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        input[type="text"]:focus,
+        input[type="email"]:focus,
         input[type="password"]:focus {
             border-color: #007bff;
             box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
@@ -136,7 +136,6 @@
     <div class="login-container">
         <h2>Login Layanan Surat</h2>
 
-
         @if ($errors->any())
             <div class="error">
                 <ul>
@@ -150,12 +149,12 @@
         <form method="POST" action="{{ route('auth.login') }}">
             @csrf
             <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" value="{{ old('username') }}">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ old('email') }}" required>
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password">
+                <input type="password" id="password" name="password" required>
             </div>
             <button type="submit">Login</button>
         </form>
