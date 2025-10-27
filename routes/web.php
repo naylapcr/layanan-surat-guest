@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\WargaController;
 use App\Http\Controllers\DashboardController;
@@ -31,3 +32,20 @@ Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard'
 
 Route::get('/tracking', [GuestController::class, 'tracking'])
     ->name('guest.tracking');
+
+// Routes untuk User Management
+Route::resource('user', UserController::class);
+
+Route::get('/login', [AuthController::class, 'index'])->name('login.form');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+
+Route::post('/verify-password', [AuthController::class, 'verifyPassword'])->name('verify.password');
+
+Route::get('/login', [AuthController::class, 'index'])->name('login.form');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('guest.login-form');
+
+Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('guest.register-form');
+Route::post('/register', [AuthController::class, 'register'])->name('register');

@@ -86,6 +86,7 @@
                             </div>
                         </div>
                         <a href="contact.html" class="nav-item nav-link">Kontak</a>
+                        <a href="{{ route('user.index') }}" class="nav-item nav-link">Data User</a>
                     </div>
                     <button class="btn btn-primary btn-md-square border-secondary mb-3 mb-md-3 mb-lg-0 me-3" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search"></i></button>
                     <a href="" class="btn btn-primary border-secondary rounded-pill py-2 px-4 px-lg-3 mb-3 mb-md-3 mb-lg-0">Ajukan Surat</a>

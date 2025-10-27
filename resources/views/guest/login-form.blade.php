@@ -158,6 +158,10 @@
             </div>
             <button type="submit">Login</button>
         </form>
+        <div class="login-footer">
+    <p>Belum punya akun? <a href="{{ route('guest.register-form') }}">Daftar di sini</a></p>
+    <p class="mt-2">Sistem Surat Menyurat <strong>Bina Desa</strong></p>
+</div>
     </div>
 </body>
 </html>

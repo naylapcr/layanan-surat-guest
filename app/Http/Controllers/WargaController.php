@@ -21,7 +21,7 @@ class WargaController extends Controller
      */
     public function create()
     {
-        return view('data-warga.create');
+        return view('guest.data-warga.create');
     }
 
     /**
