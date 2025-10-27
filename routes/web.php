@@ -49,3 +49,11 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('guest.logi
 
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('guest.register-form');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
+
+// Routes untuk data warga
+Route::get('/warga', [WargaController::class, 'index'])->name('warga.index');
+Route::get('/warga/create', [WargaController::class, 'create'])->name('warga.create');
+Route::post('/warga', [WargaController::class, 'store'])->name('warga.store');
+Route::get('/warga/{warga}/edit', [WargaController::class, 'edit'])->name('warga.edit');
+Route::put('/warga/{warga}', [WargaController::class, 'update'])->name('warga.update');
+Route::delete('/warga/{warga}', [WargaController::class, 'destroy'])->name('warga.destroy');

@@ -17,4 +17,11 @@ class Warga extends Model
         'telp',
         'email'
     ];
+
+    public $timestamps = true;
+
+    public function getRouteKeyName()
+    {
+        return 'warga_id';
+    }
 }
