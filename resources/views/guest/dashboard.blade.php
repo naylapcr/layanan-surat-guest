@@ -1,3 +1,4 @@
+{{-- start css --}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,7 +34,9 @@
     </head>
 
     <body>
+{{-- end css --}}
 
+{{-- start header --}}
         <!-- Topbar Start -->
         <div class="container-fluid bg-primary px-5 d-none d-lg-block">
             <div class="row gx-0 align-items-center">

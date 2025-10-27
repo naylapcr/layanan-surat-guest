@@ -9,6 +9,12 @@
 
 {{-- start main content --}}
     <!-- Content Start -->
+     <div class="page-header">
+        <div class="container text-center">
+            <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Data User</h1>
+            <p class="lead text-white animate__animated animate__fadeInUp">Tambahkan Data User baru ke sistem</p>
+        </div>
+    </div>
     <div class="container-fluid py-5">
         <div class="container py-5">
             <div class="row justify-content-center">

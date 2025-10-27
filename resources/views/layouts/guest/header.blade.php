@@ -39,11 +39,4 @@
     </div>
     <!-- Navbar End -->
 
-    <!-- Page Header Start -->
-    <div class="page-header">
-        <div class="container text-center">
-            <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Tambah Jenis Surat</h1>
-            <p class="lead text-white animate__animated animate__fadeInUp">Tambahkan jenis surat baru ke sistem</p>
-        </div>
-    </div>
-    <!-- Page Header End -->
+    

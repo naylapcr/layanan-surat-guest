@@ -6,6 +6,12 @@
 @include('layouts.guest.header')
 {{-- end header --}}
     <!-- Content Start -->
+     <div class="page-header">
+        <div class="container text-center">
+            <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Edit Data User</h1>
+            <p class="lead text-white animate__animated animate__fadeInUp">Edit Data User ke sistem</p>
+        </div>
+    </div>
     <div class="container-fluid py-5">
         <div class="container py-5">
             <div class="row justify-content-center">

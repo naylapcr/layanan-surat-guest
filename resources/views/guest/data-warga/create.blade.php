@@ -6,6 +6,12 @@
 @include('layouts.guest.header')
 {{-- end header --}}
 <!-- Content Start -->
+    <div class="page-header">
+        <div class="container text-center">
+            <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Tambah Data Warga</h1>
+            <p class="lead text-white animate__animated animate__fadeInUp">Tambahkan Data Warga baru ke sistem</p>
+        </div>
+    </div>
 <div class="container-fluid py-5">
     <div class="container py-5">
         <div class="row justify-content-center">
@@ -20,7 +26,7 @@
                     <div class="form-body">
                         <form method="POST" action="{{ route('warga.store') }}">
                             @csrf
-                        </form>
+
                         @if ($errors->any())
                             <div class="alert alert-danger animate__animated animate__shakeX">
                                 <h5><i class="fas fa-exclamation-triangle me-2"></i>Terjadi Kesalahan</h5>
