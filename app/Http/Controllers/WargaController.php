@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Warga;
@@ -12,8 +11,8 @@ class WargaController extends Controller
      */
     public function index()
     {
-        $data['dataWarga'] = Warga::all();
-        return view('guest.data-warga', $data);
+        $dataWarga = Warga::all();
+        return view('guest.data-warga.data-warga', compact('dataWarga'));
     }
 
     /**
@@ -30,22 +29,22 @@ class WargaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'no_ktp' => 'required|unique:warga,no_ktp',
-            'nama' => 'required',
+            'no_ktp'        => 'required|unique:warga,no_ktp',
+            'nama'          => 'required',
             'jenis_kelamin' => 'required',
-            'agama' => 'required',
-            'pekerjaan' => 'required',
-            'telp' => 'required',
-            'email' => 'required|email'
+            'agama'         => 'required',
+            'pekerjaan'     => 'required',
+            'telp'          => 'required',
+            'email'         => 'required|email',
         ]);
 
-        $data['no_ktp'] = $request->no_ktp;
-        $data['nama'] = $request->nama;
+        $data['no_ktp']        = $request->no_ktp;
+        $data['nama']          = $request->nama;
         $data['jenis_kelamin'] = $request->jenis_kelamin;
-        $data['agama'] = $request->agama;
-        $data['pekerjaan'] = $request->pekerjaan;
-        $data['telp'] = $request->telp;
-        $data['email'] = $request->email;
+        $data['agama']         = $request->agama;
+        $data['pekerjaan']     = $request->pekerjaan;
+        $data['telp']          = $request->telp;
+        $data['email']         = $request->email;
 
         Warga::create($data);
 
@@ -65,8 +64,8 @@ class WargaController extends Controller
      */
     public function edit(string $id)
     {
-        $data['dataWarga'] = Warga::findOrFail($id);
-        return view('data-warga.edit', $data);
+        $data['warga'] = Warga::findOrFail($id);
+        return view('guest.data-warga.data-warga', $data);
     }
 
     /**
@@ -74,28 +73,20 @@ class WargaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $warga_id = $id;
-        $dataWarga = Warga::findOrFail($warga_id);
+        $$warga = Warga::findOrFail($id);
 
         $request->validate([
-            'no_ktp' => 'required|unique:warga,no_ktp,' . $id . ',warga_id',
-            'nama' => 'required',
+            'no_ktp'        => 'required|unique:warga,no_ktp,' . $id . ',warga_id',
+            'nama'          => 'required',
             'jenis_kelamin' => 'required',
-            'agama' => 'required',
-            'pekerjaan' => 'required',
-            'telp' => 'required',
-            'email' => 'required|email'
+            'agama'         => 'required',
+            'pekerjaan'     => 'required',
+            'telp'          => 'required',
+            'email'         => 'required|email',
         ]);
 
-        $dataWarga->no_ktp = $request->no_ktp;
-        $dataWarga->nama = $request->nama;
-        $dataWarga->jenis_kelamin = $request->jenis_kelamin;
-        $dataWarga->agama = $request->agama;
-        $dataWarga->pekerjaan = $request->pekerjaan;
-        $dataWarga->telp = $request->telp;
-        $dataWarga->email = $request->email;
+        $warga->update($request->all());
 
-        $dataWarga->save();
         return redirect()->route('warga.index')->with('success', 'Data warga berhasil diupdate!');
     }
 

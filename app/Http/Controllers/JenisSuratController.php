@@ -57,7 +57,7 @@ class JenisSuratController extends Controller
     public function edit(string $id)
     {
         $data['dataJenisSurat'] = \App\Models\JenisSurat::findOrFail($id);
-        return view('jenis-surat.edit', $data);
+        return view('guest.jenis-surat.edit', $data);
     }
 
     /**

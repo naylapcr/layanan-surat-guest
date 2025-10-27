@@ -1,167 +1,288 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Layanan Surat</title>
+    <title>Login - Sistem Surat Menyurat Bina Desa</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: #333;
-            animation: gradientAnimation 15s ease infinite;
-        }
-
-        @keyframes gradientAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .login-container {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            transform-style: preserve-3d;
-            perspective: 1000px;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
-
-        .login-container:hover {
-            transform: translateY(-10px) rotateX(2deg) rotateY(2deg);
-        }
-
-        h2 {
-            background: linear-gradient(45deg, #007bff, #17a2b8);
-            color: white;
+            background: linear-gradient(135deg, #1e5799 0%, #207cca 51%, #2989d8 100%);
             padding: 20px;
-            text-align: center;
-            border-radius: 10px;
-            margin: -60px -40px 30px -40px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
         }
 
-        h2:hover {
-            transform: scale(1.05);
+        .container {
+            display: flex;
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .left-panel {
+            flex: 1;
+            background: linear-gradient(rgba(30, 87, 153, 0.8), rgba(32, 124, 202, 0.8)),
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%231e5799" width="100" height="100"/><path fill="%23207cca" d="M0 0h50v50H0z"/></svg>');
+            background-size: cover;
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .left-panel h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .left-panel p {
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 300px;
+        }
+
+        .right-panel {
+            flex: 1;
+            padding: 40px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h2 {
+            color: #1e5799;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .form-container {
+            max-width: 350px;
+            margin: 0 auto;
+        }
+
+        h3 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+            font-size: 22px;
+            font-weight: 500;
         }
 
         .form-group {
-            margin-bottom: 2em;
-            text-align: left;
-            position: relative;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            margin-bottom: 0.5em;
-            font-weight: bold;
+            margin-bottom: 8px;
             color: #555;
-            transition: all 0.3s ease;
+            font-weight: 500;
         }
 
         input[type="email"],
         input[type="password"] {
             width: 100%;
-            padding: 0.75em;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            box-sizing: border-box;
-            background-color: #f9f9f9;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: all 0.3s;
         }
 
-        input[type="email"]:focus,
-        input[type="password"]:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
-            background-color: white;
+        input:focus {
+            border-color: #1e5799;
+            box-shadow: 0 0 0 2px rgba(30, 87, 153, 0.2);
             outline: none;
-            transform: scale(1.01);
         }
 
-        .error {
-            color: #e74c3c;
-            background-color: #fdf5f5;
-            border-left: 4px solid #e74c3c;
-            padding: 10px;
-            margin-bottom: 1.5em;
-            border-radius: 5px;
-            font-size: 0.9em;
-            animation: fadeIn 0.5s ease-in-out;
+        .password-hint {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        button[type="submit"] {
+        .btn-login {
             width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            background: linear-gradient(45deg, #17a2b8, #007bff);
+            padding: 12px;
+            background: #1e5799;
             color: white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
         }
 
-        button[type="submit"]:hover {
-            background: linear-gradient(45deg, #007bff, #17a2b8);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-            transform: translateY(-3px);
+        .btn-login:hover {
+            background: #16457a;
         }
 
-        button[type="submit"]:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        .register-link {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .register-link a {
+            color: #1e5799;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .text-error {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 5px;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .left-panel {
+                padding: 30px 20px;
+            }
+
+            .right-panel {
+                padding: 30px 20px;
+            }
         }
     </style>
 </head>
+
 <body>
-    <div class="login-container">
-        <h2>Login Layanan Surat</h2>
+    <div class="container">
+        <div class="left-panel">
+            <h1>Sistem Surat Menyurat</h1>
+            <p>Bina Desa - Layanan pengelolaan surat menyurat untuk masyarakat desa secara digital dan terintegrasi.</p>
+        </div>
 
-        @if ($errors->any())
-            <div class="error">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+        <div class="right-panel">
+            <div class="logo">
+                <h2>Bina Desa</h2>
             </div>
-        @endif
 
-        <form method="POST" action="{{ route('auth.login') }}">
-            @csrf
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" value="{{ old('email') }}" required>
+            <div class="form-container">
+                <h3>Login Layanan Surat</h3>
+
+                @if ($errors->any())
+                    <div class="alert-error">
+                        <ul style="margin-left: 15px;">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                @if (session('success'))
+                    <div class="alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                <!-- PERUBAHAN: Mengubah method POST menjadi GET -->
+                <form action="{{ url('/dashboard') }}" method="GET">
+                    @csrf
+
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" value="{{ old('email') }}" required>
+                        @error('email')
+                            <span class="text-error">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                        @error('password')
+                            <span class="text-error">{{ $message }}</span>
+                        @enderror
+                        <div class="password-hint">Minimal 3 karakter & harus mengandung huruf kapital</div>
+                    </div>
+
+                    <button type="submit" class="btn-login">Login</button>
+                </form>
+
+                <div class="register-link">
+                    Belum punya akun? <a href="{{ route('register') }}">Daftar di sini</a>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                    <p style="color: #666; font-size: 14px;">Sistem Surat Menyurat Bina Desa</p>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit">Login</button>
-        </form>
-        <div class="login-footer">
-    <p>Belum punya akun? <a href="{{ route('guest.register-form') }}">Daftar di sini</a></p>
-    <p class="mt-2">Sistem Surat Menyurat <strong>Bina Desa</strong></p>
-</div>
+        </div>
     </div>
+
+    <script>
+        // Alternatif: Menggunakan JavaScript untuk redirect ke dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.querySelector('form');
+
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Validasi sederhana
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                if (email && password) {
+                    // Redirect ke dashboard setelah login berhasil
+                    window.location.href = "{{ url('/dashboard') }}";
+                }
+            });
+        });
+    </script>
 </body>
+
 </html>

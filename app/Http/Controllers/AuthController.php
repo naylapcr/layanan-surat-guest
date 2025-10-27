@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -20,7 +22,15 @@ class AuthController extends Controller
      */
     public function showLoginForm()
     {
-        return view('guest.login-form'); // Diubah dari 'guests' menjadi 'guest' untuk konsistensi
+        return view('guest.login-form');
+    }
+
+    /**
+     * Menampilkan form registrasi
+     */
+    public function showRegistrationForm()
+    {
+        return view('guest.register-form');
     }
 
     /**
@@ -46,15 +56,49 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             // Login berhasil
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard'); // Redirect ke halaman setelah login sukses
+            return redirect()->intended('/dashboard');
         }
 
-        // Login gagal - tampilkan halaman respon dengan data login (seperti sebelumnya)
+        // Login gagal - tampilkan halaman respon dengan data login
         $data['email'] = $request->email;
         $data['password'] = $request->password;
         $data['error'] = 'Login gagal. Email atau password salah.';
 
         return view('guest.respon-form', $data);
+    }
+
+    /**
+     * Memproses registrasi user baru
+     */
+    public function register(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:3|confirmed|regex:/[A-Z]/',
+        ], [
+            'name.required' => 'Nama tidak boleh kosong',
+            'email.required' => 'Email tidak boleh kosong',
+            'email.email' => 'Format email tidak valid',
+            'email.unique' => 'Email sudah terdaftar',
+            'password.required' => 'Password tidak boleh kosong',
+            'password.min' => 'Password minimal 3 karakter',
+            'password.confirmed' => 'Konfirmasi password tidak cocok',
+            'password.regex' => 'Password harus mengandung setidaknya satu huruf kapital'
+        ]);
+
+        // Buat user baru
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        // Login user setelah registrasi
+        Auth::login($user);
+
+        return redirect('/dashboard')->with('success', 'Registrasi berhasil!');
     }
 
     /**
@@ -66,7 +110,7 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login'); // Redirect ke halaman login setelah logout
+        return redirect('/login');
     }
 
     /**
