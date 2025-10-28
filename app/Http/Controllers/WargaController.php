@@ -11,12 +11,12 @@ class WargaController extends Controller
     public function index()
     {
         $warga = Warga::all();
-        return view('guest.data-warga.data-warga', compact('warga'));
+        return view('pages.guest.data-warga.data-warga', compact('warga'));
     }
 
     public function create()
     {
-        return view('guest.data-warga.create');
+        return view('pages.guest.data-warga.create');
     }
 
     public function store(Request $request)
@@ -44,7 +44,7 @@ class WargaController extends Controller
 
     public function edit(Warga $warga)
     {
-        return view('guest.data-warga.edit', compact('warga'));
+        return view('pages.guest.data-warga.edit', compact('warga'));
     }
 
     public function update(Request $request, Warga $warga)

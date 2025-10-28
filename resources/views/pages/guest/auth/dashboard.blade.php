@@ -57,9 +57,9 @@
                 </div>
                 <div class="col-lg-4 text-center text-lg-end">
                     <div class="d-inline-flex align-items-center" style="height: 45px;">
-                        <a href="#" class="text-white me-2"> Bantuan</a><small class="text-white"> / </small>
-                        <a href="#" class="text-white mx-2"> Dukungan</a><small class="text-white"> / </small>
-                        <a href="#" class="text-white ms-2"> Kontak</a>
+                        <a href="#" class="text-white me-2"><i class="fas fa-question-circle me-1"></i> Bantuan</a><small class="text-white"> / </small>
+                        <a href="#" class="text-white mx-2"><i class="fas fa-headset me-1"></i> Dukungan</a><small class="text-white"> / </small>
+                        <a href="#" class="text-white ms-2"><i class="fas fa-phone me-1"></i> Kontak</a>
                     </div>
                 </div>
             </div>
@@ -77,23 +77,38 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0">
-                        <a href="{{ url('/') }}" class="nav-item nav-link active">Beranda</a>
-                        <a href="{{ route('warga.index') }}" class="nav-item nav-link">Data Warga</a>
-                        <a href="{{ route('jenis-surat.index') }}" class="nav-item nav-link">Jenis Surat</a>
+                        <a href="{{ url('/') }}" class="nav-item nav-link active"><i class="fas fa-home me-1"></i>Beranda</a>
+                        <a href="{{ route ('about') }}" class="nav-item nav-link"><i class="fas fa-info-circle me-1"></i>Tentang</a>
+                        <a href="{{ route('warga.index') }}" class="nav-item nav-link"><i class="fas fa-users me-1"></i>Data Warga</a>
+                        <a href="{{ route('jenis-surat.index') }}" class="nav-item nav-link"><i class="fas fa-envelope me-1"></i>Jenis Surat</a>
                         <div class="nav-item dropdown">
-                            <a href="#" class="nav-link" data-bs-toggle="dropdown"><span class="dropdown-toggle">Layanan</span></a>
+                            <a href="#" class="nav-link" data-bs-toggle="dropdown"><i class="fas fa-concierge-bell me-1"></i><span class="dropdown-toggle">Layanan</span></a>
                             <div class="dropdown-menu m-0">
-                                <a href="feature.html" class="dropdown-item">Pengajuan Surat</a>
-                                <a href="countries.html" class="dropdown-item">Status Surat</a>
-                                <a href="testimonial.html" class="dropdown-item">Bantuan</a>
+                                <a href="feature.html" class="dropdown-item"><i class="fas fa-file-import me-2"></i>Pengajuan Surat</a>
+                                <a href="countries.html" class="dropdown-item"><i class="fas fa-tasks me-2"></i>Status Surat</a>
+                                <a href="testimonial.html" class="dropdown-item"><i class="fas fa-question-circle me-2"></i>Bantuan</a>
                             </div>
                         </div>
-                        <a href="contact.html" class="nav-item nav-link">Kontak</a>
-                        <a href="{{ route('user.index') }}" class="nav-item nav-link">Data User</a>
-                    <a href="{{ route('login') }}" class="nav-item nav-link {{ Request::is('login*') ? 'active' : '' }}">login</a>
+                        <a href="contact.html" class="nav-item nav-link"><i class="fas fa-address-book me-1"></i>Kontak</a>
+                        <a href="{{ route('user.index') }}" class="nav-item nav-link"><i class="fas fa-user-cog me-1"></i>Data User</a>
+
+                        <!-- Profile Dropdown -->
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle me-1"></i>Profile
+                            </a>
+                            <div class="dropdown-menu m-0">
+                                <a href="#" class="dropdown-item"><i class="fas fa-user me-2"></i>Profil Saya</a>
+                                <a href="#" class="dropdown-item"><i class="fas fa-cog me-2"></i>Pengaturan</a>
+                                <a href="#" class="dropdown-item"><i class="fas fa-history me-2"></i>Riwayat</a>
+                                <div class="dropdown-divider"></div>
+                                <a href="{{ route('login') }}" class="dropdown-item"><i class="fas fa-sign-in-alt me-2"></i>Login</a>
+                                <a href="#" class="dropdown-item"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+                            </div>
+                        </div>
                     </div>
                     <button class="btn btn-primary btn-md-square border-secondary mb-3 mb-md-3 mb-lg-0 me-3" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search"></i></button>
-                    <a href="" class="btn btn-primary border-secondary rounded-pill py-2 px-4 px-lg-3 mb-3 mb-md-3 mb-lg-0">Ajukan Surat</a>
+                    <a href="" class="btn btn-primary border-secondary rounded-pill py-2 px-4 px-lg-3 mb-3 mb-md-3 mb-lg-0"><i class="fas fa-paper-plane me-2"></i>Ajukan Surat</a>
                 </div>
             </nav>
         </div>
@@ -112,11 +127,11 @@
                         <img src="{{ asset('assets-guest/img/carousel-1.jpg') }}" class="img-fluid" alt="Image">
                         <div class="carousel-caption">
                             <div class="text-center p-4" style="max-width: 900px;">
-                                <h4 class="text-white text-uppercase fw-bold mb-3 mb-md-4 wow fadeInUp" data-wow-delay="0.1s">Layanan Surat Menyurat Terpadu</h4>
+                                <h4 class="text-white text-uppercase fw-bold mb-3 mb-md-4 wow fadeInUp" data-wow-delay="0.1s"><i class="fas fa-mail-bulk me-2"></i>Layanan Surat Menyurat Terpadu</h4>
                                 <h1 class="display-1 text-capitalize text-white mb-3 mb-md-4 wow fadeInUp" data-wow-delay="0.3s">Sistem Surat Bina Desa</h1>
-                                <p class="text-white mb-4 mb-md-5 fs-5 wow fadeInUp" data-wow-delay="0.5s">Melayani berbagai kebutuhan administrasi surat menyurat untuk warga desa dengan cepat, mudah, dan terpercaya.
+                                <p class="text-white mb-4 mb-md-5 fs-5 wow fadeInUp" data-wow-delay="0.5s"><i class="fas fa-check-circle me-2"></i>Melayani berbagai kebutuhan administrasi surat menyurat untuk warga desa dengan cepat, mudah, dan terpercaya.
                                 </p>
-                                <a class="btn btn-primary border-secondary rounded-pill text-white py-3 px-5 wow fadeInUp" data-wow-delay="0.7s" href="#">Ajukan Sekarang</a>
+                                <a class="btn btn-primary border-secondary rounded-pill text-white py-3 px-5 wow fadeInUp" data-wow-delay="0.7s" href="#"><i class="fas fa-paper-plane me-2"></i>Ajukan Sekarang</a>
                             </div>
                         </div>
                     </div>
@@ -124,11 +139,11 @@
                         <img src="{{ asset('assets-guest/img/carousel-2.jpg') }}" class="img-fluid" alt="Image">
                         <div class="carousel-caption">
                             <div class="text-center p-4" style="max-width: 900px;">
-                                <h5 class="text-white text-uppercase fw-bold mb-3 mb-md-4 wow fadeInUp" data-wow-delay="0.1s">Pelayanan Terbaik Untuk Warga</h5>
+                                <h5 class="text-white text-uppercase fw-bold mb-3 mb-md-4 wow fadeInUp" data-wow-delay="0.1s"><i class="fas fa-award me-2"></i>Pelayanan Terbaik Untuk Warga</h5>
                                 <h1 class="display-1 text-capitalize text-white mb-3 mb-md-4 wow fadeInUp" data-wow-delay="0.3s">Administrasi Digital Desa</h1>
-                                <p class="text-white mb-4 mb-md-5 fs-5 wow fadeInUp" data-wow-delay="0.5s">Transformasi layanan administrasi desa menuju digitalisasi untuk kemudahan dan transparansi.
+                                <p class="text-white mb-4 mb-md-5 fs-5 wow fadeInUp" data-wow-delay="0.5s"><i class="fas fa-digital-tachograph me-2"></i>Transformasi layanan administrasi desa menuju digitalisasi untuk kemudahan dan transparansi.
                                 </p>
-                                <a class="btn btn-primary border-secondary rounded-pill text-white py-3 px-5 wow fadeInUp" data-wow-delay="0.7s" href="#">Pelajari Lebih Lanjut</a>
+                                <a class="btn btn-primary border-secondary rounded-pill text-white py-3 px-5 wow fadeInUp" data-wow-delay="0.7s" href="#"><i class="fas fa-info-circle me-2"></i>Pelajari Lebih Lanjut</a>
                             </div>
                         </div>
                     </div>
@@ -151,7 +166,7 @@
             <div class="modal-dialog modal-fullscreen">
                 <div class="modal-content rounded-0">
                     <div class="modal-header">
-                        <h4 class="modal-title text-secondary mb-0" id="exampleModalLabel">Cari layanan</h4>
+                        <h4 class="modal-title text-secondary mb-0" id="exampleModalLabel"><i class="fas fa-search me-2"></i>Cari layanan</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body d-flex align-items-center">
@@ -168,7 +183,7 @@
 
 
         <!-- About Start -->
-        <div class="container-fluid py-5">
+        <div class="container-fluid py-5" id="about">
             <div class="container py-5">
                 <div class="row g-5">
                     <div class="col-xl-5 wow fadeInLeft" data-wow-delay="0.1s">
@@ -178,17 +193,17 @@
                         </div>
                     </div>
                     <div class="col-xl-7 wow fadeInRight" data-wow-delay="0.3s">
-                        <h5 class="sub-title pe-3">Tentang Kami</h5>
+                        <h5 class="sub-title pe-3"><i class="fas fa-info-circle me-2"></i>Tentang Kami</h5>
                         <h1 class="display-5 mb-4">Sistem Surat Menyurat Bina Desa.</h1>
-                        <p class="mb-4">Kami hadir untuk mempermudah proses administrasi surat menyurat di Desa Bina. Dengan sistem yang terintegrasi, warga dapat mengajukan berbagai jenis surat dengan mudah dan cepat.</p>
+                        <p class="mb-4"><i class="fas fa-check text-primary me-2"></i>Kami hadir untuk mempermudah proses administrasi surat menyurat di Desa Bina. Dengan sistem yang terintegrasi, warga dapat mengajukan berbagai jenis surat dengan mudah dan cepat.</p>
                         <div class="row gy-4 align-items-center">
                             <div class="col-12 col-sm-6 d-flex align-items-center">
                                 <i class="fas fa-map-marked-alt fa-3x text-secondary"></i>
-                                <h5 class="ms-4">Layanan Terpadu</h5>
+                                <h5 class="ms-4"><i class="fas fa-check text-primary me-2"></i>Layanan Terpadu</h5>
                             </div>
                             <div class="col-12 col-sm-6 d-flex align-items-center">
                                 <i class="fas fa-passport fa-3x text-secondary"></i>
-                                <h5 class="ms-4">Proses Cepat</h5>
+                                <h5 class="ms-4"><i class="fas fa-check text-primary me-2"></i>Proses Cepat</h5>
                             </div>
                             <div class="col-4 col-md-3">
                                 <div class="bg-light text-center rounded p-3">
@@ -215,8 +230,8 @@
                                         </a>
                                     </div>
                                     <div class="d-flex flex-column justify-content-center">
-                                        <span class="text-primary">Punya pertanyaan?</span>
-                                        <span class="text-secondary fw-bold fs-5" style="letter-spacing: 2px;">+0123 456 7890</span>
+                                        <span class="text-primary"><i class="fas fa-question-circle me-1"></i>Punya pertanyaan?</span>
+                                        <span class="text-secondary fw-bold fs-5" style="letter-spacing: 2px;"><i class="fas fa-phone me-1"></i>+0123 456 7890</span>
                                     </div>
                                 </div>
                             </div>
@@ -299,10 +314,10 @@
             <div class="container py-5">
                 <div class="section-title text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="sub-style">
-                        <h5 class="sub-title text-primary px-3">Jenis Layanan</h5>
+                        <h5 class="sub-title text-primary px-3"><i class="fas fa-concierge-bell me-2"></i>Jenis Layanan</h5>
                     </div>
                     <h1 class="display-5 mb-4">Layanan Surat Yang Tersedia</h1>
-                    <p class="mb-0">Berbagai jenis surat administrasi dapat diajukan melalui sistem kami. Pilih layanan yang sesuai dengan kebutuhan Anda.</p>
+                    <p class="mb-0"><i class="fas fa-info-circle me-2"></i>Berbagai jenis surat administrasi dapat diajukan melalui sistem kami. Pilih layanan yang sesuai dengan kebutuhan Anda.</p>
                 </div>
                 <div class="row g-4">
                     <div class="col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.1s">
@@ -314,15 +329,15 @@
                                 <div class="service-title">
                                     <div class="service-title-name">
                                         <div class="bg-primary text-center rounded p-3 mx-5 mb-4">
-                                            <a href="#" class="h4 text-white mb-0">Surat Domisili</a>
+                                            <a href="#" class="h4 text-white mb-0"><i class="fas fa-home me-2"></i>Surat Domisili</a>
                                         </div>
-                                        <a class="btn bg-light text-secondary rounded-pill py-3 px-5 mb-4" href="#">Ajukan Sekarang</a>
+                                        <a class="btn bg-light text-secondary rounded-pill py-3 px-5 mb-4" href="#"><i class="fas fa-paper-plane me-2"></i>Ajukan Sekarang</a>
                                     </div>
                                     <div class="service-content pb-4">
-                                        <a href="#"><h4 class="text-white mb-4 py-3">Surat Keterangan Domisili</h4></a>
+                                        <a href="#"><h4 class="text-white mb-4 py-3"><i class="fas fa-home me-2"></i>Surat Keterangan Domisili</h4></a>
                                         <div class="px-4">
-                                            <p class="mb-4">Surat keterangan tempat tinggal untuk keperluan administrasi.</p>
-                                            <a class="btn btn-primary border-secondary rounded-pill py-3 px-5" href="#">Ajukan Sekarang</a>
+                                            <p class="mb-4"><i class="fas fa-check-circle me-2"></i>Surat keterangan tempat tinggal untuk keperluan administrasi.</p>
+                                            <a class="btn btn-primary border-secondary rounded-pill py-3 px-5" href="#"><i class="fas fa-paper-plane me-2"></i>Ajukan Sekarang</a>
                                         </div>
                                     </div>
                                 </div>
@@ -338,15 +353,15 @@
                                 <div class="service-title">
                                     <div class="service-title-name">
                                         <div class="bg-primary text-center rounded p-3 mx-5 mb-4">
-                                            <a href="#" class="h4 text-white mb-0">Surat Tidak Mampu</a>
+                                            <a href="#" class="h4 text-white mb-0"><i class="fas fa-hand-holding-heart me-2"></i>Surat Tidak Mampu</a>
                                         </div>
-                                        <a class="btn bg-light text-secondary rounded-pill py-3 px-5 mb-4" href="#">Ajukan Sekarang</a>
+                                        <a class="btn bg-light text-secondary rounded-pill py-3 px-5 mb-4" href="#"><i class="fas fa-paper-plane me-2"></i>Ajukan Sekarang</a>
                                     </div>
                                     <div class="service-content pb-4">
-                                        <a href="#"><h4 class="text-white mb-4 py-3">Surat Keterangan Tidak Mampu</h4></a>
+                                        <a href="#"><h4 class="text-white mb-4 py-3"><i class="fas fa-hand-holding-heart me-2"></i>Surat Keterangan Tidak Mampu</h4></a>
                                         <div class="px-4">
-                                            <p class="mb-4">Surat untuk keperluan bantuan sosial dan pendidikan.</p>
-                                            <a class="btn btn-primary border-secondary rounded-pill text-white py-3 px-5" href="#">Ajukan Sekarang</a>
+                                            <p class="mb-4"><i class="fas fa-check-circle me-2"></i>Surat untuk keperluan bantuan sosial dan pendidikan.</p>
+                                            <a class="btn btn-primary border-secondary rounded-pill text-white py-3 px-5" href="#"><i class="fas fa-paper-plane me-2"></i>Ajukan Sekarang</a>
                                         </div>
                                     </div>
                                 </div>
@@ -362,15 +377,15 @@
                                 <div class="service-title">
                                     <div class="service-title-name">
                                         <div class="bg-primary text-center rounded p-3 mx-5 mb-4">
-                                            <a href="#" class="h4 text-white mb-0">Surat Usaha</a>
+                                            <a href="#" class="h4 text-white mb-0"><i class="fas fa-briefcase me-2"></i>Surat Usaha</a>
                                         </div>
-                                        <a class="btn bg-light text-secondary rounded-pill py-3 px-5 mb-4" href="#">Ajukan Sekarang</a>
+                                        <a class="btn bg-light text-secondary rounded-pill py-3 px-5 mb-4" href="#"><i class="fas fa-paper-plane me-2"></i>Ajukan Sekarang</a>
                                     </div>
                                     <div class="service-content pb-4">
-                                        <a href="#"><h4 class="text-white mb-4 py-3">Surat Keterangan Usaha</h4></a>
+                                        <a href="#"><h4 class="text-white mb-4 py-3"><i class="fas fa-briefcase me-2"></i>Surat Keterangan Usaha</h4></a>
                                         <div class="px-4">
-                                            <p class="mb-4">Surat untuk keperluan perizinan dan pengembangan usaha.</p>
-                                            <a class="btn btn-primary border-secondary rounded-pill text-white py-3 px-5" href="#">Ajukan Sekarang</a>
+                                            <p class="mb-4"><i class="fas fa-check-circle me-2"></i>Surat untuk keperluan perizinan dan pengembangan usaha.</p>
+                                            <a class="btn btn-primary border-secondary rounded-pill text-white py-3 px-5" href="#"><i class="fas fa-paper-plane me-2"></i>Ajukan Sekarang</a>
                                         </div>
                                     </div>
                                 </div>
@@ -388,7 +403,7 @@
                 <div class="row g-5">
                     <div class="col-md-6 col-lg-6 col-xl-3">
                         <div class="footer-item d-flex flex-column">
-                            <h4 class="text-secondary mb-4">Kontak Info</h4>
+                            <h4 class="text-secondary mb-4"><i class="fas fa-info-circle me-2"></i>Kontak Info</h4>
                             <a href=""><i class="fa fa-map-marker-alt me-2"></i> Jl. Desa Bina No. 123</a>
                             <a href=""><i class="fas fa-envelope me-2"></i> admin@binadesa.com</a>
                             <a href=""><i class="fas fa-phone me-2"></i> +012 345 67890</a>
@@ -402,33 +417,33 @@
                     </div>
                     <div class="col-md-6 col-lg-6 col-xl-3">
                         <div class="footer-item d-flex flex-column">
-                            <h4 class="text-secondary mb-4">Jam Layanan</h4>
+                            <h4 class="text-secondary mb-4"><i class="fas fa-clock me-2"></i>Jam Layanan</h4>
                             <div class="mb-3">
-                                <h6 class="text-muted mb-0">Senin - Jumat:</h6>
+                                <h6 class="text-muted mb-0"><i class="fas fa-calendar-day me-2"></i>Senin - Jumat:</h6>
                                 <p class="text-white mb-0">08.00 - 16.00</p>
                             </div>
                             <div class="mb-3">
-                                <h6 class="text-muted mb-0">Sabtu:</h6>
+                                <h6 class="text-muted mb-0"><i class="fas fa-calendar-day me-2"></i>Sabtu:</h6>
                                 <p class="text-white mb-0">08.00 - 14.00</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-6 col-xl-3">
                         <div class="footer-item d-flex flex-column">
-                            <h4 class="text-secondary mb-4">Layanan Kami</h4>
-                            <a href="#" class=""><i class="fas fa-angle-right me-2"></i> Surat Domisili</a>
-                            <a href="#" class=""><i class="fas fa-angle-right me-2"></i> Surat Tidak Mampu</a>
-                            <a href="#" class=""><i class="fas fa-angle-right me-2"></i> Surat Usaha</a>
-                            <a href="#" class=""><i class="fas fa-angle-right me-2"></i> Surat Pengantar</a>
+                            <h4 class="text-secondary mb-4"><i class="fas fa-concierge-bell me-2"></i>Layanan Kami</h4>
+                            <a href="#" class=""><i class="fas fa-angle-right me-2"></i><i class="fas fa-home me-2"></i>Surat Domisili</a>
+                            <a href="#" class=""><i class="fas fa-angle-right me-2"></i><i class="fas fa-hand-holding-heart me-2"></i>Surat Tidak Mampu</a>
+                            <a href="#" class=""><i class="fas fa-angle-right me-2"></i><i class="fas fa-briefcase me-2"></i>Surat Usaha</a>
+                            <a href="#" class=""><i class="fas fa-angle-right me-2"></i><i class="fas fa-envelope me-2"></i>Surat Pengantar</a>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-6 col-xl-3">
                         <div class="footer-item">
-                            <h4 class="text-secondary mb-4">Newsletter</h4>
-                            <p class="text-white mb-3">Dapatkan informasi terbaru tentang layanan surat menyurat desa kami.</p>
+                            <h4 class="text-secondary mb-4"><i class="fas fa-newspaper me-2"></i>Newsletter</h4>
+                            <p class="text-white mb-3"><i class="fas fa-info-circle me-2"></i>Dapatkan informasi terbaru tentang layanan surat menyurat desa kami.</p>
                             <div class="position-relative mx-auto rounded-pill">
                                 <input class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5" type="text" placeholder="Email anda">
-                                <button type="button" class="btn btn-primary rounded-pill position-absolute top-0 end-0 py-2 mt-2 me-2">Daftar</button>
+                                <button type="button" class="btn btn-primary rounded-pill position-absolute top-0 end-0 py-2 mt-2 me-2"><i class="fas fa-paper-plane me-2"></i>Daftar</button>
                             </div>
                         </div>
                     </div>
@@ -446,7 +461,7 @@
                         <span class="text-white"><a href="#" class="border-bottom text-white"><i class="fas fa-copyright text-light me-2"></i>Bina Desa</a>, All right reserved.</span>
                     </div>
                     <div class="col-md-6 text-center text-md-end text-white">
-                        Sistem Surat Menyurat Desa
+                        <i class="fas fa-envelope me-2"></i>Sistem Surat Menyurat Desa
                     </div>
                 </div>
             </div>
@@ -469,6 +484,32 @@
 
     <!-- Template Javascript -->
     <script src="{{ asset('assets-guest/js/main.js') }}"></script>
+
+    <script>
+        // Smooth scroll untuk anchor links
+        document.addEventListener('DOMContentLoaded', function() {
+            const anchorLinks = document.querySelectorAll('a[href^="#"]');
+
+            anchorLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        const offsetTop = targetElement.offsetTop - 100; // Adjust for fixed header
+
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
     </body>
 
 </html>

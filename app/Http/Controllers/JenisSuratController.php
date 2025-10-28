@@ -13,7 +13,7 @@ class JenisSuratController extends Controller
     public function index()
     {
         $data['dataJenisSurat'] = \App\Models\JenisSurat::all();
-        return view('guest.jenis-surat.index', $data);
+        return view('pages.guest.jenis-surat.index', $data);
     }
 
     /**
@@ -21,7 +21,7 @@ class JenisSuratController extends Controller
      */
     public function create()
     {
-        return view('guest.jenis-surat.create');
+        return view('pages.guest.jenis-surat.create');
     }
 
     /**
@@ -57,7 +57,7 @@ class JenisSuratController extends Controller
     public function edit(string $id)
     {
         $data['dataJenisSurat'] = \App\Models\JenisSurat::findOrFail($id);
-        return view('guest.jenis-surat.edit', $data);
+        return view('pages.guest.jenis-surat.edit', $data);
     }
 
     /**

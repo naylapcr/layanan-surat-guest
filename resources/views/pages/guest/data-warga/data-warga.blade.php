@@ -5,7 +5,9 @@
 {{-- start header --}}
 @include('layouts.guest.header')
 {{-- end header --}}
-    <!-- Content Start -->
+
+{{-- main content --}}
+        <!-- Content Start -->
      <div class="page-header">
         <div class="container text-center">
             <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Data Warga</h1>
@@ -19,7 +21,9 @@
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <i class="fas fa-check-circle me-2"></i>
                     {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
             @endif
 
@@ -27,7 +31,9 @@
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <i class="fas fa-exclamation-triangle me-2"></i>
                     {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
             @endif
 
@@ -95,7 +101,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control border-0" placeholder="Cari warga..." id="searchInput">
                                 <button class="btn btn-primary" type="button" id="searchButton">
-                                    <i class="fas fa-search"></i>
+                                    <i class="fas fa-search me-2"></i>Cari
                                 </button>
                             </div>
                         </div>
@@ -104,16 +110,22 @@
                                 <i class="fas fa-filter me-2"></i>Filter
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item filter-option" href="#" data-filter="all">Semua</a></li>
-                                <li><a class="dropdown-item filter-option" href="#" data-filter="L">Laki-laki</a></li>
-                                <li><a class="dropdown-item filter-option" href="#" data-filter="P">Perempuan</a></li>
+                                <li><a class="dropdown-item filter-option" href="#" data-filter="all">
+                                    <i class="fas fa-list me-2"></i>Semua
+                                </a></li>
+                                <li><a class="dropdown-item filter-option" href="#" data-filter="L">
+                                    <i class="fas fa-male me-2"></i>Laki-laki
+                                </a></li>
+                                <li><a class="dropdown-item filter-option" href="#" data-filter="P">
+                                    <i class="fas fa-female me-2"></i>Perempuan
+                                </a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 text-md-end">
                     <a href="{{ route('warga.create') }}" class="btn btn-primary" data-bs-toggle="tooltip" title="Tambah data warga baru">
-                        <i class="fas fa-plus me-2"></i>Tambah Warga
+                        <i class="fas fa-user-plus me-2"></i>Tambah Warga
                     </a>
                 </div>
             </div>
@@ -129,7 +141,7 @@
                             </h6>
                             <div class="dropdown">
                                 <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip" title="Aksi">
-                                    <i class="fas fa-ellipsis-v"></i>
+                                    <i class="fas fa-cog"></i>
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
@@ -141,11 +153,9 @@
                                         <form id="delete-form-{{ $data->warga_id }}" action="{{ route('warga.destroy', $data->warga_id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <a class="dropdown-item text-danger delete-btn" href="#"
-                                               data-warga-id="{{ $data->warga_id }}"
-                                               data-warga-name="{{ $data->nama }}">
-                                                <i class="fas fa-trash me-2"></i>Hapus
-                                            </a>
+                                            <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data warga ini?')">
+                                                <i class="fas fa-trash-alt me-2"></i>Hapus
+                                            </button>
                                         </form>
                                     </li>
                                 </ul>
@@ -171,7 +181,7 @@
                                 </div>
                                 <div class="col-6">
                                     <small class="text-muted">Agama</small>
-                                    <p class="mb-2">{{ $data->agama }}</p>
+                                    <p class="mb-2"><i class="fas fa-pray me-2"></i>{{ $data->agama }}</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -185,13 +195,13 @@
                             <div class="row text-center">
                                 <div class="col-6 border-end">
                                     <a href="tel:{{ $data->telp }}" class="text-secondary" title="Telepon" data-bs-toggle="tooltip">
-                                        <i class="fas fa-phone"></i>
+                                        <i class="fas fa-phone-alt"></i>
                                         <small class="d-block mt-1">Telepon</small>
                                     </a>
                                 </div>
                                 <div class="col-6">
                                     <a href="mailto:{{ $data->email }}" class="text-secondary" title="Email" data-bs-toggle="tooltip">
-                                        <i class="fas fa-envelope"></i>
+                                        <i class="fas fa-envelope-open"></i>
                                         <small class="d-block mt-1">Email</small>
                                     </a>
                                 </div>
@@ -207,7 +217,7 @@
                             <h4 class="text-muted">Belum ada data warga</h4>
                             <p class="text-muted mb-4">Mulai dengan menambahkan data warga pertama</p>
                             <a href="{{ route('warga.create') }}" class="btn btn-primary">
-                                <i class="fas fa-plus me-2"></i>Tambah Warga Pertama
+                                <i class="fas fa-user-plus me-2"></i>Tambah Warga Pertama
                             </a>
                         </div>
                     </div>
@@ -218,13 +228,14 @@
             <!-- Info jumlah data -->
             <div class="row mt-4">
                 <div class="col-12 text-center">
-                    <p class="text-muted" id="dataInfo">Menampilkan {{ $warga->count() }} data warga</p>
+                    <p class="text-muted" id="dataInfo">
+                        <i class="fas fa-info-circle me-2"></i>Menampilkan {{ $warga->count() }} data warga
+                    </p>
                 </div>
             </div>
         </div>
     </div>
     <!-- Content End -->
-
     <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -233,7 +244,9 @@
                     <h5 class="modal-title" id="deleteModalLabel">
                         <i class="fas fa-exclamation-triangle me-2"></i>Konfirmasi Hapus
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
                 <div class="modal-body text-center">
                     <i class="fas fa-trash-alt fa-4x text-danger mb-3"></i>
@@ -248,14 +261,18 @@
                     <form id="deleteForm" method="POST" style="display: inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-delete">
-                            <i class="fas fa-trash me-2"></i>Ya, Hapus
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash-alt me-2"></i>Ya, Hapus
                         </button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    {{-- end content --}}
+
+    {{-- end content --}}
 {{-- start footer --}}
 @include('layouts.guest.footer')
    {{-- end footer --}}

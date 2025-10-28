@@ -15,7 +15,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('guest.user.index', compact('users'));
+        return view('pages.guest.user.index', compact('users'));
     }
 
     /**
@@ -23,7 +23,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('guest.user.create');
+        return view('pages.guest.user.create');
     }
 
     /**
@@ -59,7 +59,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('guest.user.edit', compact('user'));
+        return view('pages.guest.user.edit', compact('user'));
     }
 
     /**
