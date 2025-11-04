@@ -187,7 +187,7 @@
 
 @media (max-width: 768px) {
     .topbar {
-        display: none;    
+        display: none;
     }
 }
 /*** Topbar End ***/
@@ -389,7 +389,7 @@
 
 .carousel-header .carousel-inner .carousel-item {
     position: relative;
-    min-height: 100vh 
+    min-height: 100vh
 }
 
 .carousel-header .carousel-inner .carousel-item img {
@@ -469,7 +469,7 @@
     top: 0;
     border-radius: 10px 10px 0 0;
     background-color: var(--bs-primary);
-    
+
 }
 .counter-facts .counter .counter-icon {
     position: relative;
@@ -517,7 +517,7 @@
 }
 
 @media screen and (max-width: 1200px) {
-    .counter-facts .counter { margin-bottom: 40px; 
+    .counter-facts .counter { margin-bottom: 40px;
     }
 }
 /*** Counter Facts End ***/
@@ -538,7 +538,7 @@
 
 .service .service-item .service-inner .service-title .service-content {
     position: absolute;
-    bottom: -100%; 
+    bottom: -100%;
     left: 0;
     margin-left: 30px;
     margin-right: 30px;
@@ -625,7 +625,7 @@
 }
 
 .features .feature-item .feature-icon {
-    width: 120px; 
+    width: 120px;
     height: 120px;
     border-radius: 10px;
     display: inline-flex;
@@ -677,11 +677,11 @@
 
 .country .country-item .country-flag {
     position: absolute;
-    width: 90px; 
-    height: 90px; 
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
-    top: -45px; 
-    left: 50%; 
+    top: -45px;
+    left: 50%;
     transform: translateX(-50%);
     transition: 0.5s;
     z-index: 2;
@@ -792,7 +792,7 @@
     padding: 20px;
     border-radius: 10px;
     background: rgba(0, 0, 0, 0.5);
-    display: flex; 
+    display: flex;
     flex-direction: column;
     justify-content: end;
     text-align: center;
@@ -831,7 +831,7 @@
 
 .training .training-item:hover .training-content {
     bottom: 0;
-}  
+}
 /*** training End ***/
 
 
@@ -904,4 +904,6 @@
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     background: var(--bs-secondary) !important;
 }
+
+
 /*** copyright end ***/
