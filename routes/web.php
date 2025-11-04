@@ -9,7 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JenisSuratController;
 
 Route::get('/', function () {
-    return view('pages.guest.auth.dashboard');
+    return view('pages.guest.dashboard.dashboard');
 })->name('home');
 
 // Route untuk CRUD Warga
@@ -59,5 +59,5 @@ Route::put('/warga/{warga}', [WargaController::class, 'update'])->name('warga.up
 Route::delete('/warga/{warga}', [WargaController::class, 'destroy'])->name('warga.destroy');
 
 Route::get('/about', function () {
-    return view('pages.guest.auth.about');
+    return view('pages.guest.dashboard.about');
 })->name('about');
