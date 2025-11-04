@@ -1,12 +1,8 @@
-{{-- start css --}}
-@include('layouts.guest.css')
-<body>
-{{-- end css --}}
+@extends('layouts.guest.app')
 
-{{-- start header --}}
-@include('layouts.guest.header')
-{{-- end header --}}
-    <!-- Content Start -->
+@section('content')
+{{-- start main content --}}
+
      <div class="page-header">
         <div class="container text-center">
             <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Edit Jenis Surat</h1>
@@ -87,14 +83,6 @@
             </div>
         </div>
     </div>
-    <!-- Content End -->
+{{-- end main content --}}
 
-    {{-- start footer --}}
-@include('layouts.guest.footer')
-    {{-- end footer --}}
-
-    {{-- start js --}}
-@include('layouts.guest.js')
-</body>
-</html>
-{{-- end js --}}
+@endsection

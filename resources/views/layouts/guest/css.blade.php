@@ -30,6 +30,10 @@
         <!-- Template Stylesheet -->
         <link href="{{ asset('assets-guest/css/style.css') }}" rel="stylesheet">
         <link href="{{ asset('assets-guest/css/guest.css') }}" rel="stylesheet">
+
+        <!-- load font awesome for icons -->
+        <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
     </head>
 
     <body>

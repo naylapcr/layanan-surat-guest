@@ -1,10 +1,6 @@
-{{-- start css --}}
-@include('layouts.guest.css')
-{{-- end css --}}
+@extends('layouts.guest.app')
 
-{{-- start header --}}
-@include('layouts.guest.header')
-{{-- end header --}}
+@section('content')
 <!-- Content Start -->
     <div class="page-header">
         <div class="container text-center">
@@ -145,10 +141,5 @@
 </div>
 <!-- Content End -->
 
-{{-- start footer --}}
-@include('layouts.guest.footer')
-{{-- end footer --}}
+@endsection
 
-{{-- start js --}}
-@include('layouts.guest.js')
-{{-- end js --}}

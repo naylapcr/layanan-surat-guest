@@ -1,11 +1,8 @@
-{{-- start css --}}
-@include('layouts.guest.css')
-{{-- end css --}}
+@extends('layouts.guest.app')
 
-{{-- start header --}}
-@include('layouts.guest.header')
-{{-- end header --}}
-    <!-- Content Start -->
+
+@section('content')
+{{-- main content --}}
      <div class="page-header">
         <div class="container text-center">
             <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Edit Data Warga</h1>
@@ -136,14 +133,5 @@
             </div>
         </div>
     </div>
-    <!-- Content End -->
-
-    {{-- footer start --}}
-    @include('layouts.guest.footer')
-    {{-- footer end --}}
-
-    {{-- start js --}}
-    @include('layouts.guest.js')
-</body>
-</html>
-    {{-- end js --}}
+{{-- end content --}}
+@endsection

@@ -1,12 +1,6 @@
-{{-- start css --}}
-@include('layouts.guest.css')
-<body>
-{{-- end css --}}
+@extends('layouts.guest.app')
 
-{{-- start header --}}
-    @include('layouts.guest.header')
-{{-- end header --}}
-
+@section('content')
 {{-- start main content --}}
     <!-- Content Start -->
      <div class="page-header">
@@ -128,10 +122,4 @@
     <!-- Content End -->
 {{-- end main content --}}
 
-{{-- start footer --}}
-@include('layouts.guest.footer')
-{{-- end footer --}}
-
-{{-- start js --}}
-    @include('layouts.guest.js')
-</html>
+@endsection
