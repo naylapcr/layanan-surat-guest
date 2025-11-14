@@ -10,7 +10,7 @@ class PermohonanSurat extends Model
     use HasFactory;
 
     protected $table = 'permohonan_surat';
-    protected $primaryKey = 'permohonan_id'; // Diubah kembali ke permohonan_id
+    protected $primaryKey = 'permohonan_id';
 
     protected $fillable = [
         'nomor_permohonan',
@@ -26,7 +26,7 @@ class PermohonanSurat extends Model
      */
     public function jenisSurat()
     {
-        return $this->belongsTo(JenisSurat::class, 'jenis_surat_id', 'jenis_surat_id');
+        return $this->belongsTo(JenisSurat::class, 'jenis_surat_id', 'jenis_id');
     }
 
     /**

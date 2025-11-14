@@ -11,6 +11,31 @@
 </div>
 <div class="container-fluid py-5">
     <div class="container py-5">
+        <!-- Success/Error Messages -->
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show animate__animated animate__fadeIn" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-check-circle me-3 fa-lg"></i>
+                    <div class="flex-grow-1">
+                        {{ session('success') }}
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show animate__animated animate__fadeIn" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-exclamation-triangle me-3 fa-lg"></i>
+                    <div class="flex-grow-1">
+                        {{ session('error') }}
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        @endif
+
         <!-- Stats Cards -->
         <div class="row mb-5">
             <div class="col-md-3 mb-4">
@@ -33,8 +58,8 @@
                             <i class="fas fa-clock fa-3x"></i>
                         </div>
                         <div>
-                            <h4 class="mb-0 counter" data-target="{{ $dataPermohonanSurat->where('status', 'pending')->count() }}">0</h4>
-                            <p class="mb-0">Pending</p>
+                            <h4 class="mb-0 counter" data-target="{{ $dataPermohonanSurat->where('status', 'DRAFT')->count() }}">0</h4>
+                            <p class="mb-0">Draft</p>
                         </div>
                     </div>
                 </div>
@@ -46,7 +71,7 @@
                             <i class="fas fa-check-circle fa-3x"></i>
                         </div>
                         <div>
-                            <h4 class="mb-0 counter" data-target="{{ $dataPermohonanSurat->where('status', 'completed')->count() }}">0</h4>
+                            <h4 class="mb-0 counter" data-target="{{ $dataPermohonanSurat->where('status', 'SELESAI')->count() }}">0</h4>
                             <p class="mb-0">Selesai</p>
                         </div>
                     </div>
@@ -59,7 +84,7 @@
                             <i class="fas fa-file-alt fa-3x"></i>
                         </div>
                         <div>
-                            <h4 class="mb-0 counter" data-target="{{ $dataPermohonanSurat->unique('jenis_id')->count() }}">0</h4>
+                            <h4 class="mb-0 counter" data-target="{{ $dataPermohonanSurat->unique('jenis_surat_id')->count() }}">0</h4>
                             <p class="mb-0">Jenis Surat</p>
                         </div>
                     </div>
@@ -85,10 +110,12 @@
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item filter-option" href="#" data-filter="all"><i class="fas fa-list me-2"></i>Semua</a></li>
-                            <li><a class="dropdown-item filter-option" href="#" data-filter="pending"><i class="fas fa-clock me-2"></i>Pending</a></li>
-                            <li><a class="dropdown-item filter-option" href="#" data-filter="approved"><i class="fas fa-check me-2"></i>Disetujui</a></li>
-                            <li><a class="dropdown-item filter-option" href="#" data-filter="rejected"><i class="fas fa-times me-2"></i>Ditolak</a></li>
-                            <li><a class="dropdown-item filter-option" href="#" data-filter="completed"><i class="fas fa-check-circle me-2"></i>Selesai</a></li>
+                            <li><a class="dropdown-item filter-option" href="#" data-filter="DRAFT"><i class="fas fa-clock me-2"></i>Draft</a></li>
+                            <li><a class="dropdown-item filter-option" href="#" data-filter="DIAJUKAN"><i class="fas fa-paper-plane me-2"></i>Diajukan</a></li>
+                            <li><a class="dropdown-item filter-option" href="#" data-filter="DIPROSES"><i class="fas fa-cog me-2"></i>Diproses</a></li>
+                            <li><a class="dropdown-item filter-option" href="#" data-filter="SELESAI"><i class="fas fa-check-circle me-2"></i>Selesai</a></li>
+                            <li><a class="dropdown-item filter-option" href="#" data-filter="DIAMBIL"><i class="fas fa-hand-holding me-2"></i>Diambil</a></li>
+                            <li><a class="dropdown-item filter-option" href="#" data-filter="DITOLAK"><i class="fas fa-times me-2"></i>Ditolak</a></li>
                         </ul>
                     </div>
                 </div>
@@ -101,98 +128,133 @@
             </div>
         </div>
 
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show animate__animated animate__fadeIn" role="alert">
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-check-circle me-3 fa-lg"></i>
-                    <div class="flex-grow-1">
-                        {{ session('success') }}
+        <!-- Widget Cards untuk Data Permohonan Surat -->
+        <div class="row" id="permohonanContainer">
+            @forelse($dataPermohonanSurat as $index => $permohonan)
+            <div class="col-xl-4 col-md-6 mb-4 permohonan-card animate__animated animate__fadeInUp" data-status="{{ $permohonan->status }}" data-search="{{ strtolower($permohonan->nomor_permohonan . ' ' . ($permohonan->warga ? $permohonan->warga->nama : 'Tidak Diketahui')) }}" data-aos="fade-up" data-aos-delay="{{ ($index % 3) * 100 }}">
+                <div class="card widget-card h-100">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">
+                            <i class="fas fa-envelope me-2"></i>{{ $permohonan->nomor_permohonan }}
+                        </h6>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-light dropdown-toggle action-btn" type="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip" title="Aksi">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('permohonan-surat.show', $permohonan->permohonan_id) }}">
+                                        <i class="fas fa-eye me-2"></i>Detail
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('permohonan-surat.edit', $permohonan->permohonan_id) }}">
+                                        <i class="fas fa-edit me-2"></i>Edit
+                                    </a>
+                                </li>
+                                <li>
+                                    <button type="button" class="dropdown-item text-danger delete-btn" data-permohonan-id="{{ $permohonan->permohonan_id }}" data-permohonan-name="{{ $permohonan->nomor_permohonan }}">
+                                        <i class="fas fa-trash-alt me-2"></i>Hapus
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        @endif
-
-        <!-- Table untuk Permohonan Surat -->
-        <div class="card animate__animated animate__fadeInUp">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover" id="permohonanTable">
-                        <thead class="table-primary">
-                            <tr>
-                                <th>No.</th>
-                                <th>Nomor Permohonan</th>
-                                <th>Nama Pemohon</th>
-                                <th>Jenis Surat</th>
-                                <th>Tanggal Pengajuan</th>
-                                <th>Status</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($dataPermohonanSurat as $index => $permohonan)
-                            <tr class="permohonan-card-item" data-search="{{ strtolower($permohonan->nomor_permohonan . ' ' . $permohonan->pemohon->nama) }}" data-status="{{ $permohonan->status }}">
-                                <td>{{ $index + 1 }}</td>
-                                <td>
-                                    <strong>{{ $permohonan->nomor_permohonan }}</strong>
-                                </td>
-                                <td>{{ $permohonan->pemohon->nama }}</td>
-                                <td>{{ $permohonan->jenisSurat->nama_jenis }}</td>
-                                <td>{{ \Carbon\Carbon::parse($permohonan->tanggal_pengajuan)->format('d M Y') }}</td>
-                                <td>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <small class="text-muted">Pemohon</small>
+                                <p class="mb-2">
+                                    <i class="fas fa-user text-primary me-2"></i>
+                                    @if($permohonan->warga)
+                                        {{ $permohonan->warga->nama }}
+                                    @else
+                                        <span class="text-muted">Data pemohon tidak ditemukan</span>
+                                    @endif
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <small class="text-muted">Jenis Surat</small>
+                                <p class="mb-2">
+                                    @if($permohonan->jenisSurat)
+                                        <i class="fas fa-file-alt me-2"></i>{{ $permohonan->jenisSurat->nama_jenis }}
+                                    @else
+                                        <span class="text-muted">Jenis surat tidak ditemukan</span>
+                                    @endif
+                                </p>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted">Status</small>
+                                <p class="mb-2">
                                     @php
                                         $statusClass = [
-                                            'pending' => 'warning',
-                                            'approved' => 'success',
-                                            'rejected' => 'danger',
-                                            'completed' => 'info'
+                                            'DRAFT' => 'secondary',
+                                            'DIAJUKAN' => 'info',
+                                            'DIPROSES' => 'warning',
+                                            'SELESAI' => 'success',
+                                            'DIAMBIL' => 'primary',
+                                            'DITOLAK' => 'danger'
                                         ][$permohonan->status] ?? 'secondary';
 
-                                        $statusText = [
-                                            'pending' => 'Pending',
-                                            'approved' => 'Disetujui',
-                                            'rejected' => 'Ditolak',
-                                            'completed' => 'Selesai'
-                                        ][$permohonan->status] ?? $permohonan->status;
+                                        $statusIcon = [
+                                            'DRAFT' => 'clock',
+                                            'DIAJUKAN' => 'paper-plane',
+                                            'DIPROSES' => 'cog',
+                                            'SELESAI' => 'check-circle',
+                                            'DIAMBIL' => 'hand-holding',
+                                            'DITOLAK' => 'times'
+                                        ][$permohonan->status] ?? 'clock';
                                     @endphp
-                                    <span class="badge bg-{{ $statusClass }}">{{ $statusText }}</span>
-                                </td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn btn-sm btn-info view-btn" data-bs-toggle="tooltip" title="Lihat Detail" onclick="viewPermohonan({{ $permohonan->permohonan_id }})">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <a href="{{ route('permohonan-surat.edit', $permohonan->permohonan_id) }}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <button type="button" class="btn btn-sm btn-danger delete-btn" data-bs-toggle="tooltip" title="Hapus" data-permohonan-id="{{ $permohonan->permohonan_id }}" data-permohonan-name="{{ $permohonan->nomor_permohonan }}">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="7" class="text-center py-5">
-                                    <div class="empty-state-card">
-                                        <i class="fas fa-envelope-open fa-4x text-muted mb-3"></i>
-                                        <h4 class="text-muted">Belum ada data permohonan surat</h4>
-                                        <p class="text-muted mb-4">Mulai dengan menambahkan permohonan surat pertama</p>
-                                        <a href="{{ route('permohonan-surat.create') }}" class="btn btn-primary">
-                                            <i class="fas fa-plus me-2"></i>Tambah Permohonan Pertama
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                                    <span class="badge status-badge bg-{{ $statusClass }}">
+                                        <i class="fas fa-{{ $statusIcon }} me-1"></i>{{ $permohonan->status }}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <small class="text-muted">Tanggal Pengajuan</small>
+                                <p class="mb-2"><i class="fas fa-calendar text-warning me-2"></i>{{ \Carbon\Carbon::parse($permohonan->tanggal_pengajuan)->format('d M Y') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-light">
+                        <div class="row text-center">
+                            <div class="col-6 border-end">
+                                <a href="{{ route('permohonan-surat.show', $permohonan->permohonan_id) }}" class="text-secondary detail-link" title="Lihat Detail" data-bs-toggle="tooltip">
+                                    <i class="fas fa-eye"></i>
+                                    <small class="d-block mt-1">Detail</small>
+                                </a>
+                            </div>
+                            <div class="col-6">
+                                <a href="{{ route('permohonan-surat.edit', $permohonan->permohonan_id) }}" class="text-secondary edit-link" title="Edit" data-bs-toggle="tooltip">
+                                    <i class="fas fa-edit"></i>
+                                    <small class="d-block mt-1">Edit</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            @empty
+            <div class="col-12">
+                <div class="card text-center py-5 empty-state-card" data-aos="fade-up">
+                    <div class="card-body">
+                        <i class="fas fa-envelope-open fa-4x text-muted mb-3"></i>
+                        <h4 class="text-muted">Belum ada data permohonan surat</h4>
+                        <p class="text-muted mb-4">Mulai dengan menambahkan permohonan surat pertama</p>
+                        <a href="{{ route('permohonan-surat.create') }}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Tambah Permohonan Pertama
+                        </a>
+                    </div>
+                </div>
+            </div>
+            @endforelse
         </div>
 
         <!-- Info jumlah data -->
-        @if($dataPermohonanSurat->count() > 0)
         <div class="row mt-4">
             <div class="col-12 text-center">
                 <p class="text-muted" id="dataInfo">
@@ -200,60 +262,9 @@
                 </p>
             </div>
         </div>
-        @endif
     </div>
 </div>
-
-<!-- View Detail Modal -->
-<div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="viewModalLabel">
-                    <i class="fas fa-eye me-2"></i>Detail Permohonan Surat
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="detail-group mb-3">
-                            <label class="form-label fw-bold text-primary">Nomor Permohonan</label>
-                            <p id="detailNomor" class="mb-0">-</p>
-                        </div>
-                        <div class="detail-group mb-3">
-                            <label class="form-label fw-bold text-primary">Nama Pemohon</label>
-                            <p id="detailPemohon" class="mb-0">-</p>
-                        </div>
-                        <div class="detail-group mb-3">
-                            <label class="form-label fw-bold text-primary">Jenis Surat</label>
-                            <p id="detailJenis" class="mb-0">-</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="detail-group mb-3">
-                            <label class="form-label fw-bold text-primary">Tanggal Pengajuan</label>
-                            <p id="detailTanggal" class="mb-0">-</p>
-                        </div>
-                        <div class="detail-group mb-3">
-                            <label class="form-label fw-bold text-primary">Status</label>
-                            <p id="detailStatus" class="mb-0">-</p>
-                        </div>
-                        <div class="detail-group mb-3">
-                            <label class="form-label fw-bold text-primary">Catatan</label>
-                            <p id="detailCatatan" class="mb-0 text-muted">-</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="fas fa-times me-2"></i>Tutup
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- Content End -->
 
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -286,7 +297,8 @@
         </div>
     </div>
 </div>
-{{-- end main content --}}
+
+{{-- end content --}}
 
 <style>
     /* Animasi untuk kartu statistik */
@@ -302,38 +314,47 @@
         box-shadow: 0 12px 25px rgba(0,0,0,0.15) !important;
     }
 
-    /* Animasi untuk tabel */
-    .table-responsive {
-        border-radius: 10px;
+    /* Animasi untuk kartu permohonan */
+    .widget-card {
+        transition: all 0.3s ease;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
         overflow: hidden;
     }
 
-    .table th {
-        border-top: none;
-        font-weight: 600;
-        background-color: var(--bs-primary);
-        color: white;
+    .widget-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
     }
 
-    .table-hover tbody tr:hover {
-        background-color: rgba(0,0,0,0.02);
-        transform: scale(1.01);
-        transition: all 0.2s ease;
+    .card-header {
+        border-radius: 15px 15px 0 0 !important;
+        padding: 1rem 1.25rem;
+    }
+
+    /* Efek untuk badge status */
+    .status-badge {
+        transition: all 0.3s ease;
+        font-size: 0.75rem;
+        padding: 0.35em 0.65em;
+    }
+
+    .widget-card:hover .status-badge {
+        transform: scale(1.1);
     }
 
     /* Styling untuk tombol aksi */
-    .action-buttons {
-        display: flex;
-        gap: 5px;
-    }
-
-    .action-buttons .btn {
-        border-radius: 8px;
+    .action-btn {
         transition: all 0.3s ease;
+        border: none;
+        border-radius: 8px;
+        padding: 0.25rem 0.5rem;
     }
 
-    .action-buttons .btn:hover {
-        transform: translateY(-2px);
+    .action-btn:hover {
+        background-color: rgba(255,255,255,0.2) !important;
+        transform: scale(1.1);
     }
 
     /* Styling untuk tombol tambah */
@@ -399,11 +420,31 @@
         transform: translateY(-2px);
     }
 
+    /* Styling untuk detail dan edit links */
+    .detail-link, .edit-link {
+        transition: all 0.3s ease;
+        padding: 0.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .detail-link:hover {
+        background-color: rgba(0,0,0,0.05);
+        transform: scale(1.1);
+        color: var(--bs-info) !important;
+    }
+
+    .edit-link:hover {
+        background-color: rgba(0,0,0,0.05);
+        transform: scale(1.1);
+        color: var(--bs-warning) !important;
+    }
+
     /* Styling untuk empty state */
     .empty-state-card {
         border: 2px dashed #dee2e6;
         border-radius: 15px;
-        padding: 2rem;
         transition: all 0.3s ease;
     }
 
@@ -424,6 +465,10 @@
         border-left-color: var(--bs-success);
     }
 
+    .alert-danger {
+        border-left-color: var(--bs-danger);
+    }
+
     /* Modal styling */
     .modal-content {
         border: none;
@@ -433,25 +478,41 @@
 
     .modal-header {
         border-radius: 15px 15px 0 0;
+        background: linear-gradient(135deg, var(--bs-danger), #dc3545);
+        color: white;
     }
 
-    /* Detail group styling */
-    .detail-group label {
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
+    /* Animasi untuk kartu yang difilter */
+    .permohonan-card.hidden {
+        display: none;
+        animation: fadeOut 0.3s ease;
     }
 
-    .detail-group p {
-        font-size: 1rem;
-        padding: 0.5rem 0;
-        border-bottom: 1px solid #f0f0f0;
+    .permohonan-card.visible {
+        display: block;
+        animation: fadeInUp 0.5s ease;
     }
 
-    /* Badge styling */
-    .badge {
-        font-size: 0.75rem;
-        padding: 0.5rem 0.75rem;
-        border-radius: 20px;
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateY(20px);
+        }
     }
 
     /* Counter animation */
@@ -496,8 +557,9 @@
         const searchInput = document.getElementById('searchInput');
         const searchButton = document.getElementById('searchButton');
         const filterOptions = document.querySelectorAll('.filter-option');
-        const permohonanRows = document.querySelectorAll('.permohonan-card-item');
+        const permohonanCards = document.querySelectorAll('.permohonan-card');
         const filteredCount = document.getElementById('filtered-count');
+        const dataInfo = document.getElementById('dataInfo');
 
         // Delete modal functionality
         const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
@@ -516,27 +578,29 @@
         });
 
         function updateFilteredCount() {
-            const visibleRows = document.querySelectorAll('.permohonan-card-item:not(.d-none)').length;
+            const visibleCards = document.querySelectorAll('.permohonan-card:not(.hidden)').length;
             if (filteredCount) {
-                filteredCount.textContent = visibleRows;
+                filteredCount.textContent = visibleCards;
             }
         }
 
-        function filterRows() {
+        function filterCards() {
             const searchTerm = searchInput.value.toLowerCase();
             const activeFilter = document.querySelector('.filter-option.active')?.getAttribute('data-filter') || 'all';
 
-            permohonanRows.forEach(row => {
-                const rowSearch = row.getAttribute('data-search');
-                const rowStatus = row.getAttribute('data-status');
+            permohonanCards.forEach(card => {
+                const cardSearch = card.getAttribute('data-search');
+                const cardStatus = card.getAttribute('data-status');
 
-                const matchesSearch = rowSearch.includes(searchTerm);
-                const matchesFilter = activeFilter === 'all' || rowStatus === activeFilter;
+                const matchesSearch = cardSearch.includes(searchTerm);
+                const matchesFilter = activeFilter === 'all' || cardStatus === activeFilter;
 
                 if (matchesSearch && matchesFilter) {
-                    row.classList.remove('d-none');
+                    card.classList.remove('hidden');
+                    card.classList.add('visible');
                 } else {
-                    row.classList.add('d-none');
+                    card.classList.add('hidden');
+                    card.classList.remove('visible');
                 }
             });
 
@@ -544,8 +608,8 @@
         }
 
         // Event listener untuk pencarian
-        searchInput.addEventListener('input', filterRows);
-        searchButton.addEventListener('click', filterRows);
+        searchInput.addEventListener('input', filterCards);
+        searchButton.addEventListener('click', filterCards);
 
         // Event listener untuk filter
         filterOptions.forEach(option => {
@@ -555,7 +619,7 @@
                 filterOptions.forEach(opt => opt.classList.remove('active'));
                 this.classList.add('active');
 
-                filterRows();
+                filterCards();
             });
         });
 
@@ -573,42 +637,22 @@
             }, 5000);
         });
 
+        // Efek hover untuk kartu
+        permohonanCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
         // Initialize tooltips
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         const tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
     });
-
-    // Fungsi untuk melihat detail permohonan
-    function viewPermohonan(id) {
-        // Implementasi AJAX untuk mengambil data detail
-        fetch(`/permohonan-surat/${id}`)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('detailNomor').textContent = data.nomor_permohonan;
-                document.getElementById('detailPemohon').textContent = data.pemohon.nama;
-                document.getElementById('detailJenis').textContent = data.jenis_surat.nama_jenis;
-                document.getElementById('detailTanggal').textContent = new Date(data.tanggal_pengajuan).toLocaleDateString('id-ID');
-
-                const statusText = {
-                    'pending': 'Pending',
-                    'approved': 'Disetujui',
-                    'rejected': 'Ditolak',
-                    'completed': 'Selesai'
-                }[data.status] || data.status;
-
-                document.getElementById('detailStatus').textContent = statusText;
-                document.getElementById('detailCatatan').textContent = data.catatan || '-';
-
-                const viewModal = new bootstrap.Modal(document.getElementById('viewModal'));
-                viewModal.show();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan saat mengambil data detail');
-            });
-    }
 </script>
-
 @endsection
