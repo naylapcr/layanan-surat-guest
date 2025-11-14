@@ -26,23 +26,23 @@ class PermohonanSuratController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        // Coba beberapa kemungkinan nama kolom
-        try {
-            $dataJenisSurat = JenisSurat::orderBy('nama_jenis', 'asc')->get();
-        } catch (\Exception $e) {
-            try {
-                $dataJenisSurat = JenisSurat::orderBy('nama', 'asc')->get();
-            } catch (\Exception $e) {
-                // Jika semua gagal, ambil tanpa order
-                $dataJenisSurat = JenisSurat::all();
-            }
-        }
+{
+    // Debug: Cek data langsung
+    $dataJenisSurat = \App\Models\JenisSurat::all();
+    $dataWarga = \App\Models\Warga::all();
 
-        $dataWarga = Warga::orderBy('nama', 'asc')->get();
+    // Log untuk debugging
+    \Log::info('Create Permohonan - Jenis Surat Count: ' . $dataJenisSurat->count());
+    \Log::info('Create Permohonan - Warga Count: ' . $dataWarga->count());
 
-        return view('pages.guest.permohonan-surat.create', compact('dataJenisSurat', 'dataWarga'));
+    // Jika development, tampilkan debug info
+    if (app()->environment('local')) {
+        logger('Jenis Surat Data:', $dataJenisSurat->toArray());
+        logger('Warga Data:', $dataWarga->toArray());
     }
+
+    return view('pages.guest.permohonan-surat.create', compact('dataJenisSurat', 'dataWarga'));
+}
 
     /**
      * Store a newly created resource in storage.

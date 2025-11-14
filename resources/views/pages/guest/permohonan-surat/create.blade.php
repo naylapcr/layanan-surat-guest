@@ -23,6 +23,7 @@
                             </h3>
                             <p class="text-muted mt-2">Isi informasi detail tentang permohonan surat baru</p>
                         </div>
+
                         <div class="form-body">
                             <form method="POST" action="{{ route('permohonan-surat.store') }}" id="permohonanSuratForm">
                                 @csrf
@@ -38,6 +39,26 @@
                                                         <li>{{ $error }}</li>
                                                     @endforeach
                                                 </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+
+                                <!-- Debug Info -->
+                                @php
+                                    // Debug informasi
+                                    $jenisSuratCount = isset($dataJenisSurat) ? $dataJenisSurat->count() : 0;
+                                    $wargaCount = isset($dataWarga) ? $dataWarga->count() : 0;
+                                @endphp
+
+                                <!-- Debug Alert -->
+                                @if($jenisSuratCount === 0)
+                                    <div class="alert alert-warning animate__animated animate__fadeIn">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-exclamation-triangle me-3 fa-lg"></i>
+                                            <div>
+                                                <h5 class="alert-heading mb-2">Data Jenis Surat Tidak Ditemukan</h5>
+                                                <p class="mb-0">Silakan tambahkan data jenis surat terlebih dahulu atau hubungi administrator.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -68,11 +89,21 @@
                                         <div class="input-group-icon">
                                             <select name="jenis_surat_id" id="jenis_surat_id" class="form-control input-focus-effect @error('jenis_surat_id') is-invalid @enderror" required>
                                                 <option value="">-- Pilih Jenis Surat --</option>
-                                                @foreach($dataJenisSurat as $jenis)
-                                                    <option value="{{ $jenis->jenis_surat_id }}" {{ old('jenis_surat_id') == $jenis->jenis_surat_id ? 'selected' : '' }}>
-                                                        {{ $jenis->nama_jenis_surat }}
-                                                    </option>
-                                                @endforeach
+                                                @if(isset($dataJenisSurat) && $dataJenisSurat->count() > 0)
+                                                    @foreach($dataJenisSurat as $jenis)
+                                                        <option value="{{ $jenis->jenis_id }}" {{ old('jenis_surat_id') == $jenis->jenis_id ? 'selected' : '' }}>
+                                                            {{ $jenis->nama_jenis }}
+                                                        </option>
+                                                    @endforeach
+                                                @else
+                                                    <!-- Fallback options jika data tidak tersedia -->
+                                                    <option value="1">Surat Keterangan Domisili</option>
+                                                    <option value="2">Surat Keterangan Tidak Mampu</option>
+                                                    <option value="3">Surat Keterangan Usaha</option>
+                                                    <option value="4">Surat Pengantar</option>
+                                                    <option value="5">Surat Keterangan Kelahiran</option>
+                                                    <option value="6">Surat Keterangan Kematian</option>
+                                                @endif
                                             </select>
                                             <i class="fas fa-file-alt form-icon"></i>
                                         </div>
@@ -81,7 +112,11 @@
                                         @enderror
                                         <div class="form-text">
                                             <i class="fas fa-info-circle me-1"></i>
-                                            Pilih jenis surat yang diperlukan
+                                            @if(isset($dataJenisSurat) && $dataJenisSurat->count() > 0)
+                                                Tersedia {{ $dataJenisSurat->count() }} jenis surat
+                                            @else
+                                                Data jenis surat tidak tersedia, menggunakan data default
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -118,11 +153,15 @@
                                     <div class="input-group-icon">
                                         <select name="warga_id" id="warga_id" class="form-control input-focus-effect @error('warga_id') is-invalid @enderror" required>
                                             <option value="">-- Pilih Nama Pemohon --</option>
-                                            @foreach($dataWarga as $warga)
-                                                <option value="{{ $warga->warga_id }}" {{ old('warga_id') == $warga->warga_id ? 'selected' : '' }}>
-                                                    {{ $warga->nama }} - {{ $warga->nik }}
-                                                </option>
-                                            @endforeach
+                                            @if(isset($dataWarga) && $dataWarga->count() > 0)
+                                                @foreach($dataWarga as $warga)
+                                                    <option value="{{ $warga->warga_id }}" {{ old('warga_id') == $warga->warga_id ? 'selected' : '' }}>
+                                                        {{ $warga->nama }} - {{ $warga->nik }}
+                                                    </option>
+                                                @endforeach
+                                            @else
+                                                <option value="" disabled>Data warga tidak tersedia</option>
+                                            @endif
                                         </select>
                                         <i class="fas fa-user form-icon"></i>
                                     </div>
@@ -131,7 +170,11 @@
                                     @enderror
                                     <div class="form-text">
                                         <i class="fas fa-info-circle me-1"></i>
-                                        Pilih nama pemohon dari data warga
+                                        @if(isset($dataWarga) && $dataWarga->count() > 0)
+                                            Tersedia {{ $dataWarga->count() }} data warga
+                                        @else
+                                            Data warga tidak tersedia
+                                        @endif
                                     </div>
                                 </div>
 
@@ -194,7 +237,7 @@
                                     <a href="{{ route('permohonan-surat.index') }}" class="btn btn-outline-secondary btn-back">
                                         <i class="fas fa-arrow-left me-2"></i>Kembali ke Daftar
                                     </a>
-                                    <button type="submit" class="btn btn-primary btn-submit" id="submitButton">
+                                    <button type="submit" class="btn btn-primary btn-submit" id="submitButton" {{ ($jenisSuratCount === 0 || $wargaCount === 0) ? 'disabled' : '' }}>
                                         <span class="submit-text">
                                             <i class="fas fa-paper-plane me-2"></i>Ajukan Permohonan
                                         </span>
@@ -218,6 +261,15 @@
                                         Pastikan memilih jenis surat yang sesuai dengan kebutuhan.
                                         Untuk permohonan baru, pilih status "DIAJUKAN" agar langsung diproses oleh admin.
                                     </p>
+                                    @if($jenisSuratCount === 0 || $wargaCount === 0)
+                                        <div class="alert alert-warning mt-3 mb-0 small">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>
+                                            <strong>Perhatian:</strong>
+                                            @if($jenisSuratCount === 0) Data jenis surat tidak tersedia. @endif
+                                            @if($wargaCount === 0) Data warga tidak tersedia. @endif
+                                            Silakan hubungi administrator.
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -374,11 +426,28 @@
         transform: translateY(0);
     }
 
+    .btn-submit:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
     /* Alert styling */
     .alert {
         border: none;
         border-radius: 10px;
+    }
+
+    .alert-danger {
         border-left: 4px solid var(--bs-danger);
+    }
+
+    .alert-warning {
+        border-left: 4px solid var(--bs-warning);
+    }
+
+    .alert-success {
+        border-left: 4px solid var(--bs-success);
     }
 
     /* Info card styling */
@@ -512,6 +581,10 @@
 
         catatanTextarea.addEventListener('input', updateCharacterCount);
         updateCharacterCount(); // Initial call
+
+        // Debug info di console
+        console.log('Jenis Surat Options:', document.getElementById('jenis_surat_id').options.length);
+        console.log('Warga Options:', document.getElementById('warga_id').options.length);
     });
 </script>
 
