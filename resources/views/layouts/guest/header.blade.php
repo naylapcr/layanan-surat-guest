@@ -43,11 +43,12 @@
                         <a href="{{ route('about') }}" class="nav-item nav-link {{ request()->routeIs('about') ? 'active' : '' }}"><i class="fas fa-info-circle me-1"></i>Tentang</a>
                         <a href="{{ route('warga.index') }}" class="nav-item nav-link {{ request()->routeIs('warga.index') ? 'active' : '' }}"><i class="fas fa-users me-1"></i>Data Warga</a>
                         <a href="{{ route('jenis-surat.index') }}" class="nav-item nav-link {{ request()->routeIs('jenis-surat.index') ? 'active' : '' }}"><i class="fas fa-envelope me-1"></i>Jenis Surat</a>
+                        <a href="{{ route('permohonan-surat.index') }}" class="nav-item nav-link {{ request()->routeIs('permohonan-surat.index') ? 'active' : '' }}"><i class="fas fa-file-import me-1"></i>Permohonan Surat</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle {{ request()->is('feature', 'countries', 'testimonial') ? 'active' : '' }}" data-bs-toggle="dropdown"><i class="fas fa-concierge-bell me-1"></i><span class="dropdown-toggle">Layanan</span></a>
                             <div class="dropdown-menu m-0">
-                                <a href="feature.html" class="dropdown-item"><i class="fas fa-file-import me-2"></i>Pengajuan Surat</a>
-                                <a href="countries.html" class="dropdown-item"><i class="fas fa-tasks me-2"></i>Status Surat</a>
+                                <a href="{{ route('permohonan-surat.create') }}" class="dropdown-item"><i class="fas fa-file-import me-2"></i>Ajukan Permohonan</a>
+                                <a href="{{ route('permohonan-surat.index') }}" class="dropdown-item"><i class="fas fa-tasks me-2"></i>Status Permohonan</a>
                                 <a href="testimonial.html" class="dropdown-item"><i class="fas fa-question-circle me-2"></i>Bantuan</a>
                             </div>
                         </div>
@@ -70,7 +71,7 @@
                         </div>
                     </div>
                     <button class="btn btn-primary btn-md-square border-secondary mb-3 mb-md-3 mb-lg-0 me-3" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search"></i></button>
-                    <a href="" class="btn btn-primary border-secondary rounded-pill py-2 px-4 px-lg-3 mb-3 mb-md-3 mb-lg-0"><i class="fas fa-paper-plane me-2"></i>Ajukan Surat</a>
+                    <a href="{{ route('permohonan-surat.create') }}" class="btn btn-primary border-secondary rounded-pill py-2 px-4 px-lg-3 mb-3 mb-md-3 mb-lg-0"><i class="fas fa-paper-plane me-2"></i>Ajukan Surat</a>
                 </div>
             </nav>
         </div>

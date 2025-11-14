@@ -7,6 +7,7 @@ use App\Http\Controllers\GuestController;
 use App\Http\Controllers\WargaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JenisSuratController;
+use App\Http\Controllers\PermohonanSuratController;
 
 Route::get('/', function () {
     return view('pages.guest.dashboard.dashboard');
@@ -15,8 +16,11 @@ Route::get('/', function () {
 // Route untuk CRUD Warga
 Route::resource('warga', WargaController::class);
 
-// Route untuk CRUD Jenis Surat - PASTIKAN INI ADA
+// Route untuk CRUD Jenis Surat
 Route::resource('jenis-surat', JenisSuratController::class);
+
+// Route untuk CRUD Permohonan Surat
+Route::resource('permohonan-surat', PermohonanSuratController::class);
 
 // Route lainnya...
 Route::prefix('surat')->group(function () {
