@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class PermohonanSurat extends Model
 {
@@ -15,7 +15,7 @@ class PermohonanSurat extends Model
     protected $fillable = [
         'nomor_permohonan',
         'warga_id',
-        'jenis_id',
+        'jenis_surat_id',
         'tanggal_pengajuan',
         'status',
         'catatan',
@@ -37,3 +37,4 @@ class PermohonanSurat extends Model
         return $this->belongsTo(Warga::class, 'warga_id', 'warga_id');
     }
 }
+
