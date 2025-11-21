@@ -8,109 +8,96 @@ use Illuminate\Http\Request;
 
 class PermohonanSuratController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        // Ambil data permohonan beserta relasi Warga dan JenisSurat dengan eager loading
-        $dataPermohonanSurat = PermohonanSurat::with(['warga', 'jenisSurat'])
-            ->orderBy('tanggal_pengajuan', 'desc')
-            ->get();
+        $query = PermohonanSurat::with(['warga', 'jenisSurat']);
+
+        // Search functionality
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nomor_permohonan', 'like', "%{$search}%")
+                  ->orWhereHas('warga', function($q) use ($search) {
+                      $q->where('nama', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        // Filter by status
+        if ($request->has('filter_status') && $request->filter_status != 'all') {
+            $query->where('status', $request->filter_status);
+        }
+
+        // Order by latest
+        $query->orderBy('tanggal_pengajuan', 'desc');
+
+        $dataPermohonanSurat = $query->paginate(12);
 
         return view('pages.guest.permohonan-surat.index', compact('dataPermohonanSurat'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        // Debug: Cek data langsung
-        $dataJenisSurat = \App\Models\JenisSurat::all();
-        $dataWarga      = \App\Models\Warga::all();
-
-        // Log untuk debugging
-        \Log::info('Create Permohonan - Jenis Surat Count: ' . $dataJenisSurat->count());
-        \Log::info('Create Permohonan - Warga Count: ' . $dataWarga->count());
-
-        // Jika development, tampilkan debug info
-        if (app()->environment('local')) {
-            logger('Jenis Surat Data:', $dataJenisSurat->toArray());
-            logger('Warga Data:', $dataWarga->toArray());
-        }
+        $dataJenisSurat = JenisSurat::all();
+        $dataWarga = Warga::all();
 
         return view('pages.guest.permohonan-surat.create', compact('dataJenisSurat', 'dataWarga'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
-            'jenis_surat_id' => 'required|exists:jenis_surat,jenis_id', // Diubah dari jenis_surat_id ke jenis_id
-            'warga_id'       => 'required|exists:warga,warga_id',
-            'status'         => 'required|in:DRAFT,DIAJUKAN,DIPROSES,DITOLAK,SELESAI,DIAMBIL',
-            'catatan'        => 'nullable|string',
+            'jenis_surat_id' => 'required|exists:jenis_surat,jenis_id',
+            'warga_id' => 'required|exists:warga,warga_id',
+            'status' => 'required|in:DRAFT,DIAJUKAN,DIPROSES,DITOLAK,SELESAI,DIAMBIL',
+            'catatan' => 'nullable|string',
         ]);
 
-        // Generate Nomor Permohonan otomatis
-        $lastId          = PermohonanSurat::max('permohonan_id') ?? 0;
+        $lastId = PermohonanSurat::max('permohonan_id') ?? 0;
         $nomorPermohonan = 'PMH-' . date('Ymd') . '-' . str_pad($lastId + 1, 3, '0', STR_PAD_LEFT);
 
         PermohonanSurat::create([
-            'nomor_permohonan'  => $nomorPermohonan,
-            'warga_id'          => $request->warga_id,
-            'jenis_surat_id'    => $request->jenis_surat_id, // Tetap menggunakan jenis_surat_id untuk field di tabel permohonan_surat
+            'nomor_permohonan' => $nomorPermohonan,
+            'warga_id' => $request->warga_id,
+            'jenis_surat_id' => $request->jenis_surat_id,
             'tanggal_pengajuan' => now()->toDateString(),
-            'status'            => $request->status,
-            'catatan'           => $request->catatan,
+            'status' => $request->status,
+            'catatan' => $request->catatan,
         ]);
 
         return redirect()->route('permohonan-surat.index')->with('success', 'Permohonan surat berhasil diajukan!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
         $permohonanSurat = PermohonanSurat::findOrFail($id);
-
         $dataJenisSurat = JenisSurat::orderBy('nama_jenis', 'asc')->get();
-        $dataWarga      = Warga::orderBy('nama', 'asc')->get();
+        $dataWarga = Warga::orderBy('nama', 'asc')->get();
 
         return view('pages.guest.permohonan-surat.edit', compact('permohonanSurat', 'dataJenisSurat', 'dataWarga'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $permohonanSurat = PermohonanSurat::findOrFail($id);
 
         $request->validate([
-            'jenis_surat_id' => 'required|exists:jenis_surat,jenis_id', // Diubah dari jenis_surat_id ke jenis_id
-            'warga_id'       => 'required|exists:warga,warga_id',
-            'status'         => 'required|in:DRAFT,DIAJUKAN,DIPROSES,DITOLAK,SELESAI,DIAMBIL',
-            'catatan'        => 'nullable|string',
+            'jenis_surat_id' => 'required|exists:jenis_surat,jenis_id',
+            'warga_id' => 'required|exists:warga,warga_id',
+            'status' => 'required|in:DRAFT,DIAJUKAN,DIPROSES,DITOLAK,SELESAI,DIAMBIL',
+            'catatan' => 'nullable|string',
         ]);
 
         $permohonanSurat->update([
-            'warga_id'       => $request->warga_id,
-            'jenis_surat_id' => $request->jenis_surat_id, // Tetap menggunakan jenis_surat_id untuk field di tabel permohonan_surat
-            'status'         => $request->status,
-            'catatan'        => $request->catatan,
+            'warga_id' => $request->warga_id,
+            'jenis_surat_id' => $request->jenis_surat_id,
+            'status' => $request->status,
+            'catatan' => $request->catatan,
         ]);
 
         return redirect()->route('permohonan-surat.index')->with('success', 'Permohonan surat berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         $permohonanSurat = PermohonanSurat::findOrFail($id);
@@ -119,9 +106,6 @@ class PermohonanSuratController extends Controller
         return redirect()->route('permohonan-surat.index')->with('success', 'Permohonan surat berhasil dihapus!');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
         $permohonan = PermohonanSurat::with(['warga', 'jenisSurat'])->findOrFail($id);
