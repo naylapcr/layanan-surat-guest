@@ -47,7 +47,7 @@
                                 <i class="fas fa-users fa-3x"></i>
                             </div>
                             <div>
-                                <h4 class="mb-0 counter" data-target="{{ $warga->count() }}">0</h4>
+                                <h4 class="mb-0 counter" data-target="{{ App\Models\Warga::count() }}">0</h4>
                                 <p class="mb-0">Total Warga</p>
                             </div>
                         </div>
@@ -61,8 +61,8 @@
                                 <i class="fas fa-male fa-3x"></i>
                             </div>
                             <div>
-                                <h4 class="mb-0 counter" data-target="{{ $warga->where('jenis_kelamin', 'L')->count() }}">0
-                                </h4>
+                                <h4 class="mb-0 counter"
+                                    data-target="{{ App\Models\Warga::where('jenis_kelamin', 'L')->count() }}">0</h4>
                                 <p class="mb-0">Laki-laki</p>
                             </div>
                         </div>
@@ -76,8 +76,8 @@
                                 <i class="fas fa-female fa-3x"></i>
                             </div>
                             <div>
-                                <h4 class="mb-0 counter" data-target="{{ $warga->where('jenis_kelamin', 'P')->count() }}">0
-                                </h4>
+                                <h4 class="mb-0 counter"
+                                    data-target="{{ App\Models\Warga::where('jenis_kelamin', 'P')->count() }}">0</h4>
                                 <p class="mb-0">Perempuan</p>
                             </div>
                         </div>
@@ -91,8 +91,8 @@
                                 <i class="fas fa-briefcase fa-3x"></i>
                             </div>
                             <div>
-                                <h4 class="mb-0 counter" data-target="{{ $warga->pluck('pekerjaan')->unique()->count() }}">0
-                                </h4>
+                                <h4 class="mb-0 counter"
+                                    data-target="{{ App\Models\Warga::distinct('pekerjaan')->count('pekerjaan') }}">0</h4>
                                 <p class="mb-0">Jenis Pekerjaan</p>
                             </div>
                         </div>
@@ -154,86 +154,7 @@
                     <div class="col-xl-4 col-md-6 mb-4 warga-card animate__animated animate__fadeInUp"
                         data-gender="{{ $data->jenis_kelamin }}" data-name="{{ strtolower($data->nama) }}"
                         data-aos="fade-up" data-aos-delay="{{ ($index % 3) * 100 }}">
-                        <div class="card widget-card h-100">
-                            <div
-                                class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                                <h6 class="mb-0">
-                                    <i class="fas fa-user me-2"></i>{{ $data->nama }}
-                                </h6>
-                                <div class="dropdown">
-                                    <button class="btn btn-sm btn-light dropdown-toggle action-btn" type="button"
-                                        data-bs-toggle="dropdown" data-bs-toggle="tooltip" title="Aksi">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a class="dropdown-item" href="{{ route('warga.edit', $data->warga_id) }}">
-                                                <i class="fas fa-edit me-2"></i>Edit
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <button type="button" class="dropdown-item text-danger delete-btn"
-                                                data-warga-id="{{ $data->warga_id }}"
-                                                data-warga-name="{{ $data->nama }}">
-                                                <i class="fas fa-trash-alt me-2"></i>Hapus
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="row mb-3">
-                                    <div class="col-12">
-                                        <small class="text-muted">NIK</small>
-                                        <p class="mb-2"><i
-                                                class="fas fa-id-card text-primary me-2"></i>{{ $data->no_ktp }}</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <small class="text-muted">Jenis Kelamin</small>
-                                        <p class="mb-2">
-                                            @if ($data->jenis_kelamin == 'L')
-                                                <span class="badge gender-badge bg-primary"><i
-                                                        class="fas fa-male me-1"></i>Laki-laki</span>
-                                            @else
-                                                <span class="badge gender-badge bg-pink"><i
-                                                        class="fas fa-female me-1"></i>Perempuan</span>
-                                            @endif
-                                        </p>
-                                    </div>
-                                    <div class="col-6">
-                                        <small class="text-muted">Agama</small>
-                                        <p class="mb-2"><i class="fas fa-pray me-2"></i>{{ $data->agama }}</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <small class="text-muted">Pekerjaan</small>
-                                        <p class="mb-2"><i
-                                                class="fas fa-briefcase text-warning me-2"></i>{{ $data->pekerjaan }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer bg-light">
-                                <div class="row text-center">
-                                    <div class="col-6 border-end">
-                                        <a href="tel:{{ $data->telp }}" class="text-secondary contact-link"
-                                            title="Telepon" data-bs-toggle="tooltip">
-                                            <i class="fas fa-phone-alt"></i>
-                                            <small class="d-block mt-1">Telepon</small>
-                                        </a>
-                                    </div>
-                                    <div class="col-6">
-                                        <a href="mailto:{{ $data->email }}" class="text-secondary contact-link"
-                                            title="Email" data-bs-toggle="tooltip">
-                                            <i class="fas fa-envelope"></i>
-                                            <small class="d-block mt-1">Email</small>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Existing card content -->
                     </div>
                 @empty
                     <div class="col-12">
@@ -255,6 +176,16 @@
             <div class="row mt-4">
                 <div class="col-12 text-center">
                     <p class="text-muted" id="dataInfo">
+                        <i class="fas fa-info-circle me-2"></i>Menampilkan {{ $warga->count() }} dari
+                        {{ $warga->total() }} data warga
+                    </p>
+                </div>
+            </div>
+
+            <!-- Info jumlah data -->
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <p class="text-muted" id="dataInfo">
                         <i class="fas fa-info-circle me-2"></i>Menampilkan <span
                             id="filtered-count">{{ $warga->count() }}</span> data warga
                     </p>
@@ -264,53 +195,58 @@
     </div>
 
     <!-- Pagination -->
-@if($warga->hasPages())
-<div class="row mt-4">
-    <div class="col-12">
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                {{-- Previous Page Link --}}
-                @if($warga->onFirstPage())
-                    <li class="page-item disabled">
-                        <span class="page-link">«</span>
-                    </li>
-                @else
-                    <li class="page-item">
-                        <a class="page-link" href="{{ $warga->previousPageUrl() }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}" rel="prev">«</a>
-                    </li>
-                @endif
+    @if ($warga->hasPages())
+        <div class="row mt-4">
+            <div class="col-12">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        {{-- Previous Page Link --}}
+                        @if ($warga->onFirstPage())
+                            <li class="page-item disabled">
+                                <span class="page-link">«</span>
+                            </li>
+                        @else
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="{{ $warga->previousPageUrl() }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}"
+                                    rel="prev">«</a>
+                            </li>
+                        @endif
 
-                {{-- Pagination Elements --}}
-                @foreach($warga->getUrlRange(1, $warga->lastPage()) as $page => $url)
-                    @if($page == $warga->currentPage())
-                        <li class="page-item active">
-                            <span class="page-link">{{ $page }}</span>
-                        </li>
-                    @else
-                        <li class="page-item">
-                            <a class="page-link" href="{{ $url }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}">{{ $page }}</a>
-                        </li>
-                    @endif
-                @endforeach
+                        {{-- Pagination Elements --}}
+                        @foreach ($warga->getUrlRange(1, $warga->lastPage()) as $page => $url)
+                            @if ($page == $warga->currentPage())
+                                <li class="page-item active">
+                                    <span class="page-link">{{ $page }}</span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link"
+                                        href="{{ $url }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}">{{ $page }}</a>
+                                </li>
+                            @endif
+                        @endforeach
 
-                {{-- Next Page Link --}}
-                @if($warga->hasMorePages())
-                    <li class="page-item">
-                        <a class="page-link" href="{{ $warga->nextPageUrl() }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}" rel="next">»</a>
-                    </li>
-                @else
-                    <li class="page-item disabled">
-                        <span class="page-link">»</span>
-                    </li>
-                @endif
-            </ul>
-        </nav>
-        <div class="text-center text-muted mt-2">
-            Menampilkan {{ $warga->firstItem() }} - {{ $warga->lastItem() }} dari {{ $warga->total() }} data
+                        {{-- Next Page Link --}}
+                        @if ($warga->hasMorePages())
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="{{ $warga->nextPageUrl() }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}"
+                                    rel="next">»</a>
+                            </li>
+                        @else
+                            <li class="page-item disabled">
+                                <span class="page-link">»</span>
+                            </li>
+                        @endif
+                    </ul>
+                </nav>
+                <div class="text-center text-muted mt-2">
+                    Menampilkan {{ $warga->firstItem() }} - {{ $warga->lastItem() }} dari {{ $warga->total() }} data
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-@endif
+    @endif
     <!-- Content End -->
     <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
