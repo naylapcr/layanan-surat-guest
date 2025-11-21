@@ -8,9 +8,30 @@ use Illuminate\Support\Facades\DB;
 
 class WargaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $warga = Warga::all();
+        $query = Warga::query();
+
+        // Search functionality
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nama', 'like', "%{$search}%")
+                  ->orWhere('no_ktp', 'like', "%{$search}%")
+                  ->orWhere('pekerjaan', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter by gender
+        if ($request->has('filter_gender') && $request->filter_gender != 'all') {
+            $query->where('jenis_kelamin', $request->filter_gender);
+        }
+
+        // Order by latest
+        $query->orderBy('created_at', 'desc');
+
+        $warga = $query->paginate(12);
+
         return view('pages.guest.data-warga.index', compact('warga'));
     }
 

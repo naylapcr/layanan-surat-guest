@@ -13,19 +13,20 @@ class CreateWarga extends Seeder
      */
     public function run(): void
     {
-        // Gunakan 'id_ID' untuk data Indonesia
         $faker = Faker::create('id_ID');
+        $jenisKelamin = ['L', 'P'];
+        $agama = ['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu'];
+        $pekerjaan = ['PNS', 'Karyawan Swasta', 'Wiraswasta', 'Petani', 'Nelayan', 'Guru', 'Dokter', 'Perawat', 'Pedagang', 'Buruh'];
 
-        // Kita buat 50 data warga dummy
-        foreach (range(1, 50) as $index) {
-            DB::table('warga')->insert([
-                'no_ktp' => $faker->unique()->numerify('14##############'),
-                'nama' => $faker->name(),
-                'jenis_kelamin' => $faker->randomElement(['L', 'P']),
-                'agama' => $faker->randomElement(['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha']),
-                'pekerjaan' => $faker->jobTitle(),
-                'telp' => $faker->numerify('08##########'),
-                'email' => $faker->unique()->safeEmail(),
+        for ($i = 0; $i < 100; $i++) {
+            Warga::create([
+                'no_ktp' => $faker->numerify('32###############'),
+                'nama' => $faker->name,
+                'jenis_kelamin' => $faker->randomElement($jenisKelamin),
+                'agama' => $faker->randomElement($agama),
+                'pekerjaan' => $faker->randomElement($pekerjaan),
+                'telp' => $faker->phoneNumber,
+                'email' => $faker->unique()->safeEmail,
             ]);
         }
     }
