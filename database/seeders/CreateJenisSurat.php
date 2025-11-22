@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
+use Carbon\Carbon;
 
 class CreateJenisSurat extends Seeder
 {
@@ -14,6 +15,9 @@ class CreateJenisSurat extends Seeder
     public function run(): void
     {
         $faker = Faker::create('id_ID');
+
+        // Hapus data lama jika ada
+        DB::table('jenis_surat')->truncate();
 
         $jenisSuratDasar = [
             ['kode' => 'SKTM', 'nama' => 'Surat Keterangan Tidak Mampu'],
@@ -48,22 +52,37 @@ class CreateJenisSurat extends Seeder
 
         $data = [];
 
-        // Create 100 jenis surat dengan variasi
-        for ($i = 0; $i < 100; $i++) {
+        // Create 120 jenis surat dengan variasi (lebih dari 12 untuk testing pagination)
+        for ($i = 0; $i < 120; $i++) {
             $jenisDasar = $jenisSuratDasar[$i % count($jenisSuratDasar)];
             $counter = floor($i / count($jenisSuratDasar)) + 1;
 
-            $syaratKhusus = $faker->randomElements($syaratUmum, $faker->numberBetween(2, 5));
+            // Beberapa data tanpa syarat untuk testing filter
+            $hasSyarat = $faker->boolean(80); // 80% punya syarat, 20% tanpa syarat
+
+            $syaratKhusus = $hasSyarat ? $faker->randomElements($syaratUmum, $faker->numberBetween(2, 5)) : [];
 
             $data[] = [
                 'kode' => $jenisDasar['kode'] . str_pad($counter, 2, '0', STR_PAD_LEFT),
                 'nama_jenis' => $jenisDasar['nama'] . ' ' . $counter,
-                'syarat_json' => json_encode($syaratKhusus),
-                'created_at' => now(),
-                'updated_at' => now(),
+                'syarat_json' => $hasSyarat ? json_encode($syaratKhusus) : null,
+                'created_at' => Carbon::now()->subDays($faker->numberBetween(0, 365)),
+                'updated_at' => Carbon::now()->subDays($faker->numberBetween(0, 30)),
             ];
+
+            // Insert setiap 20 data untuk menghindari memory issue
+            if (count($data) >= 20) {
+                DB::table('jenis_surat')->insert($data);
+                $data = [];
+            }
         }
 
-        DB::table('jenis_surat')->insert($data);
+        // Insert sisa data
+        if (count($data) > 0) {
+            DB::table('jenis_surat')->insert($data);
+        }
+
+        $this->command->info('Berhasil membuat 120 data jenis surat untuk testing pagination!');
+        $this->command->info('Total halaman: ' . ceil(120 / 12) . ' halaman');
     }
 }

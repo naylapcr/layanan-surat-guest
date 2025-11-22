@@ -95,30 +95,35 @@
         <!-- Action Bar -->
         <div class="row mb-4">
             <div class="col-md-8">
-                <div class="d-flex">
+                <form method="GET" action="{{ route('permohonan-surat.index') }}" class="d-flex">
                     <div class="search-box me-3 flex-grow-1">
                         <div class="input-group search-container">
-                            <input type="text" class="form-control border-0 input-focus-effect" placeholder="Cari nomor permohonan atau nama pemohon..." id="searchInput">
-                            <button class="btn btn-primary search-btn" type="button" id="searchButton">
+                            <input type="text" class="form-control border-0 input-focus-effect" placeholder="Cari nomor permohonan atau nama pemohon..." name="search" value="{{ request('search') }}" id="searchInput">
+                            <button class="btn btn-primary search-btn" type="submit" id="searchButton">
                                 <i class="fas fa-search me-2"></i>Cari
                             </button>
                         </div>
                     </div>
-                    <div class="dropdown">
+                    <div class="dropdown me-3">
                         <button class="btn btn-outline-secondary dropdown-toggle filter-btn" type="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip" title="Filter data permohonan">
                             <i class="fas fa-filter me-2"></i>Filter
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item filter-option" href="#" data-filter="all"><i class="fas fa-list me-2"></i>Semua</a></li>
-                            <li><a class="dropdown-item filter-option" href="#" data-filter="DRAFT"><i class="fas fa-clock me-2"></i>Draft</a></li>
-                            <li><a class="dropdown-item filter-option" href="#" data-filter="DIAJUKAN"><i class="fas fa-paper-plane me-2"></i>Diajukan</a></li>
-                            <li><a class="dropdown-item filter-option" href="#" data-filter="DIPROSES"><i class="fas fa-cog me-2"></i>Diproses</a></li>
-                            <li><a class="dropdown-item filter-option" href="#" data-filter="SELESAI"><i class="fas fa-check-circle me-2"></i>Selesai</a></li>
-                            <li><a class="dropdown-item filter-option" href="#" data-filter="DIAMBIL"><i class="fas fa-hand-holding me-2"></i>Diambil</a></li>
-                            <li><a class="dropdown-item filter-option" href="#" data-filter="DITOLAK"><i class="fas fa-times me-2"></i>Ditolak</a></li>
+                            <li><a class="dropdown-item {{ request('filter_status') == 'all' || !request('filter_status') ? 'active' : '' }}" href="{{ request()->fullUrlWithQuery(['filter_status' => 'all', 'page' => 1]) }}"><i class="fas fa-list me-2"></i>Semua</a></li>
+                            <li><a class="dropdown-item {{ request('filter_status') == 'DRAFT' ? 'active' : '' }}" href="{{ request()->fullUrlWithQuery(['filter_status' => 'DRAFT', 'page' => 1]) }}"><i class="fas fa-clock me-2"></i>Draft</a></li>
+                            <li><a class="dropdown-item {{ request('filter_status') == 'DIAJUKAN' ? 'active' : '' }}" href="{{ request()->fullUrlWithQuery(['filter_status' => 'DIAJUKAN', 'page' => 1]) }}"><i class="fas fa-paper-plane me-2"></i>Diajukan</a></li>
+                            <li><a class="dropdown-item {{ request('filter_status') == 'DIPROSES' ? 'active' : '' }}" href="{{ request()->fullUrlWithQuery(['filter_status' => 'DIPROSES', 'page' => 1]) }}"><i class="fas fa-cog me-2"></i>Diproses</a></li>
+                            <li><a class="dropdown-item {{ request('filter_status') == 'SELESAI' ? 'active' : '' }}" href="{{ request()->fullUrlWithQuery(['filter_status' => 'SELESAI', 'page' => 1]) }}"><i class="fas fa-check-circle me-2"></i>Selesai</a></li>
+                            <li><a class="dropdown-item {{ request('filter_status') == 'DIAMBIL' ? 'active' : '' }}" href="{{ request()->fullUrlWithQuery(['filter_status' => 'DIAMBIL', 'page' => 1]) }}"><i class="fas fa-hand-holding me-2"></i>Diambil</a></li>
+                            <li><a class="dropdown-item {{ request('filter_status') == 'DITOLAK' ? 'active' : '' }}" href="{{ request()->fullUrlWithQuery(['filter_status' => 'DITOLAK', 'page' => 1]) }}"><i class="fas fa-times me-2"></i>Ditolak</a></li>
                         </ul>
                     </div>
-                </div>
+                    @if(request('search') || request('filter_status'))
+                        <a href="{{ route('permohonan-surat.index') }}" class="btn btn-outline-danger">
+                            <i class="fas fa-times me-2"></i>Reset
+                        </a>
+                    @endif
+                </form>
             </div>
             <div class="col-md-4 text-md-end">
                 <!-- TOMBOL TAMBAH PERMOHONAN SURAT -->
@@ -255,13 +260,64 @@
         </div>
 
         <!-- Info jumlah data -->
+        @if($dataPermohonanSurat->count() > 0)
         <div class="row mt-4">
             <div class="col-12 text-center">
                 <p class="text-muted" id="dataInfo">
-                    <i class="fas fa-info-circle me-2"></i>Menampilkan <span id="filtered-count">{{ $dataPermohonanSurat->count() }}</span> permohonan surat
+                    <i class="fas fa-info-circle me-2"></i>Menampilkan {{ $dataPermohonanSurat->count() }} dari {{ $dataPermohonanSurat->total() }} permohonan surat
                 </p>
             </div>
         </div>
+        @endif
+
+        <!-- Pagination -->
+        @if($dataPermohonanSurat->hasPages())
+        <div class="row mt-4">
+            <div class="col-12">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        {{-- Previous Page Link --}}
+                        @if($dataPermohonanSurat->onFirstPage())
+                            <li class="page-item disabled">
+                                <span class="page-link">«</span>
+                            </li>
+                        @else
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $dataPermohonanSurat->previousPageUrl() }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}" rel="prev">«</a>
+                            </li>
+                        @endif
+
+                        {{-- Pagination Elements --}}
+                        @foreach($dataPermohonanSurat->getUrlRange(1, $dataPermohonanSurat->lastPage()) as $page => $url)
+                            @if($page == $dataPermohonanSurat->currentPage())
+                                <li class="page-item active">
+                                    <span class="page-link">{{ $page }}</span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $url }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}">{{ $page }}</a>
+                                </li>
+                            @endif
+                        @endforeach
+
+                        {{-- Next Page Link --}}
+                        @if($dataPermohonanSurat->hasMorePages())
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $dataPermohonanSurat->nextPageUrl() }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}" rel="next">»</a>
+                            </li>
+                        @else
+                            <li class="page-item disabled">
+                                <span class="page-link">»</span>
+                            </li>
+                        @endif
+                    </ul>
+                </nav>
+                <div class="text-center text-muted mt-2">
+                    Menampilkan {{ $dataPermohonanSurat->firstItem() }} - {{ $dataPermohonanSurat->lastItem() }} dari {{ $dataPermohonanSurat->total() }} data
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 <!-- Content End -->
@@ -482,39 +538,6 @@
         color: white;
     }
 
-    /* Animasi untuk kartu yang difilter */
-    .permohonan-card.hidden {
-        display: none;
-        animation: fadeOut 0.3s ease;
-    }
-
-    .permohonan-card.visible {
-        display: block;
-        animation: fadeInUp 0.5s ease;
-    }
-
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @keyframes fadeOut {
-        from {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        to {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-    }
-
     /* Counter animation */
     .counter {
         transition: all 0.5s ease;
@@ -553,14 +576,6 @@
             observer.observe(counter);
         });
 
-        // Fungsi pencarian dan filter
-        const searchInput = document.getElementById('searchInput');
-        const searchButton = document.getElementById('searchButton');
-        const filterOptions = document.querySelectorAll('.filter-option');
-        const permohonanCards = document.querySelectorAll('.permohonan-card');
-        const filteredCount = document.getElementById('filtered-count');
-        const dataInfo = document.getElementById('dataInfo');
-
         // Delete modal functionality
         const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
         const deleteForm = document.getElementById('deleteForm');
@@ -577,55 +592,6 @@
             });
         });
 
-        function updateFilteredCount() {
-            const visibleCards = document.querySelectorAll('.permohonan-card:not(.hidden)').length;
-            if (filteredCount) {
-                filteredCount.textContent = visibleCards;
-            }
-        }
-
-        function filterCards() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const activeFilter = document.querySelector('.filter-option.active')?.getAttribute('data-filter') || 'all';
-
-            permohonanCards.forEach(card => {
-                const cardSearch = card.getAttribute('data-search');
-                const cardStatus = card.getAttribute('data-status');
-
-                const matchesSearch = cardSearch.includes(searchTerm);
-                const matchesFilter = activeFilter === 'all' || cardStatus === activeFilter;
-
-                if (matchesSearch && matchesFilter) {
-                    card.classList.remove('hidden');
-                    card.classList.add('visible');
-                } else {
-                    card.classList.add('hidden');
-                    card.classList.remove('visible');
-                }
-            });
-
-            updateFilteredCount();
-        }
-
-        // Event listener untuk pencarian
-        searchInput.addEventListener('input', filterCards);
-        searchButton.addEventListener('click', filterCards);
-
-        // Event listener untuk filter
-        filterOptions.forEach(option => {
-            option.addEventListener('click', function(e) {
-                e.preventDefault();
-
-                filterOptions.forEach(opt => opt.classList.remove('active'));
-                this.classList.add('active');
-
-                filterCards();
-            });
-        });
-
-        // Set filter "Semua" sebagai aktif secara default
-        document.querySelector('.filter-option[data-filter="all"]').classList.add('active');
-
         // Auto-hide alerts setelah 5 detik
         const alerts = document.querySelectorAll('.alert');
         alerts.forEach(alert => {
@@ -638,6 +604,7 @@
         });
 
         // Efek hover untuk kartu
+        const permohonanCards = document.querySelectorAll('.permohonan-card');
         permohonanCards.forEach(card => {
             card.addEventListener('mouseenter', function() {
                 this.style.transform = 'translateY(-5px)';

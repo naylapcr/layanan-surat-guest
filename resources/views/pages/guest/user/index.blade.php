@@ -47,26 +47,31 @@
             <!-- Action Bar -->
             <div class="row mb-4">
                 <div class="col-md-8">
-                    <div class="d-flex">
+                    <form method="GET" action="{{ route('user.index') }}" class="d-flex">
                         <div class="search-box me-3 flex-grow-1">
                             <div class="input-group search-container">
-                                <input type="text" class="form-control border-0 input-focus-effect" placeholder="Cari user..." id="searchInput">
-                                <button class="btn btn-primary search-btn" type="button" id="searchButton">
-                                    <i class="fas fa-search"></i>
+                                <input type="text" class="form-control border-0 input-focus-effect" placeholder="Cari user..." name="search" value="{{ request('search') }}" id="searchInput">
+                                <button class="btn btn-primary search-btn" type="submit" id="searchButton">
+                                    <i class="fas fa-search me-2"></i>Cari
                                 </button>
                             </div>
                         </div>
-                        <div class="dropdown">
+                        <div class="dropdown me-3">
                             <button class="btn btn-outline-secondary dropdown-toggle filter-btn" type="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip" title="Filter data user">
                                 <i class="fas fa-filter me-2"></i>Filter
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item filter-option" href="#" data-filter="all">Semua</a></li>
-                                <li><a class="dropdown-item filter-option" href="#" data-filter="recent">User Baru</a></li>
-                                <li><a class="dropdown-item filter-option" href="#" data-filter="old">User Lama</a></li>
+                                <li><a class="dropdown-item {{ request('filter_recent') == 'all' || !request('filter_recent') ? 'active' : '' }}" href="{{ request()->fullUrlWithQuery(['filter_recent' => 'all', 'page' => 1]) }}"><i class="fas fa-list me-2"></i>Semua</a></li>
+                                <li><a class="dropdown-item {{ request('filter_recent') == 'recent' ? 'active' : '' }}" href="{{ request()->fullUrlWithQuery(['filter_recent' => 'recent', 'page' => 1]) }}"><i class="fas fa-star me-2"></i>User Baru</a></li>
+                                <li><a class="dropdown-item {{ request('filter_recent') == 'old' ? 'active' : '' }}" href="{{ request()->fullUrlWithQuery(['filter_recent' => 'old', 'page' => 1]) }}"><i class="fas fa-history me-2"></i>User Lama</a></li>
                             </ul>
                         </div>
-                    </div>
+                        @if(request('search') || request('filter_recent'))
+                            <a href="{{ route('user.index') }}" class="btn btn-outline-danger">
+                                <i class="fas fa-times me-2"></i>Reset
+                            </a>
+                        @endif
+                    </form>
                 </div>
                 <div class="col-md-4 text-md-end">
                     <a href="{{ route('user.create') }}" class="btn btn-primary floating-action-btn" data-bs-toggle="tooltip" title="Tambah user baru">
@@ -259,8 +264,57 @@
             <div class="row mt-4">
                 <div class="col-12 text-center">
                     <p class="text-muted" id="dataInfo">
-                        <i class="fas fa-info-circle me-2"></i>Menampilkan <span id="filtered-count">{{ $users->count() }}</span> user
+                        <i class="fas fa-info-circle me-2"></i>Menampilkan {{ $users->count() }} dari {{ $users->total() }} user
                     </p>
+                </div>
+            </div>
+            @endif
+
+            <!-- Pagination -->
+            @if($users->hasPages())
+            <div class="row mt-4">
+                <div class="col-12">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            {{-- Previous Page Link --}}
+                            @if($users->onFirstPage())
+                                <li class="page-item disabled">
+                                    <span class="page-link">«</span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $users->previousPageUrl() }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}" rel="prev">«</a>
+                                </li>
+                            @endif
+
+                            {{-- Pagination Elements --}}
+                            @foreach($users->getUrlRange(1, $users->lastPage()) as $page => $url)
+                                @if($page == $users->currentPage())
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ $page }}</span>
+                                    </li>
+                                @else
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $url }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}">{{ $page }}</a>
+                                    </li>
+                                @endif
+                            @endforeach
+
+                            {{-- Next Page Link --}}
+                            @if($users->hasMorePages())
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $users->nextPageUrl() }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}" rel="next">»</a>
+                                </li>
+                            @else
+                                <li class="page-item disabled">
+                                    <span class="page-link">»</span>
+                                </li>
+                            @endif
+                        </ul>
+                    </nav>
+                    <div class="text-center text-muted mt-2">
+                        Menampilkan {{ $users->firstItem() }} - {{ $users->lastItem() }} dari {{ $users->total() }} data
+                    </div>
                 </div>
             </div>
             @endif
@@ -557,42 +611,26 @@
         color: white;
     }
 
-    /* Animasi untuk kartu yang difilter */
-    .user-card-item.hidden {
-        display: none;
-        animation: fadeOut 0.3s ease;
-    }
-
-    .user-card-item.visible {
-        display: block;
-        animation: fadeInUp 0.5s ease;
-    }
-
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @keyframes fadeOut {
-        from {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        to {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-    }
-
     /* Counter animation */
     .counter {
         transition: all 0.5s ease;
+    }
+
+    /* Pagination styling */
+    .pagination .page-link {
+        border-radius: 8px;
+        margin: 0 2px;
+        border: none;
+        color: var(--bs-primary);
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: var(--bs-primary);
+        border-color: var(--bs-primary);
+    }
+
+    .pagination .page-link:hover {
+        background-color: #e9ecef;
     }
 </style>
 
@@ -628,13 +666,6 @@
             observer.observe(counter);
         });
 
-        // Fungsi pencarian dan filter
-        const searchInput = document.getElementById('searchInput');
-        const searchButton = document.getElementById('searchButton');
-        const filterOptions = document.querySelectorAll('.filter-option');
-        const userCards = document.querySelectorAll('.user-card-item');
-        const filteredCount = document.getElementById('filtered-count');
-
         // Delete modal functionality
         const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
         const deleteForm = document.getElementById('deleteForm');
@@ -655,56 +686,6 @@
 
         setupDeleteButtons();
 
-        function updateFilteredCount() {
-            const visibleCards = document.querySelectorAll('.user-card-item:not(.hidden)').length;
-            if (filteredCount) {
-                filteredCount.textContent = visibleCards;
-            }
-        }
-
-        function filterCards() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const activeFilter = document.querySelector('.filter-option.active')?.getAttribute('data-filter') || 'all';
-
-            userCards.forEach(card => {
-                const cardName = card.getAttribute('data-name');
-                const cardEmail = card.getAttribute('data-email');
-                const cardRecent = card.getAttribute('data-recent');
-
-                const matchesSearch = cardName.includes(searchTerm) || cardEmail.includes(searchTerm);
-                const matchesFilter = activeFilter === 'all' || cardRecent === activeFilter;
-
-                if (matchesSearch && matchesFilter) {
-                    card.classList.remove('hidden');
-                    card.classList.add('visible');
-                } else {
-                    card.classList.add('hidden');
-                    card.classList.remove('visible');
-                }
-            });
-
-            updateFilteredCount();
-        }
-
-        // Event listener untuk pencarian
-        searchInput.addEventListener('input', filterCards);
-        searchButton.addEventListener('click', filterCards);
-
-        // Event listener untuk filter
-        filterOptions.forEach(option => {
-            option.addEventListener('click', function(e) {
-                e.preventDefault();
-
-                filterOptions.forEach(opt => opt.classList.remove('active'));
-                this.classList.add('active');
-
-                filterCards();
-            });
-        });
-
-        // Set filter "Semua" sebagai aktif secara default
-        document.querySelector('.filter-option[data-filter="all"]').classList.add('active');
-
         // Auto-hide alerts setelah 5 detik
         const alerts = document.querySelectorAll('.alert');
         alerts.forEach(alert => {
@@ -717,6 +698,7 @@
         });
 
         // Efek hover untuk kartu
+        const userCards = document.querySelectorAll('.user-card-item');
         userCards.forEach(card => {
             card.addEventListener('mouseenter', function() {
                 this.style.transform = 'translateY(-5px)';
