@@ -264,53 +264,58 @@
     </div>
 
     <!-- Pagination -->
-@if($warga->hasPages())
-<div class="row mt-4">
-    <div class="col-12">
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                {{-- Previous Page Link --}}
-                @if($warga->onFirstPage())
-                    <li class="page-item disabled">
-                        <span class="page-link">«</span>
-                    </li>
-                @else
-                    <li class="page-item">
-                        <a class="page-link" href="{{ $warga->previousPageUrl() }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}" rel="prev">«</a>
-                    </li>
-                @endif
+    @if ($warga->hasPages())
+        <div class="row mt-4">
+            <div class="col-12">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        {{-- Previous Page Link --}}
+                        @if ($warga->onFirstPage())
+                            <li class="page-item disabled">
+                                <span class="page-link">«</span>
+                            </li>
+                        @else
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="{{ $warga->previousPageUrl() }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}"
+                                    rel="prev">«</a>
+                            </li>
+                        @endif
 
-                {{-- Pagination Elements --}}
-                @foreach($warga->getUrlRange(1, $warga->lastPage()) as $page => $url)
-                    @if($page == $warga->currentPage())
-                        <li class="page-item active">
-                            <span class="page-link">{{ $page }}</span>
-                        </li>
-                    @else
-                        <li class="page-item">
-                            <a class="page-link" href="{{ $url }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}">{{ $page }}</a>
-                        </li>
-                    @endif
-                @endforeach
+                        {{-- Pagination Elements --}}
+                        @foreach ($warga->getUrlRange(1, $warga->lastPage()) as $page => $url)
+                            @if ($page == $warga->currentPage())
+                                <li class="page-item active">
+                                    <span class="page-link">{{ $page }}</span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link"
+                                        href="{{ $url }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}">{{ $page }}</a>
+                                </li>
+                            @endif
+                        @endforeach
 
-                {{-- Next Page Link --}}
-                @if($warga->hasMorePages())
-                    <li class="page-item">
-                        <a class="page-link" href="{{ $warga->nextPageUrl() }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}" rel="next">»</a>
-                    </li>
-                @else
-                    <li class="page-item disabled">
-                        <span class="page-link">»</span>
-                    </li>
-                @endif
-            </ul>
-        </nav>
-        <div class="text-center text-muted mt-2">
-            Menampilkan {{ $warga->firstItem() }} - {{ $warga->lastItem() }} dari {{ $warga->total() }} data
+                        {{-- Next Page Link --}}
+                        @if ($warga->hasMorePages())
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="{{ $warga->nextPageUrl() }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}"
+                                    rel="next">»</a>
+                            </li>
+                        @else
+                            <li class="page-item disabled">
+                                <span class="page-link">»</span>
+                            </li>
+                        @endif
+                    </ul>
+                </nav>
+                <div class="text-center text-muted mt-2">
+                    Menampilkan {{ $warga->firstItem() }} - {{ $warga->lastItem() }} dari {{ $warga->total() }} data
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-@endif
+    @endif
     <!-- Content End -->
     <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
