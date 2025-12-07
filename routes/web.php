@@ -65,3 +65,8 @@ Route::delete('/warga/{warga}', [WargaController::class, 'destroy'])->name('warg
 Route::get('/about', function () {
     return view('pages.guest.dashboard.about');
 })->name('about');
+
+// routes/web.php
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+
