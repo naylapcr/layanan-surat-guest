@@ -21,6 +21,16 @@ class PermohonanSurat extends Model
         'catatan',
     ];
 
+    public function scopeFilter($query, $request, $filterableColumns)
+    {
+        foreach ($filterableColumns as $column) {
+            if ($request->has($column) && $request->$column != '') {
+                $query->where($column, $request->$column);
+            }
+        }
+        return $query;
+    }
+
     /**
      * Relasi ke JenisSurat
      */

@@ -45,7 +45,7 @@
                             <i class="fas fa-envelope-open fa-3x"></i>
                         </div>
                         <div>
-                            <h4 class="mb-0 counter" data-target="{{ $dataPermohonanSurat->count() }}">0</h4>
+                            <h4 class="mb-0 counter" data-target="{{ $dataPermohonan->count() }}">0</h4>
                             <p class="mb-0">Total Permohonan</p>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                             <i class="fas fa-clock fa-3x"></i>
                         </div>
                         <div>
-                            <h4 class="mb-0 counter" data-target="{{ $dataPermohonanSurat->where('status', 'DRAFT')->count() }}">0</h4>
+                            <h4 class="mb-0 counter" data-target="{{ $dataPermohonan->where('status', 'DRAFT')->count() }}">0</h4>
                             <p class="mb-0">Draft</p>
                         </div>
                     </div>
@@ -71,7 +71,7 @@
                             <i class="fas fa-check-circle fa-3x"></i>
                         </div>
                         <div>
-                            <h4 class="mb-0 counter" data-target="{{ $dataPermohonanSurat->where('status', 'SELESAI')->count() }}">0</h4>
+                            <h4 class="mb-0 counter" data-target="{{ $dataPermohonan->where('status', 'SELESAI')->count() }}">0</h4>
                             <p class="mb-0">Selesai</p>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                             <i class="fas fa-file-alt fa-3x"></i>
                         </div>
                         <div>
-                            <h4 class="mb-0 counter" data-target="{{ $dataPermohonanSurat->unique('jenis_surat_id')->count() }}">0</h4>
+                            <h4 class="mb-0 counter" data-target="{{ $dataPermohonan->unique('jenis_surat_id')->count() }}">0</h4>
                             <p class="mb-0">Jenis Surat</p>
                         </div>
                     </div>
@@ -135,7 +135,7 @@
 
         <!-- Widget Cards untuk Data Permohonan Surat -->
         <div class="row" id="permohonanContainer">
-            @forelse($dataPermohonanSurat as $index => $permohonan)
+            @forelse($dataPermohonan as $index => $dataPermohonan)
             <div class="col-xl-4 col-md-6 mb-4 permohonan-card animate__animated animate__fadeInUp" data-status="{{ $permohonan->status }}" data-search="{{ strtolower($permohonan->nomor_permohonan . ' ' . ($permohonan->warga ? $permohonan->warga->nama : 'Tidak Diketahui')) }}" data-aos="fade-up" data-aos-delay="{{ ($index % 3) * 100 }}">
                 <div class="card widget-card h-100">
                     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
@@ -260,36 +260,36 @@
         </div>
 
         <!-- Info jumlah data -->
-        @if($dataPermohonanSurat->count() > 0)
+        @if($dataPermohonan->count() > 0)
         <div class="row mt-4">
             <div class="col-12 text-center">
                 <p class="text-muted" id="dataInfo">
-                    <i class="fas fa-info-circle me-2"></i>Menampilkan {{ $dataPermohonanSurat->count() }} dari {{ $dataPermohonanSurat->total() }} permohonan surat
+                    <i class="fas fa-info-circle me-2"></i>Menampilkan {{ $dataPermohonan->count() }} dari {{ $dataPermohonan->total() }} permohonan surat
                 </p>
             </div>
         </div>
         @endif
 
         <!-- Pagination -->
-        @if($dataPermohonanSurat->hasPages())
+        @if($dataPermohonan->hasPages())
         <div class="row mt-4">
             <div class="col-12">
                 <nav aria-label="Page navigation">
                     <ul class="pagination justify-content-center">
                         {{-- Previous Page Link --}}
-                        @if($dataPermohonanSurat->onFirstPage())
+                        @if($dataPermohonan->onFirstPage())
                             <li class="page-item disabled">
                                 <span class="page-link">«</span>
                             </li>
                         @else
                             <li class="page-item">
-                                <a class="page-link" href="{{ $dataPermohonanSurat->previousPageUrl() }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}" rel="prev">«</a>
+                                <a class="page-link" href="{{ $dataPermohonan->previousPageUrl() }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}" rel="prev">«</a>
                             </li>
                         @endif
 
                         {{-- Pagination Elements --}}
-                        @foreach($dataPermohonanSurat->getUrlRange(1, $dataPermohonanSurat->lastPage()) as $page => $url)
-                            @if($page == $dataPermohonanSurat->currentPage())
+                        @foreach($dataPermohonan->getUrlRange(1, $dataPermohonan->lastPage()) as $page => $url)
+                            @if($page == $dataPermohonan->currentPage())
                                 <li class="page-item active">
                                     <span class="page-link">{{ $page }}</span>
                                 </li>
@@ -301,9 +301,9 @@
                         @endforeach
 
                         {{-- Next Page Link --}}
-                        @if($dataPermohonanSurat->hasMorePages())
+                        @if($dataPermohonan->hasMorePages())
                             <li class="page-item">
-                                <a class="page-link" href="{{ $dataPermohonanSurat->nextPageUrl() }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}" rel="next">»</a>
+                                <a class="page-link" href="{{ $dataPermohonan->nextPageUrl() }}{{ request()->getQueryString() ? '&' . http_build_query(request()->except('page')) : '' }}" rel="next">»</a>
                             </li>
                         @else
                             <li class="page-item disabled">
@@ -313,7 +313,7 @@
                     </ul>
                 </nav>
                 <div class="text-center text-muted mt-2">
-                    Menampilkan {{ $dataPermohonanSurat->firstItem() }} - {{ $dataPermohonanSurat->lastItem() }} dari {{ $dataPermohonanSurat->total() }} data
+                    Menampilkan {{ $dataPermohonan->firstItem() }} - {{ $dataPermohonan->lastItem() }} dari {{ $dataPermohonan->total() }} data
                 </div>
             </div>
         </div>

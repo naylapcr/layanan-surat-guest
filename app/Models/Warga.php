@@ -24,4 +24,9 @@ class Warga extends Model
     {
         return 'warga_id';
     }
+
+    public function permohonanSurat()
+    {
+        return $this->hasMany(PermohonanSurat::class, 'warga_id', 'warga_id');
+    }
 }

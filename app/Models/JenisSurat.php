@@ -13,4 +13,9 @@ class JenisSurat extends Model
         'nama_jenis',
         'syarat_json'
     ];
+
+    public function permohonanSurat()
+    {
+        return $this->hasMany(PermohonanSurat::class, 'jenis_surat_id', 'jenis_id');
+    }
 }
