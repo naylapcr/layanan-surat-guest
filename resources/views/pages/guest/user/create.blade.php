@@ -73,22 +73,26 @@
                                         @error('email')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
+                                        <div class="form-text">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            Email ini akan digunakan untuk login
+                                        </div>
                                     </div>
                                 </div>
 
-                                {{-- Bagian Tambahan: Opsi Role User --}}
                                 <div class="row mb-4">
                                     <div class="col-md-12">
                                         <label for="role" class="form-label">
                                             <i class="fas fa-user-tag me-2"></i>Role User *
                                         </label>
                                         <div class="input-group-icon">
-                                            <select name="role" id="role" class="form-control input-focus-effect @error('role') is-invalid @enderror" required>
+                                            <select name="role" id="role" class="form-select input-focus-effect @error('role') is-invalid @enderror" required>
                                                 <option value="" disabled selected>Pilih Role User</option>
                                                 <option value="super_admin" {{ old('role') == 'super_admin' ? 'selected' : '' }}>Super Admin</option>
                                                 <option value="staff" {{ old('role') == 'staff' ? 'selected' : '' }}>Staff</option>
                                                 <option value="guest" {{ old('role') == 'guest' ? 'selected' : '' }}>Guest</option>
                                             </select>
+                                            <i class="fas fa-user-tag form-icon"></i>
                                         </div>
                                         @error('role')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -110,7 +114,7 @@
                                                    id="password" name="password" required
                                                    placeholder="Masukkan password">
                                             <i class="fas fa-lock form-icon"></i>
-                                            <span class="password-toggle" onclick="togglePassword('password')">
+                                            <span class="password-toggle-icon" onclick="togglePassword('password')">
                                                 <i class="fas fa-eye"></i>
                                             </span>
                                         </div>
@@ -143,20 +147,250 @@
                                             <span class="submit-text">
                                                 <i class="fas fa-save me-2"></i>Simpan User
                                             </span>
+                                            <span class="loading-spinner" style="display: none;">
+                                                <i class="fas fa-spinner fa-spin me-2"></i>Menyimpan...
+                                            </span>
                                         </button>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
+
+                     <div class="card info-card mt-4 animate__animated animate__fadeInUp" data-aos-delay="200">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-lightbulb text-warning me-3 fa-2x"></i>
+                                <div>
+                                    <h5 class="card-title mb-2">Tips Pengisian</h5>
+                                    <p class="card-text mb-0 small">
+                                        Pastikan email yang dimasukkan aktif. Gunakan password yang kuat (minimal 8 karakter, kombinasi huruf dan angka) untuk keamanan akun.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-    <script>
+
+{{-- CSS Styling agar mirip dengan page lain --}}
+<style>
+    /* Styling untuk form card */
+    .form-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+
+    /* Header form styling */
+    .form-header {
+        background: linear-gradient(135deg, var(--bs-primary), #4a6bdf);
+        color: white;
+        padding: 2.5rem 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .form-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 200%;
+        background: rgba(255,255,255,0.1);
+        transform: rotate(30deg);
+    }
+
+    .form-icon-wrapper {
+        margin-bottom: 1rem;
+    }
+
+    .form-main-icon {
+        font-size: 3rem;
+        background: rgba(255,255,255,0.2);
+        padding: 1rem;
+        border-radius: 50%;
+        margin-bottom: 1rem;
+    }
+
+    /* Form body styling */
+    .form-body {
+        padding: 2.5rem 2rem;
+    }
+
+    /* Input group dengan icon */
+    .input-group-icon {
+        position: relative;
+    }
+
+    .form-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--bs-primary);
+        transition: all 0.3s ease;
+        z-index: 10;
+    }
+
+    .password-toggle-icon {
+        position: absolute;
+        right: 40px; /* Geser sedikit agar tidak menumpuk dengan icon lock */
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+        cursor: pointer;
+        z-index: 20;
+    }
+
+    .password-toggle-icon:hover {
+        color: var(--bs-primary);
+    }
+
+    /* Efek focus pada input */
+    .input-focus-effect {
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 12px 15px;
+        transition: all 0.3s ease;
+    }
+
+    .input-focus-effect:focus {
+        border-color: var(--bs-primary);
+        box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+        transform: translateY(-2px);
+    }
+
+    /* Label styling */
+    .form-label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    /* Form text styling */
+    .form-text {
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-top: 0.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    /* Button styling */
+    .btn-back {
+        border-radius: 10px;
+        padding: 10px 20px;
+        transition: all 0.3s ease;
+        border: 2px solid #6c757d;
+    }
+
+    .btn-back:hover {
+        background-color: #6c757d;
+        color: white;
+        transform: translateX(-5px);
+    }
+
+    .btn-reset {
+        border-radius: 10px;
+        padding: 10px 20px;
+        transition: all 0.3s ease;
+        border: 2px solid var(--bs-danger);
+    }
+
+    .btn-reset:hover {
+        background-color: var(--bs-danger);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .btn-submit {
+        border-radius: 10px;
+        padding: 10px 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .btn-submit:active {
+        transform: translateY(0);
+    }
+
+    /* Select styling */
+    .form-select {
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 12px 15px;
+        transition: all 0.3s ease;
+        /* Ensure background doesn't hide arrow but matches inputs */
+        background-position: right 2.5rem center;
+    }
+
+    .form-select:focus {
+        border-color: var(--bs-primary);
+        box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+        transform: translateY(-2px);
+    }
+
+    /* Alert styling */
+    .alert {
+        border: none;
+        border-radius: 10px;
+    }
+
+    .alert-danger {
+        border-left: 4px solid var(--bs-danger);
+    }
+
+    /* Info card styling */
+    .info-card {
+        border: none;
+        border-radius: 15px;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease;
+    }
+
+    .info-card:hover {
+        transform: translateY(-3px);
+    }
+
+    /* Loading animation */
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    .loading {
+        animation: pulse 1.5s ease-in-out infinite;
+    }
+</style>
+
+<script>
     function togglePassword(fieldId) {
         const field = document.getElementById(fieldId);
-        const icon = field.parentNode.querySelector('.password-toggle i');
+        // Find icon inside the password-toggle-icon span
+        const icon = field.parentNode.querySelector('.password-toggle-icon i');
         if (field.type === 'password') {
             field.type = 'text';
             icon.className = 'fas fa-eye-slash';
@@ -165,5 +399,44 @@
             icon.className = 'fas fa-eye';
         }
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('tambahUserForm');
+        const submitButton = document.getElementById('submitButton');
+        const submitText = submitButton.querySelector('.submit-text');
+        const loadingSpinner = submitButton.querySelector('.loading-spinner');
+
+        // Efek loading saat submit form
+        form.addEventListener('submit', function() {
+            submitText.style.display = 'none';
+            loadingSpinner.style.display = 'inline';
+            submitButton.disabled = true;
+            submitButton.classList.add('loading');
+        });
+
+        // Efek hover untuk semua input
+        const inputs = document.querySelectorAll('.input-focus-effect, .form-select');
+        inputs.forEach(input => {
+            input.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+
+            input.addEventListener('mouseleave', function() {
+                if (document.activeElement !== this) {
+                    this.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        // Reset confirmation
+        const resetButton = document.querySelector('.btn-reset');
+        if(resetButton) {
+            resetButton.addEventListener('click', function(e) {
+                if (!confirm('Apakah Anda yakin ingin mengosongkan form?')) {
+                    e.preventDefault();
+                }
+            });
+        }
+    });
 </script>
 @endsection

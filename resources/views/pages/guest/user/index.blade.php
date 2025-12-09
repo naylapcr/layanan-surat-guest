@@ -138,7 +138,9 @@
                                         <h6 class="mb-1 text-white">
                                             <i class="fas fa-user me-2"></i>{{ $user->name }}
                                         </h6>
-                                        <span class="role-badge">Administrator</span>
+                                        <span class="role-badge">
+                                            {{ ucfirst(str_replace('_', ' ', $user->role)) }}
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="dropdown">

@@ -57,7 +57,7 @@ class AuthController extends Controller
             // Login berhasil
             $request->session()->regenerate();
 
-            dd('tes');
+            // dd('tes');
             return redirect()->route('dashboard')->with('success', 'Login berhasil!');
         }
 
@@ -79,6 +79,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:3|confirmed|regex:/[A-Z]/',
+            'role' => 'required|in:super_admin,staff,guest',
         ], [
             'name.required' => 'Nama tidak boleh kosong',
             'email.required' => 'Email tidak boleh kosong',
@@ -87,7 +88,8 @@ class AuthController extends Controller
             'password.required' => 'Password tidak boleh kosong',
             'password.min' => 'Password minimal 3 karakter',
             'password.confirmed' => 'Konfirmasi password tidak cocok',
-            'password.regex' => 'Password harus mengandung setidaknya satu huruf kapital'
+            'password.regex' => 'Password harus mengandung setidaknya satu huruf kapital',
+            'role.required' => 'Silakan pilih role pengguna'
         ]);
 
         // Buat user baru
@@ -95,6 +97,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
         ]);
 
         // Login user setelah registrasi

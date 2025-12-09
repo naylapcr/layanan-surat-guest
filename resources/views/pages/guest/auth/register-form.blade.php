@@ -3,6 +3,7 @@
 {{-- end css --}}
 
 {{-- start main content --}}
+
 <body>
     <div class="container">
         <div class="left-panel">
@@ -54,28 +55,44 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" name="username" value="{{ old('username') }}" required>
-                        @error('username')
+                        <label for="role">Daftar Sebagai</label>
+                        <select id="role" name="role" required
+                            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                            <option value="" disabled selected>-- Pilih Role --</option>
+                            <option value="guest">Guest (Tamu)</option>
+                            <option value="staff">Staff</option>
+                            <option value="super_admin">Super Admin</option>
+                        </select>
+                        @error('role')
                             <span class="text-error">{{ $message }}</span>
                         @enderror
                     </div>
+                
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" value="{{ old('username') }}" required>
+                            @error('username')
+                                <span class="text-error">{{ $message }}</span>
+                            @enderror
+                        </div>
 
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" required>
-                        @error('password')
-                            <span class="text-error">{{ $message }}</span>
-                        @enderror
-                        <div class="password-hint">Minimal 3 karakter & harus mengandung huruf kapital</div>
-                    </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                            @error('password')
+                                <span class="text-error">{{ $message }}</span>
+                            @enderror
+                            <div class="password-hint">Minimal 3 karakter & harus mengandung huruf kapital</div>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="password_confirmation">Konfirmasi Password</label>
-                        <input type="password" id="password_confirmation" name="password_confirmation" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="password_confirmation">Konfirmasi Password</label>
+                            <input type="password" id="password_confirmation" name="password_confirmation" required>
+                        </div>
 
-                    <button type="submit" class="btn-login">Daftar</button>
+
+
+                        <button type="submit" class="btn-login">Daftar</button>
                 </form>
 
                 <div class="login-link">
