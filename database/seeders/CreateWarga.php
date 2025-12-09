@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Warga;
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Faker\Factory as Faker;
 
 class CreateWarga extends Seeder
 {

@@ -65,7 +65,7 @@
                                         </label>
                                         <div class="input-group-icon">
                                             <input type="text" class="form-control input-focus-effect"
-                                                id="nomor_permohonan" value="{{ $permohonanSurat->nomor_permohonan }}"
+                                                id="nomor_permohonan" value="{{ $permohonan->nomor_permohonan }}"
                                                 readonly>
                                             <i class="fas fa-hashtag form-icon"></i>
                                         </div>
@@ -80,7 +80,7 @@
                                         </label>
                                         <div class="input-group-icon">
                                             <input type="date" class="form-control input-focus-effect"
-                                                id="tanggal_pengajuan" value="{{ $permohonanSurat->tanggal_pengajuan }}"
+                                                id="tanggal_pengajuan" value="{{ $permohonan->tanggal_pengajuan }}"
                                                 readonly>
                                             <i class="fas fa-calendar form-icon"></i>
                                         </div>
@@ -103,28 +103,28 @@
                                                 @if (isset($dataJenisSurat) && $dataJenisSurat->count() > 0)
                                                     @foreach ($dataJenisSurat as $jenis)
                                                         <option value="{{ $jenis->jenis_id }}"
-                                                            {{ $permohonanSurat->jenis_surat_id == $jenis->jenis_id ? 'selected' : '' }}>
+                                                            {{ $permohonan->jenis_surat_id == $jenis->jenis_id ? 'selected' : '' }}>
                                                             {{ $jenis->nama_jenis }}
                                                         </option>
                                                     @endforeach
                                                 @else
                                                     <option value="1"
-                                                        {{ $permohonanSurat->jenis_surat_id == 1 ? 'selected' : '' }}>Surat
+                                                        {{ $permohonan->jenis_surat_id == 1 ? 'selected' : '' }}>Surat
                                                         Keterangan Domisili</option>
                                                     <option value="2"
-                                                        {{ $permohonanSurat->jenis_surat_id == 2 ? 'selected' : '' }}>Surat
+                                                        {{ $permohonan->jenis_surat_id == 2 ? 'selected' : '' }}>Surat
                                                         Keterangan Tidak Mampu</option>
                                                     <option value="3"
-                                                        {{ $permohonanSurat->jenis_surat_id == 3 ? 'selected' : '' }}>Surat
+                                                        {{ $permohonan->jenis_surat_id == 3 ? 'selected' : '' }}>Surat
                                                         Keterangan Usaha</option>
                                                     <option value="4"
-                                                        {{ $permohonanSurat->jenis_surat_id == 4 ? 'selected' : '' }}>Surat
+                                                        {{ $permohonan->jenis_surat_id == 4 ? 'selected' : '' }}>Surat
                                                         Pengantar</option>
                                                     <option value="5"
-                                                        {{ $permohonanSurat->jenis_surat_id == 5 ? 'selected' : '' }}>Surat
+                                                        {{ $permohonan->jenis_surat_id == 5 ? 'selected' : '' }}>Surat
                                                         Keterangan Kelahiran</option>
                                                     <option value="6"
-                                                        {{ $permohonanSurat->jenis_surat_id == 6 ? 'selected' : '' }}>Surat
+                                                        {{ $permohonan->jenis_surat_id == 6 ? 'selected' : '' }}>Surat
                                                         Keterangan Kematian</option>
                                                 @endif
                                             </select>
@@ -141,7 +141,7 @@
                                                 <option value="">Pilih Nama Pemohon</option>
                                                 @forelse($dataWarga as $warga)
                                                     <option value="{{ $warga->warga_id }}"
-                                                        {{ $permohonanSurat->warga_id == $warga->warga_id ? 'selected' : '' }}>
+                                                        {{ $permohonan->warga_id == $warga->warga_id ? 'selected' : '' }}>
                                                         {{ $warga->nama }}
                                                         @if ($warga->nik)
                                                             - {{ $warga->nik }}
@@ -165,22 +165,22 @@
                                             <select class="form-select input-focus-effect" id="status" name="status"
                                                 required>
                                                 <option value="DRAFT"
-                                                    {{ $permohonanSurat->status == 'DRAFT' ? 'selected' : '' }}>DRAFT -
+                                                    {{ $permohonan->status == 'DRAFT' ? 'selected' : '' }}>DRAFT -
                                                     Masih dalam proses pengisian</option>
                                                 <option value="DIAJUKAN"
-                                                    {{ $permohonanSurat->status == 'DIAJUKAN' ? 'selected' : '' }}>DIAJUKAN
+                                                    {{ $permohonan->status == 'DIAJUKAN' ? 'selected' : '' }}>DIAJUKAN
                                                     - Sudah diajukan ke admin</option>
                                                 <option value="DIPROSES"
-                                                    {{ $permohonanSurat->status == 'DIPROSES' ? 'selected' : '' }}>DIPROSES
+                                                    {{ $permohonan->status == 'DIPROSES' ? 'selected' : '' }}>DIPROSES
                                                     - Sedang diproses oleh admin</option>
                                                 <option value="SELESAI"
-                                                    {{ $permohonanSurat->status == 'SELESAI' ? 'selected' : '' }}>SELESAI -
+                                                    {{ $permohonan->status == 'SELESAI' ? 'selected' : '' }}>SELESAI -
                                                     Surat sudah selesai</option>
                                                 <option value="DIAMBIL"
-                                                    {{ $permohonanSurat->status == 'DIAMBIL' ? 'selected' : '' }}>DIAMBIL -
+                                                    {{ $permohonan->status == 'DIAMBIL' ? 'selected' : '' }}>DIAMBIL -
                                                     Surat sudah diambil pemohon</option>
                                                 <option value="DITOLAK"
-                                                    {{ $permohonanSurat->status == 'DITOLAK' ? 'selected' : '' }}>DITOLAK -
+                                                    {{ $permohonan->status == 'DITOLAK' ? 'selected' : '' }}>DITOLAK -
                                                     Permohonan ditolak</option>
                                             </select>
                                             <i class="fas fa-tasks form-icon"></i>
@@ -232,7 +232,7 @@
                                     </label>
                                     <div class="input-group-icon">
                                         <textarea class="form-control input-focus-effect" id="catatan" name="catatan" rows="3"
-                                            placeholder="Masukkan catatan tambahan jika diperlukan">{{ $permohonanSurat->catatan }}</textarea>
+                                            placeholder="Masukkan catatan tambahan jika diperlukan">{{ $permohonan->catatan }}</textarea>
                                         <i class="fas fa-sticky-note form-icon"></i>
                                     </div>
                                     <div class="form-text">
@@ -276,20 +276,20 @@
                                         <div class="col-md-6">
                                             <p class="card-text mb-1 small">
                                                 <strong>Nomor Permohonan:</strong> <span
-                                                    class="badge bg-primary">{{ $permohonanSurat->nomor_permohonan }}</span>
+                                                    class="badge bg-primary">{{ $permohonan->nomor_permohonan }}</span>
                                             </p>
                                             <p class="card-text mb-1 small">
                                                 <strong>Pemohon:</strong>
-                                                @if ($permohonanSurat->warga)
-                                                    {{ $permohonanSurat->warga->nama }}
+                                                @if ($permohonan->warga)
+                                                    {{ $permohonan->warga->nama }}
                                                 @else
                                                     <span class="text-muted">Data tidak ditemukan</span>
                                                 @endif
                                             </p>
                                             <p class="card-text mb-1 small">
                                                 <strong>Jenis Surat:</strong>
-                                                @if ($permohonanSurat->jenisSurat)
-                                                    {{ $permohonanSurat->jenisSurat->nama_jenis }}
+                                                @if ($permohonan->jenisSurat)
+                                                    {{ $permohonan->jenisSurat->nama_jenis }}
                                                 @else
                                                     <span class="text-muted">Data tidak ditemukan</span>
                                                 @endif
@@ -307,24 +307,24 @@
                                                             'SELESAI' => 'success',
                                                             'DIAMBIL' => 'primary',
                                                             'DITOLAK' => 'danger',
-                                                        ][$permohonanSurat->status] ?? 'secondary';
+                                                        ][$permohonan->status] ?? 'secondary';
                                                 @endphp
                                                 <span class="badge bg-{{ $statusClass }}">
-                                                    {{ $permohonanSurat->status }}
+                                                    {{ $permohonan->status }}
                                                 </span>
                                             </p>
                                             <p class="card-text mb-1 small">
                                                 <strong>Tanggal Pengajuan:</strong>
-                                                {{ \Carbon\Carbon::parse($permohonanSurat->tanggal_pengajuan)->format('d M Y') }}
+                                                {{ \Carbon\Carbon::parse($permohonan->tanggal_pengajuan)->format('d M Y') }}
                                             </p>
                                             <p class="card-text mb-0 small">
-                                                <strong>Catatan:</strong> {{ $permohonanSurat->catatan ?: '-' }}
+                                                <strong>Catatan:</strong> {{ $permohonan->catatan ?: '-' }}
                                             </p>
                                         </div>
                                     </div>
                                     <p class="card-text mb-0 small mt-2">
                                         <strong>Terakhir diperbarui:</strong>
-                                        {{ \Carbon\Carbon::parse($permohonanSurat->updated_at)->format('d M Y H:i') }}
+                                        {{ \Carbon\Carbon::parse($permohonan->updated_at)->format('d M Y H:i') }}
                                     </p>
                                 </div>
                             </div>

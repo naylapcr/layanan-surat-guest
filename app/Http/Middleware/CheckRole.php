@@ -14,18 +14,16 @@ class CheckRole
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next, ...$role): Response
     {
         if (Auth::check()) {
             // Pecah string role menjadi array. Contoh "super_admin,staff" jadi ['super_admin', 'staff']
-            $allowedRoles = explode(',', $role);
-
             // Cek apakah role user yang login ada di dalam daftar role yang diperbolehkan
-            if (in_array(Auth::user()->role, $allowedRoles)) {
+            if (in_array(Auth::user()->role, $role)) {
+
                 return $next($request);
             }
         }
-
         return abort(403, 'Anda tidak memiliki akses ke halaman ini.');
     }
 }

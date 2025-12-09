@@ -3,6 +3,7 @@
 {{-- end css --}}
 
 {{-- main content --}}
+
 <body>
     <div class="container">
         <div class="left-panel">
@@ -35,7 +36,7 @@
                 @endif
 
 
-                <form action="{{ url('/dashboard') }}" method="GET">
+                <form action="{{ route('auth.login') }}" method="POST">
                     @csrf
 
                     <div class="form-group">
@@ -70,7 +71,6 @@
     </div>
 
     <script>
-
         document.addEventListener('DOMContentLoaded', function() {
             const loginForm = document.querySelector('form');
 
@@ -89,6 +89,6 @@
         });
     </script>
 </body>
+
 </html>
 {{-- end main content --}}
-

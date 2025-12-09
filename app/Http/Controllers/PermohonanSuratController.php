@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PermohonanSurat;
 use App\Models\Warga;
 use App\Models\JenisSurat;
-use App\Models\Multiuploads; // Import Model Upload
+use App\Models\Multipleuploads; // Import Model Upload
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File; // Import Facade File
 
@@ -49,7 +49,7 @@ class PermohonanSuratController extends Controller
         'jenis_surat_id' => 'required|exists:jenis_surat,jenis_id', // Ubah dari jenis_id ke jenis_surat_id
         'tanggal_pengajuan' => 'required|date',
         'status' => 'required',
-        'files.*' => 'mimes:doc,docx,pdf,jpg,jpeg,png|max:2048',
+        'files.*' => 'required|mimes:doc,docx,pdf,jpg,jpeg,png|max:2048',
     ]);
 
         // 1. Simpan Data Utama
@@ -83,12 +83,12 @@ class PermohonanSuratController extends Controller
         $permohonan = PermohonanSurat::with(['warga', 'jenisSurat'])->findOrFail($id);
 
         // SOLUSI ERROR: Kita ambil data file dari tabel multiuploads
-        $files = Multiuploads::where('ref_table', 'permohonan_surat')
+        $files = Multipleuploads::where('ref_table', 'permohonan_surat')
                              ->where('ref_id', $id)
                              ->get();
 
         // Kita kirimkan $files ke view menggunakan compact
-        return view('pages.permohonan-surat.show', compact('permohonan', 'files'));
+        return view('pages.guest.permohonan-surat.show', compact('permohonan', 'files'));
     }
 
     /**
@@ -100,7 +100,7 @@ class PermohonanSuratController extends Controller
         $permohonan['dataWarga'] = Warga::all();
         $permohonan['dataJenisSurat'] = JenisSurat::all();
 
-        return view('pages.permohonan-surat.edit', $permohonan);
+        return view('pages.guest.permohonan-surat.edit', $permohonan);
     }
 
     /**
@@ -119,7 +119,7 @@ class PermohonanSuratController extends Controller
         ]);
 
         // 1. Update Data Utama
-        $permohonan->update($request->except('files'));
+        $permohonan->update($request->except('files[]'));
 
         // 2. SOLUSI: Proses Upload File Tambahan (Susulan)
         // Bagian ini TIDAK ADA di codingan lama Anda, makanya file tidak masuk database
@@ -131,7 +131,7 @@ class PermohonanSuratController extends Controller
                     // Pastikan folder uploads ada di public
                     $file->move(public_path('uploads'), $filename);
 
-                    Multiuploads::create([
+                    Multipleuploads::create([
                         'filename'  => $filename,
                         'ref_table' => 'permohonan_surat',
                         'ref_id'    => $id, // ID permohonan yang sedang diedit
@@ -151,7 +151,7 @@ class PermohonanSuratController extends Controller
         $permohonan = PermohonanSurat::findOrFail($id);
 
         // Hapus file fisik dan record di multiuploads
-        $files = Multiuploads::where('ref_table', 'permohonan_surat')->where('ref_id', $id)->get();
+        $files = Multipleuploads::where('ref_table', 'permohonan_surat')->where('ref_id', $id)->get();
         foreach($files as $file){
             if(File::exists(public_path('uploads/' . $file->filename))){
                 File::delete(public_path('uploads/' . $file->filename));
@@ -169,7 +169,7 @@ class PermohonanSuratController extends Controller
      */
     public function deleteFile($id)
     {
-        $file = Multiuploads::findOrFail($id);
+        $file = Multipleuploads::findOrFail($id);
 
         // Hapus file fisik
         if(File::exists(public_path('uploads/' . $file->filename))){

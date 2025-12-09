@@ -56,7 +56,9 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             // Login berhasil
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
+
+            dd('tes');
+            return redirect()->route('dashboard')->with('success', 'Login berhasil!');
         }
 
         // Login gagal - tampilkan halaman respon dengan data login
@@ -101,7 +103,7 @@ class AuthController extends Controller
         return redirect('/dashboard')->with('success', 'Registrasi berhasil!');
     }
 
-    
+
 
     /**
      * Proses logout user
@@ -112,7 +114,7 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect()->route('login')->with('success', 'Anda berhasil logout');
     }
 
 

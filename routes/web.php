@@ -18,7 +18,7 @@ Route::get('/', function () {
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
+Route::resource('auth', AuthController::class);
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
 
@@ -28,7 +28,7 @@ Route::post('/surat/tracking', [GuestController::class, 'track'])->name('surat.g
 
 
 // --- ROUTE ADMIN PANEL (Wajib Login) ---
-Route::middleware(['checkislogin'])->group(function () {
+Route::group(['middleware'=>['checkislogin']],function () {
 
     // 1. Dashboard (Semua role yang login bisa masuk)
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -39,11 +39,8 @@ Route::middleware(['checkislogin'])->group(function () {
         Route::resource('user', UserController::class);
     });
 
-    // ----------------------------------------------------------------------------------
     // 3. GROUP TULIS DATA (Create, Edit, Update, Destroy)
-    // ATURAN: Diletakkan DI ATAS agar route '/create' dibaca duluan sebelum '/{id}'
-    // AKSES: Hanya Super Admin dan Staff. Guest DIBLOKIR.
-    // ----------------------------------------------------------------------------------
+   // AKSES: Hanya Super Admin dan Staff. Guest DIBLOKIR.
     Route::middleware(['checkrole:super_admin,staff'])->group(function () {
         // CRUD Warga (Write)
         Route::get('/warga/create', [WargaController::class, 'create'])->name('warga.create');
@@ -68,11 +65,8 @@ Route::middleware(['checkislogin'])->group(function () {
         Route::delete('/permohonan-surat/file/{id}', [PermohonanSuratController::class, 'deleteFile'])->name('permohonan-surat.delete-file');
     });
 
-    // ----------------------------------------------------------------------------------
     // 4. GROUP BACA DATA (Index & Show)
-    // ATURAN: Diletakkan DI BAWAH sebagai "catch-all" (penangkap terakhir)
     // AKSES: Super Admin, Staff, DAN Guest.
-    // ----------------------------------------------------------------------------------
     Route::middleware(['checkrole:super_admin,staff,guest'])->group(function () {
         // Warga (Read Only)
         Route::get('/warga', [WargaController::class, 'index'])->name('warga.index');
@@ -87,4 +81,7 @@ Route::middleware(['checkislogin'])->group(function () {
         Route::get('/permohonan-surat/{permohonan_surat}', [PermohonanSuratController::class, 'show'])->name('permohonan-surat.show');
     });
 
+
+
 });
+

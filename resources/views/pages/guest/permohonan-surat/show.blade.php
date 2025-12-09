@@ -10,7 +10,7 @@
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class='breadcrumb-header'>
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('permohonan-surat.index') }}">Permohonan Surat</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Detail</li>
                         </ol>
@@ -119,7 +119,7 @@
                                             </a>
 
                                             {{-- Tombol Hapus File --}}
-                                            <form action="{{ route('uploads.delete', $file->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus file ini secara permanen?');">
+                                            <form action="" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus file ini secara permanen?');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger" title="Hapus File">
@@ -148,7 +148,7 @@
 
                             {{-- Hidden fields untuk data wajib controller agar tidak error validasi --}}
                             <input type="hidden" name="nomor_permohonan" value="{{ $permohonan->nomor_permohonan }}">
-                            <input type="hidden" name="pemohon_warga_id" value="{{ $permohonan->pemohon_warga_id }}">
+                            <input type="hidden" name="warga_id" value="{{ $permohonan->pemohon_warga_id }}">
                             <input type="hidden" name="jenis_id" value="{{ $permohonan->jenis_id }}">
                             <input type="hidden" name="tanggal_pengajuan" value="{{ $permohonan->tanggal_pengajuan }}">
                             <input type="hidden" name="status" value="{{ $permohonan->status }}">

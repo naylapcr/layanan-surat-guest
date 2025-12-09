@@ -49,7 +49,7 @@ class PermohonanSurat extends Model
 
     public function files()
     {
-        return $this->hasMany(Multiuploads::class, 'ref_id', 'permohonan_id')
+        return $this->hasMany(Multipleuploads::class, 'ref_id', 'permohonan_id')
                     ->where('ref_table', 'permohonan_surat');
     }
 }
