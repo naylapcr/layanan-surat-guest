@@ -17,8 +17,9 @@ class CheckIsLogin
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::check()) {
-        return redirect()->route('auth.index')->withErrors('Silahkan login terlebih dahulu!');
+        return redirect()->route('auth.index')->with('error', 'Silahkan login terlebih dahulu!');
     }
+
     return $next($request);
     }
 }

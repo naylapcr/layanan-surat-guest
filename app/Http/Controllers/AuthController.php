@@ -101,6 +101,8 @@ class AuthController extends Controller
         return redirect('/dashboard')->with('success', 'Registrasi berhasil!');
     }
 
+    
+
     /**
      * Proses logout user
      */
@@ -112,6 +114,8 @@ class AuthController extends Controller
 
         return redirect('/login');
     }
+
+
 
     /**
      * Menampilkan halaman respon form (jika masih diperlukan)

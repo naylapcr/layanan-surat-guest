@@ -46,5 +46,11 @@ class PermohonanSurat extends Model
     {
         return $this->belongsTo(Warga::class, 'warga_id', 'warga_id');
     }
+
+    public function files()
+    {
+        return $this->hasMany(Multiuploads::class, 'ref_id', 'permohonan_id')
+                    ->where('ref_table', 'permohonan_surat');
+    }
 }
 

@@ -40,7 +40,7 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0">
                         <a href="{{ url('/') }}" class="nav-item nav-link {{ request()->is('/') ? 'active' : '' }}"><i class="fas fa-home me-1"></i>Beranda</a>
-                        <a href="{{ route('about') }}" class="nav-item nav-link {{ request()->routeIs('about') ? 'active' : '' }}"><i class="fas fa-info-circle me-1"></i>Tentang</a>
+                        {{-- <a href="{{ route('about') }}" class="nav-item nav-link {{ request()->routeIs('about') ? 'active' : '' }}"><i class="fas fa-info-circle me-1"></i>Tentang</a> --}}
                         <a href="{{ route('warga.index') }}" class="nav-item nav-link {{ request()->routeIs('warga.index') ? 'active' : '' }}"><i class="fas fa-users me-1"></i>Data Warga</a>
                         <a href="{{ route('jenis-surat.index') }}" class="nav-item nav-link {{ request()->routeIs('jenis-surat.index') ? 'active' : '' }}"><i class="fas fa-envelope me-1"></i>Jenis Surat</a>
                         <a href="{{ route('permohonan-surat.index') }}" class="nav-item nav-link {{ request()->routeIs('permohonan-surat.index') ? 'active' : '' }}"><i class="fas fa-file-import me-1"></i>Permohonan Surat</a>

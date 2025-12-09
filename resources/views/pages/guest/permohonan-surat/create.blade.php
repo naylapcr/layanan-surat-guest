@@ -68,21 +68,27 @@
                                 @endif
 
                                 <!-- Nomor Permohonan -->
-                                <div class="mb-4">
-                                    <label for="nomor_permohonan" class="form-label">
-                                        <i class="fas fa-hashtag me-2"></i>Nomor Permohonan *
-                                    </label>
-                                    <div class="input-group-icon">
-                                        <input type="text" class="form-control input-focus-effect" id="nomor_permohonan"
-                                            value="PMH-{{ date('Ymd') }}-{{ str_pad((App\Models\PermohonanSurat::max('permohonan_id') ?? 0) + 1, 3, '0', STR_PAD_LEFT) }}"
-                                            readonly>
-                                        <i class="fas fa-hashtag form-icon"></i>
-                                    </div>
-                                    <div class="form-text">
-                                        <i class="fas fa-info-circle me-1"></i>
-                                        Nomor unik permohonan surat (otomatis)
-                                    </div>
-                                </div>
+                               <div class="mb-4">
+    <label for="nomor_permohonan" class="form-label">
+        <i class="fas fa-hashtag me-2"></i>Nomor Permohonan *
+    </label>
+    <div class="input-group-icon">
+        <input type="text"
+               class="form-control input-focus-effect @error('nomor_permohonan') is-invalid @enderror"
+               id="nomor_permohonan"
+               name="nomor_permohonan"
+               value="PMH-{{ date('Ymd') }}-{{ str_pad((App\Models\PermohonanSurat::max('permohonan_id') ?? 0) + 1, 3, '0', STR_PAD_LEFT) }}"
+               readonly>
+        <i class="fas fa-hashtag form-icon"></i>
+    </div>
+    @error('nomor_permohonan')
+        <div class="invalid-feedback d-block">{{ $message }}</div>
+    @enderror
+    <div class="form-text">
+        <i class="fas fa-info-circle me-1"></i>
+        Nomor unik permohonan surat (otomatis)
+    </div>
+</div>
 
                                 <div class="row mb-4">
                                     <div class="col-md-6">

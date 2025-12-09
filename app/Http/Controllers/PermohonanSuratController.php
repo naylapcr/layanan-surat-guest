@@ -18,13 +18,13 @@ class PermohonanSuratController extends Controller
     {
         $filterableColumns = ['status'];
 
-        $data['dataPermohonan'] = PermohonanSurat::with(['pemohon', 'jenisSurat'])
+        $permohonan['permohonan'] = PermohonanSurat::with(['warga', 'jenisSurat', 'files'])
                                     ->filter($request, $filterableColumns)
                                     ->latest()
                                     ->paginate(10)
                                     ->withQueryString();
 
-        return view('pages.guest.permohonan-surat.index', $data);
+        return view('pages.guest.permohonan-surat.index', $permohonan);
     }
 
     /**
@@ -32,10 +32,10 @@ class PermohonanSuratController extends Controller
      */
     public function create()
     {
-        $data['dataWarga'] = Warga::all();
-        $data['dataJenisSurat'] = JenisSurat::all();
+        $permohonan['dataWarga'] = Warga::all();
+        $permohonan['dataJenisSurat'] = JenisSurat::all();
 
-        return view('pages.guest.permohonan-surat.create', $data);
+        return view('pages.guest.permohonan-surat.create', $permohonan);
     }
 
     /**
@@ -43,14 +43,14 @@ class PermohonanSuratController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nomor_permohonan' => 'required|unique:permohonan_surat,nomor_permohonan',
-            'pemohon_warga_id' => 'required|exists:warga,warga_id',
-            'jenis_id' => 'required|exists:jenis_surat,jenis_id',
-            'tanggal_pengajuan' => 'required|date',
-            'status' => 'required',
-            'files.*' => 'mimes:doc,docx,pdf,jpg,jpeg,png|max:2048',
-        ]);
+    $request->validate([
+        'nomor_permohonan' => 'required|unique:permohonan_surat,nomor_permohonan',
+        'warga_id' => 'required|exists:warga,warga_id', // Ubah dari pemohon_warga_id ke warga_id
+        'jenis_surat_id' => 'required|exists:jenis_surat,jenis_id', // Ubah dari jenis_id ke jenis_surat_id
+        'tanggal_pengajuan' => 'required|date',
+        'status' => 'required',
+        'files.*' => 'mimes:doc,docx,pdf,jpg,jpeg,png|max:2048',
+    ]);
 
         // 1. Simpan Data Utama
         $permohonan = PermohonanSurat::create($request->except('files'));
@@ -62,7 +62,7 @@ class PermohonanSuratController extends Controller
                     $filename = round(microtime(true) * 1000) . '-' . str_replace(' ', '-', $file->getClientOriginalName());
                     $file->move(public_path('uploads'), $filename);
 
-                    Multiuploads::create([
+                    Multipleuploads::create([
                         'filename'  => $filename,
                         'ref_table' => 'permohonan_surat',
                         'ref_id'    => $permohonan->permohonan_id,
@@ -80,7 +80,7 @@ class PermohonanSuratController extends Controller
     public function show(string $id)
     {
         // Ambil data permohonan
-        $permohonan = PermohonanSurat::with(['pemohon', 'jenisSurat'])->findOrFail($id);
+        $permohonan = PermohonanSurat::with(['warga', 'jenisSurat'])->findOrFail($id);
 
         // SOLUSI ERROR: Kita ambil data file dari tabel multiuploads
         $files = Multiuploads::where('ref_table', 'permohonan_surat')
@@ -96,11 +96,11 @@ class PermohonanSuratController extends Controller
      */
     public function edit(string $id)
     {
-        $data['permohonan'] = PermohonanSurat::findOrFail($id);
-        $data['dataWarga'] = Warga::all();
-        $data['dataJenisSurat'] = JenisSurat::all();
+        $permohonan['permohonan'] = PermohonanSurat::findOrFail($id);
+        $permohonan['dataWarga'] = Warga::all();
+        $permohonan['dataJenisSurat'] = JenisSurat::all();
 
-        return view('pages.permohonan-surat.edit', $data);
+        return view('pages.permohonan-surat.edit', $permohonan);
     }
 
     /**
@@ -111,12 +111,11 @@ class PermohonanSuratController extends Controller
         $permohonan = PermohonanSurat::findOrFail($id);
 
         $request->validate([
-            'nomor_permohonan' => 'required|unique:permohonan_surat,nomor_permohonan,' . $id . ',permohonan_id',
-            'pemohon_warga_id' => 'required|exists:warga,warga_id',
-            'jenis_id' => 'required|exists:jenis_surat,jenis_id',
-            'tanggal_pengajuan' => 'required|date',
-            'status' => 'required',
-            'files.*' => 'mimes:doc,docx,pdf,jpg,jpeg,png|max:2048',
+        'nomor_permohonan' => 'required|unique:permohonan_surat,nomor_permohonan,' . $id . ',permohonan_id',
+        'warga_id' => 'required|exists:warga,warga_id', // Sesuaikan
+        'jenis_surat_id' => 'required|exists:jenis_surat,jenis_id','tanggal_pengajuan' => 'required|date',
+        'status' => 'required',
+        'files.*' => 'mimes:doc,docx,pdf,jpg,jpeg,png|max:2048',
         ]);
 
         // 1. Update Data Utama

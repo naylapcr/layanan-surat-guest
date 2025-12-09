@@ -78,12 +78,15 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            // Tambahkan validasi role
+            'role' => 'required|in:super_admin,staff,guest',
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $data = [
             'name' => $request->name,
             'email' => $request->email,
+            'role' => $request->role, // Tambahkan ini agar role tersimpan
         ];
 
         if ($request->filled('password')) {
