@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
@@ -33,7 +34,6 @@ class UserController extends Controller
 
         // Order by latest
         $query->orderBy('created_at', 'desc');
-
         $users = $query->paginate(12);
 
         return view('pages.guest.user.index', compact('users'));
@@ -50,22 +50,32 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => 'required'
+            'role' => 'required',
+            'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
-        User::create([
+        $data = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role, // Simpan role
-        ]);
+            'role' => $request->role,
+        ];
 
-        return redirect()->route('user.index')->with('success', 'User berhasil ditambahkan!');
-    }
+        // Logic Upload Foto
+        if ($request->hasFile('foto_profil')) {
+            $file = $request->file('foto_profil');
+            $filename = time() . '-' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/profile'), $filename);
+            $data['foto_profil'] = $filename;
+        }
+
+        User::create($data);
+
+        return redirect()->route('user.index')->with('success', 'User berhasil ditambahkan!');}
 
     public function show(User $user)
     {
-        return view('guest.user.show', compact('user'));
+        return view('pages.guest.user.show', compact('user'));
     }
 
     public function edit(User $user)
@@ -81,6 +91,7 @@ class UserController extends Controller
             // Tambahkan validasi role
             'role' => 'required|in:super_admin,staff,guest',
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
+            'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
         $data = [
@@ -93,6 +104,20 @@ class UserController extends Controller
             $data['password'] = Hash::make($request->password);
         }
 
+        // Logic Update Foto
+        if ($request->hasFile('foto_profil')) {
+            // 1. Hapus foto lama jika ada
+            if ($user->foto_profil && File::exists(public_path('uploads/profile/' . $user->foto_profil))) {
+                File::delete(public_path('uploads/profile/' . $user->foto_profil));
+            }
+
+            // 2. Upload foto baru
+            $file = $request->file('foto_profil');
+            $filename = time() . '-' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/profile'), $filename);
+            $data['foto_profil'] = $filename;
+        }
+
         $user->update($data);
 
         return redirect()->route('user.index')->with('success', 'User berhasil diperbarui!');
@@ -100,6 +125,12 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+
+        // Hapus foto profil fisik saat user dihapus
+        if ($user->foto_profil && File::exists(public_path('uploads/profile/' . $user->foto_profil))) {
+            File::delete(public_path('uploads/profile/' . $user->foto_profil));
+        }
+
         $user->delete();
         return redirect()->route('user.index')->with('success', 'User berhasil dihapus!');
     }

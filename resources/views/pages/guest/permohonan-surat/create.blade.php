@@ -95,7 +95,7 @@
                                             <i class="fas fa-file-alt me-2"></i>Jenis Surat *
                                         </label>
                                         <div class="input-group-icon">
-                                            <select name="jenis_surat_id" id="jenis_surat_id"
+                                            <select name="jenis_id" id="jenis_id"
                                                 class="form-control input-focus-effect @error('jenis_surat_id') is-invalid @enderror"
                                                 required>
                                                 <option value="">-- Pilih Jenis Surat --</option>
@@ -194,7 +194,7 @@
                                         <i class="fas fa-user me-2"></i>Pemohon *
                                     </label>
                                     <div class="input-group-icon">
-                                        <select name="warga_id" id="warga_id"
+                                        <select name="pemohon_warga_id" id="pemohon_warga_id"
                                             class="form-control input-focus-effect @error('warga_id') is-invalid @enderror"
                                             required>
                                             <option value="">-- Pilih Nama Pemohon --</option>

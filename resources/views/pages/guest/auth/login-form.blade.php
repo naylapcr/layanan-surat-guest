@@ -36,7 +36,7 @@
                 @endif
 
 
-                <form action="{{ route('auth.login') }}" method="POST">
+                <form action="{{ route('login.post') }}" method="POST">
                     @csrf
 
                     <div class="form-group">

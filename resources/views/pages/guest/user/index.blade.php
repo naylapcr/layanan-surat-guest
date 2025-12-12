@@ -10,7 +10,6 @@
     </div>
     <div class="container-fluid py-5">
         <div class="container py-5">
-            <!-- Stats Cards -->
             <div class="row mb-5">
                 <div class="col-md-4 mb-4">
                     <div class="card card-stat bg-primary text-white shadow h-100 stats-card" data-aos="fade-up"
@@ -48,7 +47,6 @@
                 </div>
             </div>
 
-            <!-- Action Bar -->
             <div class="row mb-4">
                 <div class="col-md-8">
                     <form method="GET" action="{{ route('user.index') }}" class="d-flex">
@@ -120,7 +118,6 @@
                 </div>
             @endif
 
-            <!-- Widget Cards untuk User -->
             <div class="row" id="userContainer">
                 @forelse($users as $index => $user)
                     <div class="col-xl-4 col-md-6 mb-4 user-card-item animate__animated animate__fadeInUp"
@@ -128,12 +125,20 @@
                         data-recent="{{ $user->created_at->gte(now()->subDays(7)) ? 'recent' : 'old' }}"
                         data-aos="fade-up" data-aos-delay="{{ ($index % 3) * 100 }}">
                         <div class="card user-card h-100">
-                            <div
-                                class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center">
+                                    {{-- PERBAIKAN 1: Hapus kode double disini --}}
                                     <div class="user-avatar me-3">
-                                        {{ strtoupper(substr($user->name, 0, 1)) }}
+                                        @if ($user->foto_profil)
+                                            <img src="{{ asset('uploads/profile/' . $user->foto_profil) }}"
+                                                alt="{{ $user->name }}"
+                                                style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                                        @else
+                                            {{ strtoupper(substr($user->name, 0, 1)) }}
+                                        @endif
                                     </div>
+                                    {{-- Hapus baris yang menampilkan inisial teks di luar div avatar --}}
+
                                     <div>
                                         <h6 class="mb-1 text-white">
                                             <i class="fas fa-user me-2"></i>{{ $user->name }}
@@ -170,7 +175,6 @@
                             </div>
                             <div class="card-body">
                                 <div class="user-info-list">
-                                    <!-- Email -->
                                     <div class="user-info-item d-flex justify-content-between align-items-center">
                                         <div class="d-flex align-items-center">
                                             <i class="fas fa-envelope text-primary me-2"></i>
@@ -180,7 +184,6 @@
                                             style="max-width: 150px;">{{ $user->email }}</strong>
                                     </div>
 
-                                    <!-- ID User -->
                                     <div class="user-info-item d-flex justify-content-between align-items-center">
                                         <div class="d-flex align-items-center">
                                             <i class="fas fa-id-card text-primary me-2"></i>
@@ -189,7 +192,6 @@
                                         <strong>#{{ $user->id }}</strong>
                                     </div>
 
-                                    <!-- Status -->
                                     <div class="user-info-item d-flex justify-content-between align-items-center">
                                         <div class="d-flex align-items-center">
                                             <i class="fas fa-circle text-primary me-2"></i>
@@ -200,7 +202,6 @@
                                         </span>
                                     </div>
 
-                                    <!-- Password Hash -->
                                     <div class="user-info-item">
                                         <div class="d-flex align-items-center mb-2">
                                             <i class="fas fa-lock text-primary me-2"></i>
@@ -208,11 +209,10 @@
                                         </div>
                                         <div class="input-group password-input-group">
                                             <input type="password" class="form-control form-control-sm password-field"
-                                                value="{{ $user->password }}" readonly
-                                                id="password-{{ $user->id }}">
-                                            <button class="btn btn-outline-secondary btn-sm password-toggle"
-                                                type="button" onclick="togglePassword({{ $user->id }})"
-                                                data-bs-toggle="tooltip" title="Tampilkan/Sembunyikan">
+                                                value="{{ $user->password }}" readonly id="password-{{ $user->id }}">
+                                            <button class="btn btn-outline-secondary btn-sm password-toggle" type="button"
+                                                onclick="togglePassword({{ $user->id }})" data-bs-toggle="tooltip"
+                                                title="Tampilkan/Sembunyikan">
                                                 <i class="fas fa-eye" id="eye-icon-{{ $user->id }}"></i>
                                             </button>
                                             <button class="btn btn-outline-info btn-sm copy-btn" type="button"
@@ -227,7 +227,6 @@
                                         </small>
                                     </div>
 
-                                    <!-- Tanggal Bergabung -->
                                     <div class="user-info-item d-flex justify-content-between align-items-center">
                                         <div class="d-flex align-items-center">
                                             <i class="fas fa-calendar-plus text-primary me-2"></i>
@@ -236,7 +235,6 @@
                                         <strong>{{ $user->created_at->format('d M Y') }}</strong>
                                     </div>
 
-                                    <!-- Terakhir Diperbarui -->
                                     <div class="user-info-item d-flex justify-content-between align-items-center">
                                         <div class="d-flex align-items-center">
                                             <i class="fas fa-sync-alt text-primary me-2"></i>
@@ -290,16 +288,8 @@
                 @endforelse
             </div>
 
-            <!--user info -->
-            <div class="user-info-item d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-user-shield text-primary me-2"></i>
-                    <span class="text-muted">Role:</span>
-                </div>
-                <span class="badge bg-info">{{ ucfirst(str_replace('_', ' ', $user->role)) }}</span>
-            </div>
+            {{-- PERBAIKAN 2: Menghapus potongan kode (stray code) yang tertinggal di sini --}}
 
-            <!-- Info jumlah data -->
             @if ($users->count() > 0)
                 <div class="row mt-4">
                     <div class="col-12 text-center">
@@ -311,7 +301,6 @@
                 </div>
             @endif
 
-            <!-- Pagination -->
             @if ($users->hasPages())
                 <div class="row mt-4">
                     <div class="col-12">
@@ -368,7 +357,6 @@
         </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">

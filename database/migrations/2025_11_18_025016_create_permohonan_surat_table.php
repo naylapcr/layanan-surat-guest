@@ -12,20 +12,19 @@ return new class extends Migration
     public function up(): void
 {
     Schema::create('permohonan_surat', function (Blueprint $table) {
-        $table->id('permohonan_id');
+        $table->id('permohonan_id'); // Primary Key
         $table->string('nomor_permohonan')->unique();
 
-        // Perhatikan penambahan parameter kedua pada constrained()
-        $table->foreignId('warga_id')
-              ->constrained('warga', 'warga_id') // Referensi ke 'warga_id' bukan 'id'
-              ->onDelete('cascade');
+        // Foreign Key ke tabel 'warga' (NAMA KOLOM BERBEDA DENGAN PUNYA KAMU SEBELUMNYA)
+        $table->unsignedBigInteger('pemohon_warga_id');
+        $table->foreign('pemohon_warga_id')->references('warga_id')->on('warga')->onDelete('cascade');
 
-        $table->foreignId('jenis_surat_id')
-              ->constrained('jenis_surat', 'jenis_id') // Referensi ke 'jenis_id' bukan 'id'
-              ->onDelete('cascade');
+        // Foreign Key ke tabel 'jenis_surat' (NAMA KOLOM BERBEDA)
+        $table->unsignedBigInteger('jenis_id');
+        $table->foreign('jenis_id')->references('jenis_id')->on('jenis_surat')->onDelete('cascade');
 
         $table->date('tanggal_pengajuan');
-        $table->enum('status', ['DRAFT', 'DIAJUKAN', 'DIPROSES', 'SELESAI', 'DIAMBIL', 'DITOLAK']);
+        $table->string('status'); // Temanmu pakai string, bukan enum
         $table->text('catatan')->nullable();
         $table->timestamps();
     });

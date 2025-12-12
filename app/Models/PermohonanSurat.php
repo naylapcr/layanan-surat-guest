@@ -14,8 +14,8 @@ class PermohonanSurat extends Model
 
     protected $fillable = [
         'nomor_permohonan',
-        'warga_id',
-        'jenis_surat_id',
+        'pemohon_warga_id',
+        'jenis_id',
         'tanggal_pengajuan',
         'status',
         'catatan',
@@ -36,7 +36,7 @@ class PermohonanSurat extends Model
      */
     public function jenisSurat()
     {
-        return $this->belongsTo(JenisSurat::class, 'jenis_surat_id', 'jenis_id');
+        return $this->belongsTo(JenisSurat::class, 'jenis_id', 'jenis_id');
     }
 
     /**
@@ -44,7 +44,7 @@ class PermohonanSurat extends Model
      */
     public function warga()
     {
-        return $this->belongsTo(Warga::class, 'warga_id', 'warga_id');
+        return $this->belongsTo(Warga::class, 'pemohon_warga_id', 'warga_id');
     }
 
     public function files()

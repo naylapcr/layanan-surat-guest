@@ -23,7 +23,8 @@
                             <p class="text-muted mt-2">Perbarui informasi data user</p>
                         </div>
                         <div class="form-body">
-                            <form action="{{ route('user.update', $user->id) }}" method="POST" id="editUserForm">
+                            <form action="{{ route('user.update', $user->id) }}" method="POST" id="editUserForm"
+                                enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
 
@@ -172,6 +173,34 @@
                                             <i class="fas fa-info-circle me-1"></i>
                                             Ulangi password baru untuk konfirmasi
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                        <label for="foto_profil" class="form-label">
+                                            <i class="fas fa-camera me-2"></i>Foto Profil
+                                        </label>
+
+                                        @if ($user->foto_profil)
+                                            <div class="mb-3">
+                                                <img src="{{ asset('uploads/profile/' . $user->foto_profil) }}"
+                                                    alt="Foto Profil" class="img-thumbnail rounded-circle"
+                                                    style="width: 100px; height: 100px; object-fit: cover;">
+                                                <p class="small text-muted mt-1">Foto saat ini</p>
+                                            </div>
+                                        @endif
+
+                                        <div class="input-group-icon">
+                                            <input type="file"
+                                                class="form-control input-focus-effect @error('foto_profil') is-invalid @enderror"
+                                                id="foto_profil" name="foto_profil" accept="image/*">
+                                            <i class="fas fa-image form-icon"></i>
+                                        </div>
+                                        <div class="form-text">Biarkan kosong jika tidak ingin mengubah foto profil.</div>
+                                        @error('foto_profil')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 

@@ -16,7 +16,7 @@ Route::get('/', function () {
 
 // Login & Register
 Route::get('/login', [AuthController::class, 'index'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::resource('auth', AuthController::class);
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');

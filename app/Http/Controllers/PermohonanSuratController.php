@@ -45,8 +45,8 @@ class PermohonanSuratController extends Controller
     {
     $request->validate([
         'nomor_permohonan' => 'required|unique:permohonan_surat,nomor_permohonan',
-        'warga_id' => 'required|exists:warga,warga_id', // Ubah dari pemohon_warga_id ke warga_id
-        'jenis_surat_id' => 'required|exists:jenis_surat,jenis_id', // Ubah dari jenis_id ke jenis_surat_id
+        'pemohon_warga_id' => 'required|exists:warga,warga_id', // Ubah dari pemohon_warga_id ke warga_id
+        'jenis_id' => 'required|exists:jenis_surat,jenis_id', // Ubah dari jenis_id ke jenis_surat_id
         'tanggal_pengajuan' => 'required|date',
         'status' => 'required',
         'files.*' => 'required|mimes:doc,docx,pdf,jpg,jpeg,png|max:2048',
@@ -71,7 +71,7 @@ class PermohonanSuratController extends Controller
             }
         }
 
-        return redirect()->route('permohonan-surat.index')->with('success', 'Data permohonan berhasil ditambahkan!');
+        return redirect()->route('permohonan-surat.index')->with('success', 'Data berhasil ditambahkan!');
     }
 
     /**
@@ -112,8 +112,8 @@ class PermohonanSuratController extends Controller
 
         $request->validate([
         'nomor_permohonan' => 'required|unique:permohonan_surat,nomor_permohonan,' . $id . ',permohonan_id',
-        'warga_id' => 'required|exists:warga,warga_id', // Sesuaikan
-        'jenis_surat_id' => 'required|exists:jenis_surat,jenis_id','tanggal_pengajuan' => 'required|date',
+        'pemohon_warga_id' => 'required|exists:warga,warga_id', // Sesuaikan
+        'jenis_id' => 'required|exists:jenis_surat,jenis_id','tanggal_pengajuan' => 'required|date',
         'status' => 'required',
         'files.*' => 'mimes:doc,docx,pdf,jpg,jpeg,png|max:2048',
         ]);

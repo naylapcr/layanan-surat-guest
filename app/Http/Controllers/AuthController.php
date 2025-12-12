@@ -50,23 +50,18 @@ class AuthController extends Controller
             'password.regex' => 'Password harus mengandung setidaknya satu huruf kapital'
         ]);
 
-        // Coba login dengan authentication Laravel
-        $credentials = $request->only('email', 'password');
-
+        // 2. Coba Login
         if (Auth::attempt($credentials)) {
-            // Login berhasil
-            $request->session()->regenerate();
+        $request->session()->regenerate();
 
-            // dd('tes');
-            return redirect()->route('dashboard')->with('success', 'Login berhasil!');
-        }
+        // 3. Redirect jika sukses
+        return redirect()->intended('/dashboard'); // Ganti '/dashboard' sesuai halaman tujuanmu
+    }
 
-        // Login gagal - tampilkan halaman respon dengan data login
-        $data['email'] = $request->email;
-        $data['password'] = $request->password;
-        $data['error'] = 'Login gagal. Email atau password salah.';
-
-        return view('guest.respon-form', $data);
+        // 4. Kembali jika gagal
+        return back()->withErrors([
+        'email' => 'Email atau password salah.',
+    ]);
     }
 
     /**
