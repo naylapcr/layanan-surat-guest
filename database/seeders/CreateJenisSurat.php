@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema; // Tambahkan Import ini
 use Faker\Factory as Faker;
 use Carbon\Carbon;
 
@@ -16,8 +17,14 @@ class CreateJenisSurat extends Seeder
     {
         $faker = Faker::create('id_ID');
 
+        // PERBAIKAN: Matikan Foreign Key Checks sementara agar bisa truncate
+        Schema::disableForeignKeyConstraints();
+
         // Hapus data lama jika ada
         DB::table('jenis_surat')->truncate();
+
+        // Hidupkan kembali Foreign Key Checks
+        Schema::enableForeignKeyConstraints();
 
         $jenisSuratDasar = [
             ['kode' => 'SKTM', 'nama' => 'Surat Keterangan Tidak Mampu'],

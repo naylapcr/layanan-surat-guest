@@ -32,7 +32,8 @@ Route::group(['middleware'=>['checkislogin']],function () {
 
     // 1. Dashboard (Semua role yang login bisa masuk)
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
+    Route::get('/about', [DashboardController::class, 'about'])->name('about');
+    
     // 2. Manajemen User (HANYA SUPER ADMIN)
     // Staff dan Guest akan kena 403 Forbidden jika mencoba masuk sini
     Route::middleware(['checkrole:super_admin'])->group(function () {

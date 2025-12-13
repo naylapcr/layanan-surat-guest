@@ -48,10 +48,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto py-0">
-                <a href="{{ url('/dashboard') }}" class="nav-item nav-link {{ request()->is('/dashboard') ? 'active' : '' }}"><i
+                <a href="{{ url('/dashboard') }}"
+                    class="nav-item nav-link {{ request()->is('/dashboard') ? 'active' : '' }}"><i
                         class="fas fa-home me-1"></i>Beranda</a>
-                {{-- <a href="{{ route('about') }}" class="nav-item nav-link {{ request()->routeIs('about') ? 'active' : '' }}"><i class="fas fa-info-circle me-1"></i>Tentang</a> --}}
-                <a href="{{ route('warga.index') }}"
+                <a href="{{ route('about') }}"
+                    class="nav-item nav-link {{ request()->routeIs('about') ? 'active' : '' }}"><i
+                        class="fas fa-info-circle me-1"></i>Tentang</a><a href="{{ route('warga.index') }}"
                     class="nav-item nav-link {{ request()->routeIs('warga.index') ? 'active' : '' }}"><i
                         class="fas fa-users me-1"></i>Data Warga</a>
                 <a href="{{ route('jenis-surat.index') }}"
@@ -82,13 +84,31 @@
 
                 <!-- Profile Dropdown -->
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <i class="fas fa-user-circle me-1"></i>Profile
+                    <a href="#" class="nav-link dropdown-toggle d-flex align-items-center"
+                        data-bs-toggle="dropdown">
+
+                        {{-- LOGIKA TAMPILAN FOTO --}}
+                        @if (Auth::check() && Auth::user()->foto_profil)
+                            {{-- Jika user login & punya foto, tampilkan gambarnya --}}
+                            <img src="{{ asset('uploads/profile/' . Auth::user()->foto_profil) }}" alt="Profile"
+                                class="rounded-circle me-2"
+                                style="width: 30px; height: 30px; object-fit: cover; border: 2px solid #fff;">
+                        @else
+                            {{-- Jika tidak ada foto/belum login, tampilkan icon default --}}
+                            <i class="fas fa-user-circle me-2" style="font-size: 1.5rem;"></i>
+                        @endif
+
+                        {{-- TAMPILKAN NAMA --}}
+                        <span class="text-truncate" style="max-width: 100px;">
+                            {{ Auth::user()->name ?? 'Guest' }}
+                        </span>
                     </a>
                     <div class="dropdown-menu m-0">
-                        <a href="#" class="dropdown-item"><i class="fas fa-user me-2"></i>Profil Saya</a>
-                        <a href="#" class="dropdown-item"><i class="fas fa-cog me-2"></i>Pengaturan</a>
-                        <a href="#" class="dropdown-item"><i class="fas fa-history me-2"></i>Riwayat</a>
+                        @auth
+                            <a href="{{ route('user.show', Auth::user()->id) }}" class="dropdown-item">
+                                <i class="fas fa-user me-2"></i>Profil Saya
+                            </a>
+                        @endauth
                         <div class="dropdown-divider"></div>
                         <a href="{{ route('login') }}" class="dropdown-item"><i
                                 class="fas fa-sign-in-alt me-2"></i>Login</a>

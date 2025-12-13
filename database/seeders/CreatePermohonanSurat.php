@@ -2,10 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\PermohonanSurat;
+use App\Models\JenisSurat;
+use App\Models\Warga;
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Faker\Factory as Faker;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Schema; // Jangan lupa import Schema
 
 class CreatePermohonanSurat extends Seeder
 {
@@ -16,37 +19,50 @@ class CreatePermohonanSurat extends Seeder
     {
         $faker = Faker::create('id_ID');
 
-        // 1. Ambil SEMUA ID yang ada dari tabel Warga dan JenisSurat
-        $wargaIds = DB::table('warga')->pluck('warga_id');
-        $jenisIds = DB::table('jenis_surat')->pluck('jenis_id');
+        // Ambil ID yang valid untuk referensi
+        // Kita ambil 'warga_id' dan 'jenis_id' karena itu Primary Key di tabel induknya
+        $wargaIds = Warga::pluck('warga_id')->toArray();
+        $jenisSuratIds = JenisSurat::pluck('jenis_id')->toArray();
 
-        // 2. Cek apakah data sudah ada
-        if ($wargaIds->isEmpty() || $jenisIds->isEmpty()) {
-            $this->command->error('Tabel Warga atau JenisSurat masih kosong.');
-            $this->command->error('Silakan jalankan seeder untuk Warga dan JenisSurat terlebih dahulu.');
+        // Pastikan tabel induk tidak kosong
+        if (empty($wargaIds) || empty($jenisSuratIds)) {
+            $this->command->error('Tabel warga atau jenis_surat masih kosong. Jalankan seeder Warga dan JenisSurat terlebih dahulu.');
             return;
         }
 
-        $statuses = ['DRAFT', 'DIAJUKAN', 'DIPROSES', 'DITOLAK', 'SELESAI', 'DIAMBIL'];
-        $data = [];
+        // Matikan pengecekan FK sementara agar bisa truncate (kosongkan tabel)
+        Schema::disableForeignKeyConstraints();
+        DB::table('permohonan_surat')->truncate();
+        Schema::enableForeignKeyConstraints();
 
-        // 3. Buat 100 data permohonan dummy
+        $data = [];
         for ($i = 0; $i < 100; $i++) {
-            $lastId = DB::table('permohonan_surat')->max('permohonan_id') ?? 0;
-            $nomorPermohonan = 'PMH-' . date('Ymd') . '-' . str_pad($lastId + $i + 1, 3, '0', STR_PAD_LEFT);
+            $tanggal = $faker->dateTimeBetween('-1 year', 'now');
 
             $data[] = [
-                'nomor_permohonan' => $nomorPermohonan,
-                'warga_id' => $faker->randomElement($wargaIds),
-                'jenis_surat_id' => $faker->randomElement($jenisIds),
-                'tanggal_pengajuan' => $faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d'),
-                'status' => $faker->randomElement($statuses),
-                'catatan' => $faker->boolean(70) ? $faker->sentence : null,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'nomor_permohonan' => 'PMH-' . $tanggal->format('Ymd') . '-' . str_pad($i + 1, 3, '0', STR_PAD_LEFT),
+
+                // PERBAIKAN: Gunakan nama kolom yang sesuai dengan migrasi temanmu
+                'pemohon_warga_id' => $faker->randomElement($wargaIds), // Sebelumnya 'warga_id'
+                'jenis_id'         => $faker->randomElement($jenisSuratIds), // Sebelumnya 'jenis_surat_id'
+
+                'tanggal_pengajuan' => $tanggal->format('Y-m-d'),
+                'status'            => $faker->randomElement(['DRAFT', 'DIAJUKAN', 'DIPROSES', 'SELESAI', 'DIAMBIL', 'DITOLAK']),
+                'catatan'           => $faker->sentence(),
+                'created_at'        => now(),
+                'updated_at'        => now(),
             ];
+
+            // Insert per 50 data agar lebih ringan
+            if (count($data) >= 50) {
+                DB::table('permohonan_surat')->insert($data);
+                $data = [];
+            }
         }
 
-        DB::table('permohonan_surat')->insert($data);
+        // Insert sisa data
+        if (!empty($data)) {
+            DB::table('permohonan_surat')->insert($data);
+        }
     }
 }

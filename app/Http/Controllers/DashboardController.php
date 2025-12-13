@@ -14,6 +14,11 @@ class DashboardController extends Controller
         return view ('pages.guest.dashboard.dashboard');
     }
 
+    public function about()
+    {
+        return view('pages.guest.dashboard.about');
+    }
+
     /**
      * Show the form for creating a new resource.
      */

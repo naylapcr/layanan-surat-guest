@@ -1,172 +1,192 @@
 @extends('layouts.guest.app')
 
 @section('content')
-    <div class="main-content container-fluid">
-        <div class="page-title mb-3">
-            <div class="row">
-                <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>Detail Permohonan Surat</h3>
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container text-center py-5">
+            <h1 class="display-3 text-white mb-4 animated slideInDown">Detail Permohonan</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb justify-content-center mb-0">
+                    <li class="breadcrumb-item"><a href="{{ url('/dashboard') }}" class="text-white">Beranda</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('permohonan-surat.index') }}" class="text-white">Riwayat</a></li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">Detail</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-5">
+
+                {{-- KOLOM KIRI: Detail Surat & Berkas --}}
+                <div class="col-lg-8 wow fadeInUp" data-wow-delay="0.1s">
+
+                    {{-- Header Kartu --}}
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="d-flex align-items-center justify-content-center flex-shrink-0 bg-primary rounded-circle me-3"
+                             style="width: 50px; height: 50px;">
+                            <i class="fa fa-envelope-open-text text-white"></i>
+                        </div>
+                        <div>
+                            <h2 class="mb-0">{{ $permohonan->jenisSurat->nama_jenis }}</h2>
+                            <small class="text-muted">Nomor Tiket: <span class="text-primary fw-bold">{{ $permohonan->nomor_permohonan }}</span></small>
+                        </div>
+                    </div>
+
+                    {{-- Informasi Utama --}}
+                    <div class="bg-light rounded p-4 mb-4">
+                        <h5 class="mb-3 text-primary"><i class="fas fa-info-circle me-2"></i>Informasi Pengajuan</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="text-muted small">Tanggal Pengajuan</label>
+                                <p class="fw-bold text-dark">{{ \Carbon\Carbon::parse($permohonan->tanggal_pengajuan)->isoFormat('D MMMM Y') }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-muted small">Update Terakhir</label>
+                                <p class="fw-bold text-dark">{{ $permohonan->updated_at->diffForHumans() }}</p>
+                            </div>
+                            <div class="col-12">
+                                <label class="text-muted small">Keperluan / Catatan</label>
+                                <p class="fw-bold text-dark bg-white p-3 rounded border">
+                                    {{ $permohonan->catatan ?? 'Tidak ada catatan khusus.' }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- FILE LAMPIRAN (FITUR YANG DIMINTA) --}}
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white py-3">
+                            <h5 class="m-0 text-primary"><i class="fas fa-paperclip me-2"></i>Berkas Lampiran</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                @php
+                                    // Asumsi: File disimpan dalam kolom 'lampiran' format JSON atau string comma-separated
+                                    // Sesuaikan logika ini dengan cara kamu menyimpan file di database
+                                    $files = [];
+                                    if(isset($permohonan->lampiran)) {
+                                        $files = is_array($permohonan->lampiran) ? $permohonan->lampiran : json_decode($permohonan->lampiran, true);
+                                    }
+                                @endphp
+
+                                @if(!empty($files))
+                                    @foreach($files as $key => $file)
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center border rounded p-3 file-item">
+                                                <div class="flex-shrink-0 me-3">
+                                                    @if(Str::endsWith(strtolower($file), ['.jpg', '.jpeg', '.png']))
+                                                        <i class="fas fa-file-image fa-2x text-warning"></i>
+                                                    @elseif(Str::endsWith(strtolower($file), ['.pdf']))
+                                                        <i class="fas fa-file-pdf fa-2x text-danger"></i>
+                                                    @else
+                                                        <i class="fas fa-file fa-2x text-secondary"></i>
+                                                    @endif
+                                                </div>
+                                                <div class="flex-grow-1 text-truncate me-3">
+                                                    {{-- Menampilkan nama file asli atau label --}}
+                                                    <h6 class="mb-0 text-truncate" title="{{ $file }}">
+                                                        Dokumen {{ $loop->iteration }}
+                                                    </h6>
+                                                    <small class="text-muted">{{ Str::limit($file, 20) }}</small>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    {{-- Tombol Lihat/Download --}}
+                                                    {{-- Sesuaikan path 'uploads/lampiran/' dengan folder penyimpananmu --}}
+                                                    <a href="{{ asset('uploads/lampiran/' . $file) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="col-12 text-center py-4">
+                                        <i class="fas fa-folder-open fa-3x text-light mb-3"></i>
+                                        <p class="text-muted">Tidak ada berkas lampiran yang diunggah.</p>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="{{ route('permohonan-surat.index') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Kembali ke Riwayat
+                    </a>
                 </div>
-                <div class="col-12 col-md-6 order-md-2 order-first">
-                    <nav aria-label="breadcrumb" class='breadcrumb-header'>
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('permohonan-surat.index') }}">Permohonan Surat</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Detail</li>
-                        </ol>
-                    </nav>
+
+                {{-- KOLOM KANAN: Status & Data Pemohon --}}
+                <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.5s">
+
+                    {{-- Card Status --}}
+                    <div class="card border-0 shadow rounded-3 mb-4 overflow-hidden">
+                        <div class="card-header py-3 text-center
+                            @if($permohonan->status == 'SELESAI') bg-success
+                            @elseif($permohonan->status == 'DITOLAK') bg-danger
+                            @elseif($permohonan->status == 'DIPROSES') bg-info
+                            @else bg-secondary @endif">
+                            <h5 class="text-white m-0">Status Permohonan</h5>
+                        </div>
+                        <div class="card-body text-center p-4">
+                            <div class="status-icon mb-3">
+                                @if($permohonan->status == 'SELESAI')
+                                    <i class="fas fa-check-circle fa-4x text-success"></i>
+                                @elseif($permohonan->status == 'DITOLAK')
+                                    <i class="fas fa-times-circle fa-4x text-danger"></i>
+                                @elseif($permohonan->status == 'DIPROSES')
+                                    <i class="fas fa-sync fa-spin fa-4x text-info"></i>
+                                @else
+                                    <i class="fas fa-clock fa-4x text-secondary"></i>
+                                @endif
+                            </div>
+                            <h3 class="fw-bold
+                                @if($permohonan->status == 'SELESAI') text-success
+                                @elseif($permohonan->status == 'DITOLAK') text-danger
+                                @elseif($permohonan->status == 'DIPROSES') text-info
+                                @else text-secondary @endif">
+                                {{ $permohonan->status }}
+                            </h3>
+                            <p class="text-muted small">Status saat ini</p>
+                        </div>
+                    </div>
+
+                    {{-- Card Data Pemohon --}}
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white py-3">
+                            <h6 class="m-0 fw-bold"><i class="fas fa-user me-2"></i>Data Pemohon</h6>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item px-0 d-flex justify-content-between">
+                                    <span class="text-muted small">Nama Lengkap</span>
+                                    <span class="fw-bold text-end">{{ $permohonan->warga->nama }}</span>
+                                </li>
+                                <li class="list-group-item px-0 d-flex justify-content-between">
+                                    <span class="text-muted small">NIK / No KTP</span>
+                                    <span class="fw-bold text-end">{{ $permohonan->warga->no_ktp ?? $permohonan->warga->nik }}</span>
+                                </li>
+                                <li class="list-group-item px-0 d-flex justify-content-between">
+                                    <span class="text-muted small">No. Telepon</span>
+                                    <span class="fw-bold text-end">{{ $permohonan->warga->telp }}</span>
+                                </li>
+                                <li class="list-group-item px-0 d-flex justify-content-between">
+                                    <span class="text-muted small">Pekerjaan</span>
+                                    <span class="fw-bold text-end">{{ $permohonan->warga->pekerjaan }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
-
-        <section class="section">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="card-title">Informasi Permohonan</h4>
-                    <a href="{{ route('permohonan-surat.index') }}" class="btn btn-secondary btn-sm">
-                        <i data-feather="arrow-left"></i> Kembali
-                    </a>
-                </div>
-                <div class="card-body">
-                    {{-- Tampilkan Pesan Sukses --}}
-                    @if (session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
-
-                    {{-- Informasi Utama --}}
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <table class="table table-borderless">
-                                <tr>
-                                    <th style="width: 35%;">Nomor Surat</th>
-                                    <td>: {{ $permohonan->nomor_permohonan }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Pemohon</th>
-                                    <td>: {{ $permohonan->pemohon->nama ?? '-' }} <br>
-                                        <small class="text-muted ml-3">(KTP: {{ $permohonan->pemohon->no_ktp ?? '-' }})</small>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Jenis Surat</th>
-                                    <td>: {{ $permohonan->jenisSurat->nama_jenis ?? '-' }}</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="col-md-6">
-                            <table class="table table-borderless">
-                                <tr>
-                                    <th style="width: 35%;">Tanggal Pengajuan</th>
-                                    <td>: {{ \Carbon\Carbon::parse($permohonan->tanggal_pengajuan)->format('d F Y') }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Status</th>
-                                    <td>:
-                                        @if ($permohonan->status == 'Diajukan')
-                                            <span class="badge bg-warning">Diajukan</span>
-                                        @elseif($permohonan->status == 'Diproses')
-                                            <span class="badge bg-info">Diproses</span>
-                                        @elseif($permohonan->status == 'Selesai')
-                                            <span class="badge bg-success">Selesai</span>
-                                        @else
-                                            <span class="badge bg-danger">Ditolak</span>
-                                        @endif
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Catatan</th>
-                                    <td>: {{ $permohonan->catatan ?? '-' }}</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    {{-- Daftar File Upload --}}
-                    <div class="d-flex justify-content-between align-items-center mb-3 mt-4">
-                        <h5 class="m-0"><i data-feather="folder"></i> Berkas Persyaratan ({{ $files->count() }})</h5>
-                    </div>
-
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
-                            <thead class="bg-light">
-                                <tr>
-                                    <th style="width: 5%" class="text-center">#</th>
-                                    <th>Nama File</th>
-                                    <th style="width: 20%">Tanggal Upload</th>
-                                    <th style="width: 20%" class="text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($files as $file)
-                                    <tr>
-                                        <td class="text-center">{{ $loop->iteration }}</td>
-                                        <td>
-                                            {{-- Menampilkan nama file --}}
-                                            <span class="d-inline-block text-truncate" style="max-width: 300px;">
-                                                {{ $file->filename }}
-                                            </span>
-                                        </td>
-                                        <td>{{ $file->created_at->format('d M Y, H:i') }}</td>
-                                        <td class="text-center">
-                                            {{-- Tombol Lihat/Download --}}
-                                            <a href="{{ asset('uploads/permohonan/' . $file->filename) }}" target="_blank" class="btn btn-sm btn-primary me-1" title="Lihat File">
-                                                <i data-feather="eye"></i>
-                                            </a>
-
-                                            {{-- Tombol Hapus File --}}
-                                            <form action="" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus file ini secara permanen?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger" title="Hapus File">
-                                                    <i data-feather="trash-2"></i>
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="4" class="text-center text-muted py-4">
-                                            <em>Belum ada berkas yang diunggah untuk permohonan ini.</em>
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {{-- Form Upload Cepat (Susulan) --}}
-                    {{-- <div class="mt-4 p-4 bg-light rounded border"> --}}
-                        <h6 class="mb-3"><i data-feather="upload-cloud"></i> Upload Berkas Tambahan</h6>
-                        <form action="{{ route('permohonan-surat.update', $permohonan->permohonan_id) }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
-
-                            {{-- Hidden fields untuk data wajib controller agar tidak error validasi --}}
-                            <input type="hidden" name="nomor_permohonan" value="{{ $permohonan->nomor_permohonan }}">
-                            <input type="hidden" name="warga_id" value="{{ $permohonan->pemohon_warga_id }}">
-                            <input type="hidden" name="jenis_id" value="{{ $permohonan->jenis_id }}">
-                            <input type="hidden" name="tanggal_pengajuan" value="{{ $permohonan->tanggal_pengajuan }}">
-                            <input type="hidden" name="status" value="{{ $permohonan->status }}">
-
-                            <div class="input-group">
-                                <input type="file" class="form-control" name="files[]" multiple required>
-                                <button class="btn btn-success" type="submit">
-                                    <i data-feather="upload"></i> Upload Sekarang
-                                </button>
-                            </div>
-                            <small class="text-muted mt-2 d-block">
-                                Format: JPG, PNG, PDF, DOCX. Maksimal 2MB.
-                            </small>
-                        </form>
-                    {{-- </div> --}}
-
-                </div>
-            </div>
-        </section>
     </div>
+    <style>
+        .file-item {
+            transition: all 0.2s ease;
+        }
+        .file-item:hover {
+            background-color: #f8f9fa;
+            border-color: var(--bs-primary) !important;
+        }
+    </style>
 @endsection
