@@ -36,33 +36,31 @@ class AuthController extends Controller
     /**
      * Memproses form login
      */
-    public function login(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:3|regex:/[A-Z]/',
-        ], [
-            'email.required' => 'Email tidak boleh kosong',
-            'email.email' => 'Format email tidak valid',
-            'password.required' => 'Password tidak boleh kosong',
-            'password.min' => 'Password minimal 3 karakter',
-            'password.regex' => 'Password harus mengandung setidaknya satu huruf kapital'
-        ]);
+    public function login(Request $request) // Nama fungsi sesuaikan dengan route Anda (loginPost atau login)
+{
+    // 1. Validasi Input
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        // 2. Coba Login
-        if (Auth::attempt($credentials)) {
+    // 2. BAGIAN INI YANG HILANG DI KODE ANDA
+    // Kita harus mengambil email dan password dari form dan menyimpannya ke $credentials
+    $credentials = $request->only('email', 'password');
+
+    // 3. Proses Login
+    if (Auth::attempt($credentials)) {
         $request->session()->regenerate();
 
-        // 3. Redirect jika sukses
-        return redirect()->intended('/dashboard'); // Ganti '/dashboard' sesuai halaman tujuanmu
+        // Login Berhasil -> Arahkan ke dashboard
+        return redirect()->intended('/dashboard')->with('success', 'Berhasil Login!');
     }
 
-        // 4. Kembali jika gagal
-        return back()->withErrors([
-        'email' => 'Email atau password salah.',
-    ]);
-    }
+    // 4. Login Gagal -> Kembalikan ke halaman login dengan error
+    return back()->withErrors([
+        'email' => 'Email atau password yang Anda masukkan salah.',
+    ])->onlyInput('email');
+}
 
     /**
      * Memproses registrasi user baru

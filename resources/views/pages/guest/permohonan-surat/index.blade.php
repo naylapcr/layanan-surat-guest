@@ -44,7 +44,6 @@
                                 <i class="fas fa-envelope-open fa-3x"></i>
                             </div>
                             <div>
-                                {{-- Menggunakan total() untuk hitung semua data di database, bukan hanya halaman ini --}}
                                 <h4 class="mb-0 counter" data-target="{{ $permohonan->total() }}">0</h4>
                                 <p class="mb-0">Total Permohonan</p>
                             </div>
@@ -59,8 +58,6 @@
                                 <i class="fas fa-clock fa-3x"></i>
                             </div>
                             <div>
-                                {{-- Mengambil data statistik idealnya dikirim terpisah dari controller,
-                                     tapi jika menggunakan collection paginator, kita gunakan count() untuk data di halaman ini --}}
                                 <h4 class="mb-0 counter"
                                     data-target="{{ $permohonan->where('status', 'DRAFT')->count() }}">0</h4>
                                 <p class="mb-0">Draft (Page Ini)</p>
@@ -120,11 +117,12 @@
                                     <i class="fas fa-filter me-2"></i>Filter
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{{ route('permohonan-surat.index') }}">Semua</a></li>
-                                    </ul>
+                                    <li><a class="dropdown-item" href="{{ route('permohonan-surat.index') }}">Semua</a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
-                        @if(request('search'))
+                        @if (request('search'))
                             <a href="{{ route('permohonan-surat.index') }}" class="btn btn-outline-danger">
                                 <i class="fas fa-times me-2"></i>Reset
                             </a>
@@ -132,20 +130,17 @@
                     </form>
                 </div>
 
-                {{-- Hanya Tampilkan Tombol Tambah jika BUKAN Guest --}}
                 @if (Auth::check() && Auth::user()->role !== 'guest')
-                <div class="col-md-4 text-md-end">
-                    <a href="{{ route('permohonan-surat.create') }}"
-                        class="btn btn-primary floating-action-btn" data-bs-toggle="tooltip"
-                        title="Tambah permohonan surat baru">
-                        <i class="fas fa-plus me-2"></i>Tambah Permohonan
-                    </a>
-                </div>
+                    <div class="col-md-4 text-md-end">
+                        <a href="{{ route('permohonan-surat.create') }}" class="btn btn-primary floating-action-btn"
+                            data-bs-toggle="tooltip" title="Tambah permohonan surat baru">
+                            <i class="fas fa-plus me-2"></i>Tambah Permohonan
+                        </a>
+                    </div>
                 @endif
             </div>
 
             <div class="row" id="permohonanContainer">
-                {{-- PERBAIKAN UTAMA: Mengganti $permohonan menjadi $item di dalam loop --}}
                 @forelse($permohonan as $index => $item)
                     <div class="col-xl-4 col-md-6 mb-4 permohonan-card animate__animated animate__fadeInUp"
                         data-status="{{ $item->status }}"
@@ -252,26 +247,41 @@
                                 </div>
                             </div>
 
-                            {{-- TAMBAHAN: MENAMPILKAN LIST FILE --}}
-                                <div class="row mt-2 border-top pt-2">
-                                    <div class="col-12">
-                                        <small class="text-muted d-block mb-1">Berkas Lampiran:</small>
-                                        @forelse($item->files as $file)
-                                            <a href="{{ asset('uploads/' . $file->filename) }}" target="_blank"
-                                               class="badge bg-light text-dark border text-decoration-none me-1 mb-1"
-                                               data-bs-toggle="tooltip" title="{{ $file->filename }}">
-                                                <i class="fas fa-paperclip text-primary me-1"></i>File {{ $loop->iteration }}
-                                            </a>
-                                        @empty
-                                            <span class="text-muted small fst-italic">Tidak ada lampiran</span>
-                                        @endforelse
-                                    </div>
+                            {{-- BAGIAN TAMPILAN FILE YANG DIPERBAIKI --}}
+                            <div class="card-footer bg-white border-top-0 pt-0 pb-3">
+                                <div class="d-flex align-items-center mb-2 mt-2">
+                                    <i class="fas fa-paperclip text-secondary small me-2"></i>
+                                    <small class="text-secondary fw-bold" style="font-size: 0.75rem;">BERKAS LAMPIRAN</small>
                                 </div>
-                                {{-- AKHIR TAMBAHAN --}}
+
+                                <div class="d-flex flex-wrap gap-2">
+                                    @forelse($item->files as $file)
+                                        @php
+                                            $isPdf = str_ends_with(strtolower($file->filename), '.pdf');
+                                        @endphp
+                                        <a href="{{ asset('uploads/' . $file->filename) }}" target="_blank"
+                                           class="btn btn-sm btn-outline-light text-dark border shadow-sm rounded-pill px-3 py-1 d-flex align-items-center file-chip"
+                                           style="font-size: 0.8rem; text-decoration: none;"
+                                           data-bs-toggle="tooltip" title="{{ $file->filename }}">
+                                            @if($isPdf)
+                                                <i class="fas fa-file-pdf text-danger me-2"></i>
+                                            @else
+                                                <i class="fas fa-file-image text-success me-2"></i>
+                                            @endif
+                                            <span class="fw-medium">Dokumen {{ $loop->iteration }}</span>
+                                        </a>
+                                    @empty
+                                        <span class="text-muted small fst-italic ms-1">
+                                            <i class="fas fa-ban me-1 opacity-50"></i>Tidak ada lampiran
+                                        </span>
+                                    @endforelse
+                                </div>
+                            </div>
+                            {{-- AKHIR PERBAIKAN FILE --}}
 
                             <div class="card-footer bg-light">
                                 <div class="row text-center">
-                                    @if(Auth::check() && Auth::user()->role == 'guest')
+                                    @if (Auth::check() && Auth::user()->role == 'guest')
                                         <div class="col-12">
                                             <a href="{{ route('permohonan-surat.show', $item->permohonan_id) }}"
                                                 class="text-secondary detail-link" title="Lihat Detail"
@@ -311,9 +321,9 @@
                                 <p class="text-muted mb-4">Mulai dengan menambahkan permohonan surat pertama
                                 </p>
                                 @if (Auth::check() && Auth::user()->role !== 'guest')
-                                <a href="{{ route('permohonan-surat.create') }}" class="btn btn-primary">
-                                    <i class="fas fa-plus me-2"></i>Tambah Permohonan Pertama
-                                </a>
+                                    <a href="{{ route('permohonan-surat.create') }}" class="btn btn-primary">
+                                        <i class="fas fa-plus me-2"></i>Tambah Permohonan Pertama
+                                    </a>
                                 @endif
                             </div>
                         </div>
@@ -560,6 +570,17 @@
             background-color: rgba(0, 0, 0, 0.05);
             transform: scale(1.1);
             color: var(--bs-warning) !important;
+        }
+
+        /* Styling untuk file chips */
+        .file-chip {
+            transition: all 0.2s ease;
+        }
+        .file-chip:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1) !important;
+            background-color: #f8f9fa;
+            border-color: var(--bs-primary) !important;
         }
 
         /* Styling untuk empty state */
