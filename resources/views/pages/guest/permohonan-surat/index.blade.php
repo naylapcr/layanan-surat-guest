@@ -628,6 +628,8 @@
         .counter {
             transition: all 0.5s ease;
         }
+
+        
     </style>
 
     <script>

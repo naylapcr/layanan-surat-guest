@@ -125,7 +125,8 @@
                         data-recent="{{ $user->created_at->gte(now()->subDays(7)) ? 'recent' : 'old' }}"
                         data-aos="fade-up" data-aos-delay="{{ ($index % 3) * 100 }}">
                         <div class="card user-card h-100">
-                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                            <div
+                                class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                                 <div class="d-flex align-items-center">
                                     {{-- PERBAIKAN 1: Hapus kode double disini --}}
                                     <div class="user-avatar me-3">
@@ -209,10 +210,11 @@
                                         </div>
                                         <div class="input-group password-input-group">
                                             <input type="password" class="form-control form-control-sm password-field"
-                                                value="{{ $user->password }}" readonly id="password-{{ $user->id }}">
-                                            <button class="btn btn-outline-secondary btn-sm password-toggle" type="button"
-                                                onclick="togglePassword({{ $user->id }})" data-bs-toggle="tooltip"
-                                                title="Tampilkan/Sembunyikan">
+                                                value="{{ $user->password }}" readonly
+                                                id="password-{{ $user->id }}">
+                                            <button class="btn btn-outline-secondary btn-sm password-toggle"
+                                                type="button" onclick="togglePassword({{ $user->id }})"
+                                                data-bs-toggle="tooltip" title="Tampilkan/Sembunyikan">
                                                 <i class="fas fa-eye" id="eye-icon-{{ $user->id }}"></i>
                                             </button>
                                             <button class="btn btn-outline-info btn-sm copy-btn" type="button"
@@ -668,6 +670,65 @@
 
         .pagination .page-link:hover {
             background-color: #e9ecef;
+        }
+
+        /* --- STYLE KHUSUS HEADER MODERN --- */
+        .page-header-modern {
+            background: linear-gradient(135deg, #0d6efd 0%, #0099ff 100%);
+            /* Gradasi Biru Modern */
+            padding: 5rem 0;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0 0 50px 50px;
+            /* Lengkungan di bawah agar unik */
+            box-shadow: 0 10px 30px rgba(13, 110, 253, 0.15);
+        }
+
+        /* Pola background halus (Opsional, agar tidak terlalu polos) */
+        .page-header-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(circle at 20% 150%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .page-header-modern h1 {
+            font-weight: 800;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Breadcrumb yang interaktif */
+        .breadcrumb-modern .breadcrumb-item a {
+            color: rgba(255, 255, 255, 0.8) !important;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .breadcrumb-modern .breadcrumb-item a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff !important;
+            transform: translateY(-2px);
+            /* Efek melayang saat di-hover */
+        }
+
+        .breadcrumb-modern .breadcrumb-item.active {
+            color: #fff !important;
+            font-weight: bold;
+            padding: 5px 10px;
+        }
+
+        /* Separator breadcrumb (/) */
+        .breadcrumb-modern .breadcrumb-item+.breadcrumb-item::before {
+            color: rgba(255, 255, 255, 0.5);
         }
     </style>
 

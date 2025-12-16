@@ -3,6 +3,7 @@
 @section('content')
     {{-- main content --}}
     <!-- Content Start -->
+
     <div class="page-header">
         <div class="container text-center">
             <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Data Warga</h1>
@@ -13,7 +14,8 @@
         <div class="container py-5">
             <!-- Success/Error Messages -->
             @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show animate__animated animate__fadeIn" role="alert">
+                <div class="alert alert-success alert-dismissible fade show animate__animated animate__fadeIn"
+                    role="alert">
                     <div class="d-flex align-items-center">
                         <i class="fas fa-check-circle me-3 fa-lg"></i>
                         <div class="flex-grow-1">

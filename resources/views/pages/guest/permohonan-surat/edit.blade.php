@@ -33,7 +33,7 @@
                                 @csrf
                                 @method('PUT')
 
-                                {{-- Alert Error --}}
+                                {{-- Alert Error Validation --}}
                                 @if ($errors->any())
                                     <div class="alert alert-danger animate__animated animate__shakeX" role="alert">
                                         <div class="d-flex align-items-center">
@@ -50,20 +50,6 @@
                                     </div>
                                 @endif
 
-                                {{-- Alert Success --}}
-                                @if (session('success'))
-                                    <div class="alert alert-success alert-dismissible fade show animate__animated animate__fadeIn" role="alert">
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-check-circle me-3 fa-lg"></i>
-                                            <div>
-                                                <h5 class="alert-heading mb-2">Berhasil!</h5>
-                                                <p class="mb-0">{{ session('success') }}</p>
-                                            </div>
-                                        </div>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
-                                @endif
-
                                 {{-- Baris 1: Nomor & Tanggal --}}
                                 <div class="row mb-4">
                                     <div class="col-md-6">
@@ -71,9 +57,11 @@
                                             <i class="fas fa-hashtag me-2"></i>Nomor Permohonan *
                                         </label>
                                         <div class="input-group-icon">
+                                            {{-- PERBAIKAN: Tambahkan name="nomor_permohonan" & gunakan readonly (bukan disabled) --}}
                                             <input type="text" class="form-control input-focus-effect"
                                                 id="nomor_permohonan"
-                                                value="{{ $permohonan->nomor_permohonan }}"
+                                                name="nomor_permohonan"
+                                                value="{{ old('nomor_permohonan', $permohonan->nomor_permohonan) }}"
                                                 readonly>
                                             <i class="fas fa-hashtag form-icon"></i>
                                         </div>
@@ -84,9 +72,11 @@
                                             <i class="fas fa-calendar me-2"></i>Tanggal Pengajuan *
                                         </label>
                                         <div class="input-group-icon">
+                                            {{-- PERBAIKAN: Tambahkan name="tanggal_pengajuan" & gunakan readonly --}}
                                             <input type="date" class="form-control input-focus-effect"
                                                 id="tanggal_pengajuan"
-                                                value="{{ $permohonan->tanggal_pengajuan }}"
+                                                name="tanggal_pengajuan"
+                                                value="{{ old('tanggal_pengajuan', $permohonan->tanggal_pengajuan) }}"
                                                 readonly>
                                             <i class="fas fa-calendar form-icon"></i>
                                         </div>
@@ -94,21 +84,22 @@
                                     </div>
                                 </div>
 
-                                {{-- Baris 2: Jenis Surat & Pemohon (DIPERBAIKI) --}}
+                                {{-- Baris 2: Jenis Surat & Pemohon --}}
                                 <div class="row mb-4">
                                     <div class="col-md-6">
                                         <label for="jenis_surat_id" class="form-label">
                                             <i class="fas fa-envelope me-2"></i>Jenis Surat *
                                         </label>
                                         <div class="input-group-icon">
+                                            {{-- SESUAI REQUEST: name="jenis_id" (Sesuai database teman Anda) --}}
                                             <select class="form-select input-focus-effect" id="jenis_surat_id"
                                                 name="jenis_id" required>
                                                 <option value="">Pilih Jenis Surat</option>
                                                 @foreach ($dataJenisSurat as $jenis)
                                                     @php
-                                                        // AMBIL ID DARI RELASI (LEBIH AMAN)
-                                                        $currentJenisId = $permohonan->jenisSurat ? $permohonan->jenisSurat->jenis_id : $permohonan->jenis_id;
-                                                        // CEK OLD INPUT ATAU DATA DATABASE
+                                                        // Ambil ID saat ini (cek relasi atau kolom langsung)
+                                                        $currentJenisId = $permohonan->jenisSurat ? $permohonan->jenisSurat->jenis_id : ($permohonan->jenis_id ?? $permohonan->jenis_surat_id);
+                                                        // Cek selected
                                                         $selected = old('jenis_id', $currentJenisId) == $jenis->jenis_id ? 'selected' : '';
                                                     @endphp
                                                     <option value="{{ $jenis->jenis_id }}" {{ $selected }}>
@@ -128,9 +119,7 @@
                                                 <option value="">Pilih Nama Pemohon</option>
                                                 @foreach($dataWarga as $warga)
                                                     @php
-                                                        // AMBIL ID DARI RELASI 'warga' (LEBIH AMAN DARIPADA KOLOM ID)
                                                         $currentWargaId = $permohonan->warga ? $permohonan->warga->warga_id : $permohonan->warga_id;
-                                                        // CEK OLD INPUT ATAU DATA DATABASE
                                                         $selected = old('warga_id', $currentWargaId) == $warga->warga_id ? 'selected' : '';
                                                     @endphp
                                                     <option value="{{ $warga->warga_id }}" {{ $selected }}>
@@ -214,7 +203,6 @@
                                 </div>
                             </form>
                         </div>
-                    </div>
 
                     {{-- CARD INFO DATA SAAT INI --}}
                     <div class="card info-card mt-4 animate__animated animate__fadeInUp" data-aos-delay="200">

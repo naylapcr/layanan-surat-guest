@@ -53,61 +53,51 @@
                         </div>
                     </div>
 
-                    {{-- FILE LAMPIRAN (FITUR YANG DIMINTA) --}}
+                    {{-- FILE LAMPIRAN (DENGAN PLACEHOLDER IMAGE) --}}
                     <div class="card border-0 shadow-sm mb-4">
                         <div class="card-header bg-white py-3">
                             <h5 class="m-0 text-primary"><i class="fas fa-paperclip me-2"></i>Berkas Lampiran</h5>
                         </div>
                         <div class="card-body">
-                            <div class="row g-3">
-                                @php
-                                    // Asumsi: File disimpan dalam kolom 'lampiran' format JSON atau string comma-separated
-                                    // Sesuaikan logika ini dengan cara kamu menyimpan file di database
-                                    $files = [];
-                                    if(isset($permohonan->lampiran)) {
-                                        $files = is_array($permohonan->lampiran) ? $permohonan->lampiran : json_decode($permohonan->lampiran, true);
-                                    }
-                                @endphp
+                            {{-- Container Flex --}}
+                            <div class="d-flex flex-wrap gap-2">
+                                @forelse($permohonan->files as $file)
+                                    @php
+                                        // Deteksi tipe file untuk ikon
+                                        $isPdf = Str::endsWith(strtolower($file->filename), '.pdf');
+                                    @endphp
+                                    <a href="{{ asset('uploads/' . $file->filename) }}" target="_blank"
+                                       class="btn btn-outline-light text-dark border shadow-sm rounded-pill px-3 py-2 d-flex align-items-center file-chip"
+                                       style="text-decoration: none;"
+                                       data-bs-toggle="tooltip" title="{{ $file->filename }}">
 
-                                @if(!empty($files))
-                                    @foreach($files as $key => $file)
-                                        <div class="col-md-6">
-                                            <div class="d-flex align-items-center border rounded p-3 file-item">
-                                                <div class="flex-shrink-0 me-3">
-                                                    @if(Str::endsWith(strtolower($file), ['.jpg', '.jpeg', '.png']))
-                                                        <i class="fas fa-file-image fa-2x text-warning"></i>
-                                                    @elseif(Str::endsWith(strtolower($file), ['.pdf']))
-                                                        <i class="fas fa-file-pdf fa-2x text-danger"></i>
-                                                    @else
-                                                        <i class="fas fa-file fa-2x text-secondary"></i>
-                                                    @endif
-                                                </div>
-                                                <div class="flex-grow-1 text-truncate me-3">
-                                                    {{-- Menampilkan nama file asli atau label --}}
-                                                    <h6 class="mb-0 text-truncate" title="{{ $file }}">
-                                                        Dokumen {{ $loop->iteration }}
-                                                    </h6>
-                                                    <small class="text-muted">{{ Str::limit($file, 20) }}</small>
-                                                </div>
-                                                <div class="flex-shrink-0">
-                                                    {{-- Tombol Lihat/Download --}}
-                                                    {{-- Sesuaikan path 'uploads/lampiran/' dengan folder penyimpananmu --}}
-                                                    <a href="{{ asset('uploads/lampiran/' . $file) }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                                        <i class="fas fa-eye"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                @else
-                                    <div class="col-12 text-center py-4">
-                                        <i class="fas fa-folder-open fa-3x text-light mb-3"></i>
-                                        <p class="text-muted">Tidak ada berkas lampiran yang diunggah.</p>
+                                        @if($isPdf)
+                                            <i class="fas fa-file-pdf text-danger me-2 fa-lg"></i>
+                                        @else
+                                            <i class="fas fa-file-image text-success me-2 fa-lg"></i>
+                                        @endif
+
+                                        <span class="fw-medium">Dokumen {{ $loop->iteration }}</span>
+                                    </a>
+                                @empty
+                                    {{-- BAGIAN PLACEHOLDER IMAGE JIKA KOSONG --}}
+                                    <div class="w-100 text-center py-4">
+                                        {{-- Ganti 'empty-file.png' dengan nama file gambar Anda --}}
+                                        {{-- Pastikan gambar ada di public/assets-guest/img/ --}}
+                                        <img src="{{ asset('assets-guest/img/placeholder.jpg') }}"
+                                             alt="Tidak ada lampiran"
+                                             class="img-fluid mb-3 opacity-75"
+                                             style="max-width: 150px;">
+
+                                        <p class="text-muted small mb-0">
+                                            Tidak ada berkas lampiran yang diunggah.
+                                        </p>
                                     </div>
-                                @endif
+                                @endforelse
                             </div>
                         </div>
                     </div>
+                    {{-- AKHIR FILE LAMPIRAN --}}
 
                     <a href="{{ route('permohonan-surat.index') }}" class="btn btn-outline-secondary">
                         <i class="fas fa-arrow-left me-2"></i>Kembali ke Riwayat
@@ -180,13 +170,18 @@
             </div>
         </div>
     </div>
+
     <style>
-        .file-item {
+        /* Efek hover untuk chip file agar interaktif */
+        .file-chip {
             transition: all 0.2s ease;
+            background-color: #fff;
         }
-        .file-item:hover {
-            background-color: #f8f9fa;
+        .file-chip:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1) !important;
             border-color: var(--bs-primary) !important;
+            background-color: #f8f9fa;
         }
     </style>
 @endsection

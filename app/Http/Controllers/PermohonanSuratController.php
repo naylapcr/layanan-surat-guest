@@ -46,7 +46,7 @@ class PermohonanSuratController extends Controller
     $request->validate([
         'nomor_permohonan' => 'required|unique:permohonan_surat,nomor_permohonan',
         'pemohon_warga_id' => 'required|exists:warga,warga_id', // Ubah dari pemohon_warga_id ke warga_id
-        'jenis_surat_id' => 'required|exists:jenis_surat,jenis_id', // Ubah dari jenis_id ke jenis_surat_id
+        'jenis_id' => 'required|exists:jenis_surat,jenis_id', // Ubah dari jenis_id ke jenis_surat_id
         'tanggal_pengajuan' => 'required|date',
         'status' => 'required',
         'files.*' => 'required|mimes:doc,docx,pdf,jpg,jpeg,png|max:2048',
@@ -113,7 +113,7 @@ class PermohonanSuratController extends Controller
         $request->validate([
         'nomor_permohonan' => 'required|unique:permohonan_surat,nomor_permohonan,' . $id . ',permohonan_id',
         'warga_id' => 'required|exists:warga,warga_id', // Sesuaikan
-        'jenis_surat_id' => 'required|exists:jenis_surat,jenis_id','tanggal_pengajuan' => 'required|date',
+        'jenis_id' => 'required|exists:jenis_surat,jenis_id','tanggal_pengajuan' => 'required|date',
         'status' => 'required',
         'files.*' => 'mimes:doc,docx,pdf,jpg,jpeg,png|max:2048',
         ]);

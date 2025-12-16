@@ -53,7 +53,7 @@
                     <h4 class="text-white mb-4"><i class="fas fa-code me-2"></i>Pengembang</h4>
                     <div class="d-flex align-items-center mb-3">
                         {{-- FOTO PROFIL --}}
-                        <img src="https://ui-avatars.com/api/?name=Mahasiswa+PCR&background=random"
+                        <img src="{{ asset('assets-guest/img/2457301112.jpg') }}"
                             alt="Foto Pengembang" class="img-fluid rounded-circle border border-2 border-white me-3"
                             style="width: 60px; height: 60px; object-fit: cover;">
 
@@ -70,7 +70,7 @@
                             href="https://instagram.com/naylasfn" target="_blank"><i
                                 class="fab fa-instagram"></i></a>
                         <a class="btn btn-sm btn-outline-light btn-square rounded-circle me-2"
-                            href="https://linkedin.com/in/username_anda" target="_blank"><i
+                            href="https://linkedin.com/in/nayla-saffana-74223639a" target="_blank"><i
                                 class="fab fa-linkedin-in"></i></a>
                         <a class="btn btn-sm btn-outline-light btn-square rounded-circle"
                             href="https://github.com/naylapcr" target="_blank"><i class="fab fa-github"></i></a>
