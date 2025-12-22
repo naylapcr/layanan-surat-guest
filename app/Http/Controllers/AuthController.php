@@ -36,19 +36,16 @@ class AuthController extends Controller
     /**
      * Memproses form login
      */
-    public function login(Request $request) // Nama fungsi sesuaikan dengan route Anda (loginPost atau login)
+    public function login(Request $request)
 {
-    // 1. Validasi Input
+
     $request->validate([
         'email' => 'required|email',
         'password' => 'required',
     ]);
 
-    // 2. BAGIAN INI YANG HILANG DI KODE ANDA
-    // Kita harus mengambil email dan password dari form dan menyimpannya ke $credentials
     $credentials = $request->only('email', 'password');
 
-    // 3. Proses Login
     if (Auth::attempt($credentials)) {
         $request->session()->regenerate();
 

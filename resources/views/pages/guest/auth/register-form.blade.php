@@ -13,6 +13,8 @@
 
         <div class="right-panel">
             <div class="logo">
+                {{-- Anda bisa mengganti ini dengan img logo jika ada, sesuai desain baru --}}
+                <img src="{{ asset('assets-guest/img/logo-login.png') }}" alt="Logo" style="width: 50px;">
                 <h2>Bina Desa</h2>
             </div>
 
@@ -67,7 +69,7 @@
                             <span class="text-error">{{ $message }}</span>
                         @enderror
                     </div>
-                
+
                         <div class="form-group">
                             <label for="username">Username</label>
                             <input type="text" id="username" name="username" value="{{ old('username') }}" required>

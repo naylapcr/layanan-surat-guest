@@ -5,7 +5,7 @@
         <div class="col-lg-5 text-center text-lg-start mb-lg-0">
             <div class="d-flex">
                 <a href="#" class="text-white me-4"><i
-                        class="fas fa-envelope text-light me-2"></i>admin@binadesa.com</a>
+                        class="fas fa-envelope text-light me-2"></i>admin@layanansurat.com</a>
                 <a href="#" class="text-white me-0"><i class="fas fa-phone-alt text-light me-2"></i>+01234567890</a>
             </div>
         </div>

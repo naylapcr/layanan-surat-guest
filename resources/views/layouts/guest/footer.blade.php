@@ -8,7 +8,7 @@
                     {{-- UBAH WARNA JUDUL DISINI (text-secondary -> text-white) --}}
                     <h4 class="text-white mb-4"><i class="fas fa-info-circle me-2"></i>Kontak Info</h4>
                     <a href="" class="mb-2"><i class="fa fa-map-marker-alt me-2"></i> Jl. Desa Bina No. 123</a>
-                    <a href="" class="mb-2"><i class="fas fa-envelope me-2"></i> admin@binadesa.com</a>
+                    <a href="" class="mb-2"><i class="fas fa-envelope me-2"></i> admin@layanansurat.com</a>
                     <a href="" class="mb-2"><i class="fas fa-phone me-2"></i> +012 345 67890</a>
                     <div class="d-flex align-items-center mt-3">
                         <a class="btn btn-square btn-outline-light me-2" href=""><i
@@ -86,7 +86,7 @@
         <div class="row g-4 align-items-center">
             <div class="col-md-6 text-center text-md-start mb-md-0">
                 <span class="text-white"><a href="#" class="border-bottom text-white"><i
-                            class="fas fa-copyright text-light me-2"></i>Bina Desa</a>, All right reserved.</span>
+                            class="fas fa-copyright text-light me-2"></i>Layanan Surat</a>, All right reserved.</span>
             </div>
             <div class="col-md-6 text-center text-md-end text-white">
                 <i class="fas fa-envelope me-2"></i>Sistem Surat Menyurat Desa
