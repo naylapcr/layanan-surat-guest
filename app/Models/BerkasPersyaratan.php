@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Media;
+use App\Models\PermohonanSurat;
 use Illuminate\Database\Eloquent\Model;
 
 class BerkasPersyaratan extends Model

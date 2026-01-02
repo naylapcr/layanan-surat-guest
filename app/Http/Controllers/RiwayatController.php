@@ -15,7 +15,7 @@ class RiwayatController extends Controller
     public function index()
     {
         $data = RiwayatStatusSurat::with(['permohonan', 'petugas'])->latest()->get();
-        return view('pages.riwayat.index', compact('data'));
+        return view('pages.guest.riwayat-status.index', compact('data'));
     }
 
     /**
@@ -26,7 +26,7 @@ class RiwayatController extends Controller
         $permohonan = PermohonanSurat::all();
         // Mengambil data warga untuk dijadikan petugas (simulasi)
         $warga = Warga::all();
-        return view('pages.riwayat.create', compact('permohonan', 'warga'));
+        return view('pages.guest.riwayat-status.create', compact('permohonan', 'warga'));
     }
 
     /**
@@ -66,7 +66,7 @@ class RiwayatController extends Controller
     public function edit(string $id)
     {
         $riwayat = RiwayatStatusSurat::findOrFail($id); // Pastikan ini ada
-        return view('pages.riwayat.edit', compact('riwayat'));
+        return view('pages.guest.riwayat-status.edit', compact('riwayat'));
     }
 
     /**

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\BerkasPersyaratan;
-use App\Models\PermohonanSurat;
+use App\Models\JenisSurat; // PENTING: Import Model ini
 use App\Models\Media;
 use Illuminate\Support\Facades\File;
 
@@ -13,10 +13,20 @@ class BerkasController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = BerkasPersyaratan::with('permohonan', 'media')->latest()->get();
-        return view('pages.berkas.index', compact('data'));
+        // Gunakan pagination dan filter pencarian agar sesuai dengan View Index
+        $query = BerkasPersyaratan::with('jenisSurat'); // Menggunakan relasi ke Jenis Surat
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where('nama_berkas', 'LIKE', '%' . $search . '%');
+        }
+
+        $data = $query->latest()->paginate(9)->withQueryString();
+
+        // Pastikan path view sesuai folder Anda
+        return view('pages.guest.berkas-persyaratan.index', compact('data'));
     }
 
     /**
@@ -24,8 +34,11 @@ class BerkasController extends Controller
      */
     public function create()
     {
-        $permohonan = PermohonanSurat::all();
-        return view('pages.berkas.create', compact('permohonan'));
+        // PERBAIKAN UTAMA: Ambil data JenisSurat, bukan PermohonanSurat
+        $jenisSurat = JenisSurat::all();
+
+        // Kirim variabel $jenisSurat ke view agar tidak error "Undefined variable"
+        return view('pages.guest.berkas-persyaratan.create', compact('jenisSurat'));
     }
 
     /**
@@ -33,43 +46,22 @@ class BerkasController extends Controller
      */
     public function store(Request $request)
     {
+        // Sesuaikan validasi dengan form Master Data
         $request->validate([
-            'permohonan_id' => 'required',
-            'nama_berkas' => 'required',
-            'file' => 'required|mimes:pdf,jpg,png|max:2048'
+            'nama_berkas'    => 'required|string|max:255',
+            'jenis_surat_id' => 'nullable|exists:jenis_surat,jenis_id', // Pastikan nama kolom primary key di tabel jenis_surat benar
         ]);
 
+        // Simpan data persyaratan
         $berkas = BerkasPersyaratan::create([
-            'permohonan_id' => $request->permohonan_id,
-            'nama_berkas' => $request->nama_berkas,
-            'valid' => 0 // Default belum valid
+            'jenis_surat_id' => $request->jenis_surat_id, // Masuk ke kolom jenis_surat_id
+            'nama_berkas'    => $request->nama_berkas,
+            'deskripsi'      => $request->deskripsi,
+            'is_required'    => $request->has('is_required') ? 1 : 0,
+            'valid'          => 1 // Default valid karena dibuat oleh admin
         ]);
 
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $filename = time() . '-' . $file->getClientOriginalName();
-            $file->move(public_path('uploads'), $filename);
-
-            // SIMPAN KE MEDIA (Otomatis Caption & MimeType)
-            Media::create([
-                'ref_table'  => 'berkas_persyaratan',
-                'ref_id'     => $berkas->berkas_id,
-                'file_url'   => $filename,
-                'caption'    => $request->nama_berkas, // Caption ambil dari nama berkas inputan
-                'mime_type'  => $file->getClientMimeType(),
-                'sort_order' => 0
-            ]);
-        }
-
-        return redirect()->route('berkas.index')->with('success', 'Berkas berhasil ditambahkan');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        return redirect()->route('berkas.index')->with('success', 'Persyaratan berhasil ditambahkan');
     }
 
     /**
@@ -78,7 +70,9 @@ class BerkasController extends Controller
     public function edit(string $id)
     {
         $berkas = BerkasPersyaratan::findOrFail($id);
-        return view('pages.berkas.edit', compact('berkas'));
+        $jenisSurat = JenisSurat::all(); // Perlu ini untuk dropdown edit
+
+        return view('pages.guest.berkas-persyaratan.edit', compact('berkas', 'jenisSurat'));
     }
 
     /**
@@ -89,16 +83,17 @@ class BerkasController extends Controller
         $berkas = BerkasPersyaratan::findOrFail($id);
 
         $request->validate([
-            'nama_berkas' => 'required',
-            'valid'       => 'required|boolean', // 1 (Valid) atau 0 (Tidak Valid)
+            'nama_berkas' => 'required|string|max:255',
         ]);
 
         $berkas->update([
-            'nama_berkas' => $request->nama_berkas,
-            'valid'       => $request->valid,
+            'jenis_surat_id' => $request->jenis_surat_id,
+            'nama_berkas'    => $request->nama_berkas,
+            'deskripsi'      => $request->deskripsi,
+            'is_required'    => $request->has('is_required') ? 1 : 0,
         ]);
 
-        return redirect()->route('berkas.index')->with('success', 'Data berkas berhasil diperbarui!');
+        return redirect()->route('berkas.index')->with('success', 'Data persyaratan berhasil diperbarui!');
     }
 
     /**
@@ -107,17 +102,8 @@ class BerkasController extends Controller
     public function destroy(string $id)
     {
         $berkas = BerkasPersyaratan::findOrFail($id);
-
-        // Hapus Media terkait jika ada (Optional tapi bagus)
-        $media = Media::where('ref_table', 'berkas_persyaratan')->where('ref_id', $id)->first();
-        if($media) {
-            if(File::exists(public_path('uploads/' . $media->file_url))) {
-                File::delete(public_path('uploads/' . $media->file_url));
-            }
-            $media->delete();
-        }
-
         $berkas->delete();
-        return redirect()->route('berkas.index')->with('success', 'Berkas dihapus');
+
+        return redirect()->route('berkas.index')->with('success', 'Persyaratan berhasil dihapus');
     }
 }

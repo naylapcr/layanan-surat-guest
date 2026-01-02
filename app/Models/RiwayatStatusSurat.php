@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Warga;
+use App\Models\PermohonanSurat;
 use Illuminate\Database\Eloquent\Model;
 
 class RiwayatStatusSurat extends Model

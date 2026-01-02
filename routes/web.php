@@ -64,6 +64,12 @@ Route::group(['middleware'=>['checkislogin']],function () {
         Route::put('/permohonan-surat/{permohonan_surat}', [PermohonanSuratController::class, 'update'])->name('permohonan-surat.update');
         Route::delete('/permohonan-surat/{permohonan_surat}', [PermohonanSuratController::class, 'destroy'])->name('permohonan-surat.destroy');
         Route::delete('/permohonan-surat/file/{id}', [PermohonanSuratController::class, 'deleteFile'])->name('permohonan-surat.delete-file');
+
+        // CRUD Berkas Persyaratan
+        Route::resource('berkas', App\Http\Controllers\BerkasController::class);
+
+        // CRUD Riwayat Status (Biasanya Read Only untuk index, tapi jika full CRUD:)
+        Route::resource('riwayat', App\Http\Controllers\RiwayatController::class);
     });
 
     // 4. GROUP BACA DATA (Index & Show)
