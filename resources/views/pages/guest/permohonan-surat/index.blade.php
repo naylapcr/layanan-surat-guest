@@ -4,8 +4,12 @@
     {{-- main content --}}
     <div class="page-header">
         <div class="container text-center">
-            <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Permohonan Surat</h1>
-            <p class="lead text-white animate__animated animate__fadeInUp">Data Permohonan Surat Bina Desa</p>
+            <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">
+                <i class="fas fa-paper-plane me-2 opacity-50"></i>Permohonan Surat
+            </h1>
+            <p class="lead text-white animate__animated animate__fadeInUp">
+                Data Permohonan Surat Bina Desa
+            </p>
         </div>
     </div>
     <div class="container-fluid py-5">
@@ -431,6 +435,16 @@
     {{-- end content --}}
 
     <style>
+        /* STYLE HEADER MODERN */
+        .page-header {
+            background: linear-gradient(135deg, #0d6efd 0%, #0099ff 100%);
+            padding: 5rem 0 3rem 0;
+            border-radius: 0 0 50px 50px;
+            box-shadow: 0 10px 30px rgba(13, 110, 253, 0.15);
+            margin-bottom: 0;
+            position: relative;
+        }
+
         /* Animasi untuk kartu statistik */
         .stats-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -629,7 +643,7 @@
             transition: all 0.5s ease;
         }
 
-        
+
     </style>
 
     <script>

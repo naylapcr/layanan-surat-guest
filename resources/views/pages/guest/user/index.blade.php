@@ -2,10 +2,15 @@
 
 @section('content')
     {{-- Content Start --}}
+
     <div class="page-header">
         <div class="container text-center">
-            <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Data User</h1>
-            <p class="lead text-white animate__animated animate__fadeInUp">Data User Bina Desa</p>
+            <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">
+                <i class="fas fa-user-cog me-2 opacity-50"></i>Data User
+            </h1>
+            <p class="lead text-white animate__animated animate__fadeInUp">
+                Data User Bina Desa
+            </p>
         </div>
     </div>
     <div class="container-fluid py-5">
@@ -392,6 +397,16 @@
     {{-- Content End --}}
 
     <style>
+        /* STYLE HEADER MODERN */
+        .page-header {
+            background: linear-gradient(135deg, #0d6efd 0%, #0099ff 100%);
+            padding: 5rem 0 3rem 0;
+            border-radius: 0 0 50px 50px;
+            box-shadow: 0 10px 30px rgba(13, 110, 253, 0.15);
+            margin-bottom: 0;
+            position: relative;
+        }
+
         /* Animasi untuk kartu statistik */
         .stats-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -670,65 +685,6 @@
 
         .pagination .page-link:hover {
             background-color: #e9ecef;
-        }
-
-        /* --- STYLE KHUSUS HEADER MODERN --- */
-        .page-header-modern {
-            background: linear-gradient(135deg, #0d6efd 0%, #0099ff 100%);
-            /* Gradasi Biru Modern */
-            padding: 5rem 0;
-            margin-bottom: 3rem;
-            position: relative;
-            overflow: hidden;
-            border-radius: 0 0 50px 50px;
-            /* Lengkungan di bawah agar unik */
-            box-shadow: 0 10px 30px rgba(13, 110, 253, 0.15);
-        }
-
-        /* Pola background halus (Opsional, agar tidak terlalu polos) */
-        .page-header-modern::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: radial-gradient(circle at 20% 150%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-        }
-
-        .page-header-modern h1 {
-            font-weight: 800;
-            letter-spacing: -1px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Breadcrumb yang interaktif */
-        .breadcrumb-modern .breadcrumb-item a {
-            color: rgba(255, 255, 255, 0.8) !important;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 5px 10px;
-            border-radius: 20px;
-        }
-
-        .breadcrumb-modern .breadcrumb-item a:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: #fff !important;
-            transform: translateY(-2px);
-            /* Efek melayang saat di-hover */
-        }
-
-        .breadcrumb-modern .breadcrumb-item.active {
-            color: #fff !important;
-            font-weight: bold;
-            padding: 5px 10px;
-        }
-
-        /* Separator breadcrumb (/) */
-        .breadcrumb-modern .breadcrumb-item+.breadcrumb-item::before {
-            color: rgba(255, 255, 255, 0.5);
         }
     </style>
 

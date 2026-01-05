@@ -2,17 +2,20 @@
 
 @section('content')
     {{-- main content --}}
-    <!-- Content Start -->
-
+    {{-- HEADER HALAMAN (Updated) --}}
     <div class="page-header">
         <div class="container text-center">
-            <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Data Warga</h1>
-            <p class="lead text-white animate__animated animate__fadeInUp">Menampilkan Data Warga Bina Desa</p>
+            <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">
+                <i class="fas fa-users me-2 opacity-50"></i>Data Warga
+            </h1>
+            <p class="lead text-white animate__animated animate__fadeInUp">
+                Menampilkan Data Warga Bina Desa
+            </p>
         </div>
     </div>
+
     <div class="container-fluid py-5">
         <div class="container py-5">
-            <!-- Success/Error Messages -->
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show animate__animated animate__fadeIn"
                     role="alert">
@@ -39,7 +42,6 @@
                 </div>
             @endif
 
-            <!-- Stats Cards -->
             <div class="row mb-5">
                 <div class="col-md-3 mb-4">
                     <div class="card card-stat bg-primary text-white shadow h-100 stats-card" data-aos="fade-up"
@@ -102,7 +104,6 @@
                 </div>
             </div>
 
-            <!-- Action Bar -->
             <div class="row mb-4">
                 <div class="col-md-8">
                     <form method="GET" action="{{ route('warga.index') }}" class="d-flex">
@@ -150,7 +151,6 @@
                 </div>
             </div>
 
-            <!-- Widget Cards untuk Data Warga -->
             <div class="row" id="wargaContainer">
                 @forelse($warga as $index => $data)
                     <div class="col-xl-4 col-md-6 mb-4 warga-card animate__animated animate__fadeInUp"
@@ -253,7 +253,6 @@
                 @endforelse
             </div>
 
-            <!-- Info jumlah data -->
             <div class="row mt-4">
                 <div class="col-12 text-center">
                     <p class="text-muted" id="dataInfo">
@@ -265,7 +264,6 @@
         </div>
     </div>
 
-    <!-- Pagination -->
     @if ($warga->hasPages())
         <div class="row mt-4">
             <div class="col-12">
@@ -318,8 +316,6 @@
             </div>
         </div>
     @endif
-    <!-- Content End -->
-    <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -354,6 +350,16 @@
     {{-- end content --}}
 
     <style>
+        /* STYLE HEADER MODERN (Ditambahkan sesuai permintaan) */
+        .page-header {
+            background: linear-gradient(135deg, #0d6efd 0%, #0099ff 100%);
+            padding: 5rem 0 3rem 0;
+            border-radius: 0 0 50px 50px;
+            box-shadow: 0 10px 30px rgba(13, 110, 253, 0.15);
+            margin-bottom: 0;
+            position: relative;
+        }
+
         /* Animasi untuk kartu statistik */
         .stats-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;

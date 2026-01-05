@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Warga;
-use App\Models\JenisSurat;
-use App\Models\Multipleuploads;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+// Tambahkan import Model Media
+use App\Models\Media;
 
 class PermohonanSurat extends Model
 {
@@ -50,10 +49,13 @@ class PermohonanSurat extends Model
         return $this->belongsTo(Warga::class, 'pemohon_warga_id', 'warga_id');
     }
 
+    /**
+     * PERBAIKAN: Menggunakan Model Media (bukan Multipleuploads)
+     * Karena tabel 'multiuploads' sudah tidak ada.
+     */
     public function files()
     {
-        return $this->hasMany(Multipleuploads::class, 'ref_id', 'permohonan_id')
+        return $this->hasMany(Media::class, 'ref_id', 'permohonan_id')
                     ->where('ref_table', 'permohonan_surat');
     }
 }
-

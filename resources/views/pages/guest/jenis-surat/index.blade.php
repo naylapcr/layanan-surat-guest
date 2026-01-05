@@ -2,16 +2,18 @@
 
 @section('content')
 {{-- main content --}}
-    <!-- Content Start -->
-<div class="page-header">
+    <div class="page-header">
     <div class="container text-center">
-        <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Jenis Surat</h1>
-        <p class="lead text-white animate__animated animate__fadeInUp">Jenis Surat Bina Desa</p>
+        <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">
+            <i class="fas fa-file-alt me-2 opacity-50"></i>Jenis Surat
+        </h1>
+        <p class="lead text-white animate__animated animate__fadeInUp">
+            Jenis Surat Bina Desa
+        </p>
     </div>
 </div>
 <div class="container-fluid py-5">
     <div class="container py-5">
-        <!-- Stats Cards -->
         <div class="row mb-5">
             <div class="col-md-4 mb-4">
                 <div class="card card-stat bg-primary text-white shadow h-100 stats-card" data-aos="fade-up" data-aos-delay="100">
@@ -54,7 +56,6 @@
             </div>
         </div>
 
-        <!-- Action Bar -->
         <div class="row mb-4">
             <div class="col-md-8">
                 <form method="GET" action="{{ route('jenis-surat.index') }}" class="d-flex">
@@ -92,7 +93,6 @@
                 </form>
             </div>
             <div class="col-md-4 text-md-end">
-                <!-- TOMBOL TAMBAH JENIS SURAT -->
                 <a href="{{ route('jenis-surat.create') }}" class="btn btn-primary floating-action-btn" data-bs-toggle="tooltip" title="Tambah jenis surat baru">
                     <i class="fas fa-plus me-2"></i>Tambah Jenis Surat
                 </a>
@@ -111,7 +111,6 @@
             </div>
         @endif
 
-        <!-- Widget Cards untuk Jenis Surat -->
         <div class="row" id="jenisSuratContainer">
             @forelse($dataJenisSurat as $index => $jenis)
             <div class="col-xl-4 col-md-6 mb-4 jenis-surat-card-item animate__animated animate__fadeInUp" data-name="{{ strtolower($jenis->nama_jenis) }}" data-syarat="{{ $jenis->syarat_json ? 'with-syarat' : 'without-syarat' }}" data-aos="fade-up" data-aos-delay="{{ ($index % 3) * 100 }}">
@@ -207,7 +206,6 @@
             @endforelse
         </div>
 
-        <!-- Info jumlah data -->
         @if($dataJenisSurat->count() > 0)
         <div class="row mt-4">
             <div class="col-12 text-center">
@@ -218,7 +216,6 @@
         </div>
         @endif
 
-        <!-- Pagination -->
         @if($dataJenisSurat->hasPages())
         <div class="row mt-4">
             <div class="col-12">
@@ -269,7 +266,6 @@
     </div>
 </div>
 
-<!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -303,6 +299,16 @@
 {{-- end main content --}}
 
 <style>
+    /* STYLE HEADER MODERN */
+    .page-header {
+        background: linear-gradient(135deg, #0d6efd 0%, #0099ff 100%);
+        padding: 5rem 0 3rem 0;
+        border-radius: 0 0 50px 50px;
+        box-shadow: 0 10px 30px rgba(13, 110, 253, 0.15);
+        margin-bottom: 0;
+        position: relative;
+    }
+
     /* Animasi untuk kartu statistik */
     .stats-card {
         transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -573,5 +579,4 @@
         });
     });
 </script>
-
 @endsection
