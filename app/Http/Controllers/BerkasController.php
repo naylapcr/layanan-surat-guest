@@ -38,7 +38,7 @@ class BerkasController extends Controller
      */
     public function create()
     {
-        $permohonan = PermohonanSurat::all();
+        $permohonan = PermohonanSurat::with(['warga', 'jenisSurat'])->latest()->get();
         return view('pages.guest.berkas-persyaratan.create', compact('permohonan'));
     }
 

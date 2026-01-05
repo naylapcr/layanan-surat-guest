@@ -198,40 +198,5 @@
         </div>
     </div>
 
-    <style>
-        /* STYLE HEADER MODERN */
-        .page-header {
-            background: linear-gradient(135deg, #0d6efd 0%, #0099ff 100%);
-            padding: 5rem 0 3rem 0;
-            border-radius: 0 0 50px 50px;
-            box-shadow: 0 10px 30px rgba(13, 110, 253, 0.15);
-            margin-bottom: 0;
-            position: relative;
-        }
-
-        .stats-card {
-            transition: transform .3s;
-            border: none;
-            border-radius: 15px;
-        }
-
-        .stats-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .widget-card {
-            border-radius: 15px;
-            overflow: hidden;
-            transition: transform .3s;
-        }
-
-        .widget-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
-        }
-
-        .card-header {
-            padding: 1rem 1.25rem;
-        }
-    </style>
+    @include ('layouts.guest.css')
 @endsection
